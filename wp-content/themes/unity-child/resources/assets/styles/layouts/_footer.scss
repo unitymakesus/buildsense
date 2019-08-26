@@ -1,0 +1,51 @@
+.page-footer {
+  background: transparent;
+  color: $color-black;
+
+  .footer-content {
+    color: $color-black;
+    text-align: left;
+
+    h3 {
+      text-transform: uppercase;
+      font-size: 14px;
+      font-weight: 500;
+      color: $color-blue;
+    }
+
+    .footer-left {
+      padding-left: 0;
+    }
+
+    .footer-center {
+      text-align: left;
+
+      .text-4 {
+        margin-top: 2em;
+      }
+    }
+
+    .footer-right {
+      text-align: left;
+    }
+  }
+
+  .footer-copyright {
+    background: $color-blue;
+
+    .copyright {
+      font-size: 15px;
+      margin: 0;
+      line-height: inherit;
+      margin-right: 1em;
+    }
+
+    a {
+      text-decoration: underline;
+
+      &:hover {
+        text-decoration-style: double;
+      }
+    }
+  }
+}

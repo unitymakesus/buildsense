@@ -1,0 +1,35 @@
+.banner {
+  nav {
+    box-shadow: none;
+
+    .navbar-menu {
+      position: relative;
+      top: -5px;
+
+      ul {
+        a {
+          font-size: 16px;
+          font-weight: 500;
+          width: 90px;
+          height: 90px;
+          line-height: 7em;
+          padding: 0;
+          text-align: center;
+          transition: all 0.5s;
+          background: transparent;
+
+          &:hover {
+            background: $color-yellow;
+            text-decoration: none;
+          }
+        }
+      }
+    }
+  }
+
+  .logo {
+    max-width: 175px;
+    position: relative;
+    top: 5px;
+  }
+}

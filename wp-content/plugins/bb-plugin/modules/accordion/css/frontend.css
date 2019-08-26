@@ -17,8 +17,15 @@
 	padding-left: 15px;
 	vertical-align: middle;
 }
+.fl-accordion-button-icon-left {
+	padding-left: 0;
+	padding-right: 10px;
+}
 .fl-accordion-content {
 	display: none;
+}
+.fl-accordion-item {
+	overflow: hidden;
 }
 
 /* Small */

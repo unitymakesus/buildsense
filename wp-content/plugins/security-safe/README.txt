@@ -1,19 +1,21 @@
-=== Security Safe ===
+=== WP Security Safe ===
 Contributors: sovstack, freemius
-Tags: security, wp security, privacy, security audit, file permissions, brute force login
+Tags: firewall, disable XML-RPC, security, wp security, privacy, security audit, file permissions, brute force login
 Requires at least: 3.5
 Requires PHP: 5.3
-Tested up to: 4.9.8
+Tested up to: 5.2.1
 Stable tag: trunk
 
 A plugin to quickly implement WordPress hardening and security techniques.
 
 == Description ==
 
-Security Safe is a free wp security plugin.
+Wp Security Safe is a freemium WordPress security plugin. For more advanced features, upgrade to the professional version.
 
-Features:
+Free Features:
 
+* Firewall With Logs and Charts
+* Disable XML-RPC.php
 * Hide WordPress CMS Version
 * Hide Script Versions
 * Make Website Anonymous During Updates
@@ -22,17 +24,27 @@ Features:
 * Audit & Fix File Permission
 * Audit Hosting Software Versions
 * Login Security
-* Disable XML-RPC.php
 * Brute Force Protection
 * Content Copyright Protection
-* Multi-Site Compatible
+* 404 Error Logging
 * Turn On/Off All Security Policies Easily
+
+Pro Features:
+
+* All Free Features 
+* Bulk Fix File Permissions
+* Make Theme Versions Private
+* Make Plugin Versions Private
+* Automatically Fix Theme/Plugin File Permissions
+* Import/Export Settings
+* Pro Plugin Updates
+* Priority Support
 
 == Installation ==
 
-1. Install Security Safe automatically or by uploading the ZIP file to your plugins folder. 
-2. Activate the Security Safe on the 'Plugins' admin page. The plugin initially sets minimum security policies active.
-3. Navigate to the General Settings by clicking on the Security Safe menu located on the left side admin panel.
+1. Install WP Security Safe automatically or by uploading the ZIP file to your plugins folder. 
+2. Activate the WP Security Safe on the 'Plugins' admin page. The plugin initially sets minimum security policies active.
+3. Navigate to the General Settings by clicking on the WP Security Safe menu located on the left side admin panel.
 4. On General Settings, You will notice the main icon menu at the top of the page. Navigate through all of them and change settings as they pertain to your site's needs.
 5. Test your site thoroughly. If you notice that your site is not functioning as expected, you can turn off each type of security policy (Privacy, Files, User Access, etc.) by navigating to each page and disabling the policy type. If necessary, you can disable all policy types at once using General Settings.
 
@@ -47,12 +59,74 @@ Features:
 
 == Changelog ==
 
+= 2.1.1 (Medium Priority) = 
+*Release Date - 15 July 2019*
+* Bug Fix: Session handling conflicted with some admin features in oddball scenarios
+* Improvement: Fixed a PHP Warning
+
+= 2.1.0 (Medium Priority) = 
+*Release Date - 15 July 2019*
+* Bug Fix: WP Cron activities were not recording to activity log (Only visible in debug mode)
+* Bug Fix: Charts do not display properly until an entry has been initially added to stats.
+* Bug Fix: Styling issue with wp_table_list pagination
+* Bug Fix: Search field not working on log tables
+* Bug Fix: Admin notices would not display for policies that were disabled or if wp cron was disabled using DISABLE_WP_CRON.
+* Bug Fix: The admin notices were not displaying bold properly
+* Improvement: Fixed some PHP notices, thanks Charles Suggs
+* Improvement: Excluded user roles super admin, administrator, editor, and author from text highlighting and right-click content protection while logged in
+* Improvement: Updated SDK
+* Improvement: Implemented better session handling for increased load performance
+* Improvement: Added more i18n language support.
+
+= 2.0.2 (High Priority) = 
+*Release Date - 10 June 2019*
+* Improvement: In some outlying circumstances, the db tables do not get created. A failsafe was added to create the tables if the insertion of a record failed.
+* Bug Fix: The new db tables get created if the plugin is disabled and then enabled, but not after an update process.
+
+= 2.0.0 (Low Priority) = 
+*Release Date - 10 June 2019*
+
+* Bug Fix: Security Safe would unintentionally recommend a lower version of PHP if the user had a newer version higher than the known versions.
+* Added Feature: Log 404 Errors
+* Added Feature: Log Successful and Failed Logins
+* Added Feature: Manage Blacklist / Whitelist IP Addresses
+* Added Feature: Log Blocked Access Attempts
+* Added Feature: Log Security Vulnerability Probing
+* Added Feature: Statistics and Charts
+* Improvement: Force Local Logins setting now records blocked attempts.
+* Improvement: Cleaned up some PHP Notices in error log.
+* Improvement: Updated namespacing to support future plugins
+* Improvement: Updated directory structure for better scalability
+* Improvement: Minor code standardization updates
+* Improvement: Performance testing and optimization
+* Improvement: Minor styling updates
+* Improvement: Updated PHP version checks
+* Security: Added additional security to prevent XSS
+* Tested up to: 5.2.1
+
+= 1.2.3 (High Priority) = 
+*Release Date - 1 March 2019*
+
+* Security: Updated SDK
+* Improvement: Updated PHP version checks
+* Tested up to: 5.1
+
+= 1.2.2 (High Priority) = 
+*Release Date - 9 December 2018*
+
+* NOTE: PHP 5.6 and 7.0 are now identified as no longer supported due to end of life.
+* Improvement: Converted plugin variables to constants for efficiency and updated all references
+* Improvement: Updated PHP version checks
+* Tested up to: 5.0
+
 = 1.2.1 (Medium Priority) =
-*Release Date - 24 September 2018*
+*Release Date - 22 September 2018*
+
 * Bug Fix: WP-CLI does not properly set variables and causes fatal error when attemptimg to load plugin. Thank you Brian Medlin.
 
 = 1.2.0 (High Priority) =
 *Release Date - 22 September 2018*
+
 * Improvement: Automatically display file permission issues at the top of the list of files.
 * Improvement: Removed Composer autoloading to increase efficiency
 * Improvement: Reduced PHP memory usage to increase performance
@@ -116,7 +190,7 @@ Features:
 
 * Bug Fix: Reference to wp-content was incorrect as a fallback default value when using custom plugin directory outside of wp-content directory.
 * Security: Prevent Administrators of a multisite environment from modifying settings unless they are Super Admin.
-* Added Support: Add support for backup logging. (Backup Feature Coming Soon!)
+* Added Support: Add support for backup logging.
 * Tested Multi-site Compatibility
 * Improvement: Increased plugin load efficiency
 
@@ -162,6 +236,7 @@ Features:
 
 = 1.1.2 (Medium Priority) =
 *Release Date - 20 February 2018*
+
 * Bug Fix: Icon CSS conflict with other icon plugins
 
 = 1.1.1 (Low Priority) =
