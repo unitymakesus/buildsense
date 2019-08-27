@@ -92,7 +92,7 @@ add_shortcode('news', function($atts) {
 
     <div class="article col s12 m4">
       <div class="article-img">
-				<img src="https://placekitten.com/200/300">
+				<!-- <img src="https://placekitten.com/200/300"> -->
       </div>
       <div class="article-info">
 				<p><?php echo get_the_date( 'Y' ); ?></p>
