@@ -13,51 +13,47 @@ add_shortcode('team', function($atts) {
 		'order' => 'ASC',
 	]);
 
-	ob_start();
+	ob_start(); ?>
 
-	if ($people->have_posts()) : while ($people->have_posts()) : $people->the_post(); ?>
+	<div class="team row">
 
-    <div class="row person">
-      <div class="col m4 s6 xs12">
-        <?php echo get_the_post_thumbnail($post_id, 'medium-square-thumbnail'); ?>
+	<?php if ($people->have_posts()) : while ($people->have_posts()) : $people->the_post(); ?>
 
+    <div class="person col s12 m4">
+      <div class="person-img">
+				<?php if (!empty($image = get_field('primary_image'))) { ?>
+					<img class="biopic" src="<?php echo $image['url']; ?>" alt="<?php echo $image['alt']; ?>" />
+				<?php } ?>
+
+				<?php if (!empty($imagehov = get_field('hover_image'))) { ?>
+					<img class="biopic-hover" src="<?php echo $imagehov['url']; ?>" alt="<?php echo $image['alt']; ?>" />
+				<?php } ?>
       </div>
-      <div class="col m8 s6 xs12">
+      <div class="person-info">
+				<span class="roles">Business Resources</span>
+				<span class="roles">Marketing</span>
+				<span class="roles">Sales and Marketing</span>
+
         <h2 itemprop="name"><?php the_title(); ?></h2>
 
         <?php if (!empty($title = get_field('title'))) { ?>
-          <div class="title" itemprop="jobTitle"><?php echo $title; ?></div>
+          <h3 class="title" itemprop="jobTitle"><?php echo $title; ?></h3>
         <?php } ?>
-
-				<?php if (!empty($email = get_field('email'))) { ?>
-					<div><a itemprop="email" target="_blank" rel="noopener" href="mailto:<?php echo $email; ?>"><?php echo $email; ?></a></div>
-				<?php } ?>
-
-				<?php
-					$linkedin = get_field('linkedin');
-					$twitter = get_field('twitter_name');
-				?>
-
-				<?php if (!empty($linkedin) || !empty($twitter)) { ?>
-					<ul class="social-icons">
-						<?php if (!empty($linkedin)) { ?><li class="icon-linkedin-team"><a href="<?php echo $linkedin; ?>">LinkedIn</a></li><?php } ?>
-						<?php if (!empty($twitter)) { ?><li class="icon-twitter-team"><a href="https://www.twitter.com/<?php echo $twitter; ?>">Twitter</a></li><?php } ?>
-					</ul>
-				<?php } ?>
 
         <?php
           if (!empty($short_bio = get_field('short_bio'))) {
             echo $short_bio;
 					}
 					if (!empty(get_field('longer_bio'))) {
-            echo '<p><a href="' . get_permalink() . '">Read more about ' . get_the_title() . '</a></p>';
+            echo '<a href="' . get_permalink() . '">Read more</a>';
           }
         ?>
       </div>
     </div>
-
 		<?php
-	endwhile; endif; wp_reset_postdata();
+	endwhile; endif; wp_reset_postdata(); ?>
 
-	return ob_get_clean();
+	</div>
+
+	<?php return ob_get_clean();
 });

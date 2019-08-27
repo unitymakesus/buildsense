@@ -4,6 +4,7 @@
 // Import child theme overrides into this file
 @import "common/global";
 @import "common/typography";
-@import "layouts/header";
-@import "layouts/footer";
+@import "components/header";
+@import "components/footer";
 @import "layouts/homepage";
+@import "layouts/people";

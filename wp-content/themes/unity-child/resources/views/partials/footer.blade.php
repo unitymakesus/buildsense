@@ -17,7 +17,7 @@
 
   <div class="footer-copyright">
     <div class="container flex flex-end">
-      <p class="copyright">&copy; {!! current_time('Y') !!} {{ get_bloginfo('name', 'display') }}</p>
+      <p class="copyright">BuildSense Inc, BuildSense Architecture PC &copy; {!! current_time('Y') !!}, All Rights Reserved</p>
       <a href="{{ get_home_url() }}/privacy-policy/">Privacy Policy</a>
     </div>
   </div>

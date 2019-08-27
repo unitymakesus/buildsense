@@ -34,17 +34,18 @@
     background: $color-blue;
 
     .copyright {
-      font-size: 15px;
+      font-size: 13px;
       margin: 0;
       line-height: inherit;
       margin-right: 1em;
     }
 
     a {
-      text-decoration: underline;
+      text-decoration: underline !important;
+      font-size: 13px;
 
       &:hover {
-        text-decoration-style: double;
+        text-decoration-style: double !important;
       }
     }
   }

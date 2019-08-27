@@ -1,18 +1,19 @@
 body {
   h1, .h1 {
-    font-size: 48px;
-    font-weight: 300;
+    font-size: 40px;
+    font-weight: 400;
     line-height: 1.2em;
+    color: $color-blue;
   }
 
   h2, .h2 {
-    font-size: 40px;
+    font-size: 33px;
     font-weight: 300;
     line-height: 1.2em;
   }
 
   h3, .h3 {
-    font-size: 30px;
+    font-size: 25px;
     font-weight: 400;
     margin: 15px 0;
   }
@@ -36,8 +37,8 @@ body {
     text-decoration: none !important;
     font-weight: 400 !important;
 
-    &:hover {
-      text-decoration: underline !important;
-    }
+    // &:hover {
+    //   background: $color-yellow;
+    // }
   }
 }
