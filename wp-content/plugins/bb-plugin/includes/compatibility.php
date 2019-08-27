@@ -844,3 +844,16 @@ function fl_theme_builder_cat_archive_post_grid( $query ) {
 
 	return $post_grid;
 }
+
+/**
+ * Remove sorting from download type if EDD is active.
+ * @since 2.2.5
+ */
+add_filter( 'fl_builder_admin_edit_sort_blocklist', 'fl_builder_admin_edit_sort_blocklist_edd' );
+function fl_builder_admin_edit_sort_blocklist_edd( $blocklist ) {
+	$types = FLBuilderModel::get_post_types();
+	if ( in_array( 'download', $types ) && class_exists( 'Easy_Digital_Downloads' ) ) {
+		$blocklist[] = 'download';
+	}
+	return $blocklist;
+}

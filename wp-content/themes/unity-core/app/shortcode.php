@@ -66,3 +66,53 @@ add_shortcode('team', function($atts) {
 
 	<?php return ob_get_clean();
 });
+
+
+
+add_shortcode('news', function($atts) {
+	$news = new \WP_Query([
+		'post_type' => 'simple-news',
+		'posts_per_page' => 24,
+		'orderby' => 'DES',
+		'order' => 'DES',
+	]);
+
+	ob_start(); ?>
+
+	<div class='news row'>
+
+	<?php if ($news->have_posts()) :
+		$counter = 0;
+		while ($news->have_posts()) : $news->the_post();
+			if ($counter % 3 == 0) :
+					echo $counter > 0 ? "</div>" : ""; // close div if it's not the first
+					echo "<div class='team row'>";
+			endif;
+		?>
+
+    <div class="article col s12 m4">
+      <div class="article-img">
+				<img src="https://placekitten.com/200/300">
+      </div>
+      <div class="article-info">
+				<p><?php echo get_the_date( 'Y' ); ?></p>
+        	<h2 itemprop="title"><?php the_title(); ?></h2>
+
+        <?php if (!empty($description = get_field('description'))) { ?>
+          <h3 class="description" itemprop="description"><?php echo $description; ?></h3>
+        <?php } ?>
+
+				<?php if (!empty($publication = get_field('publication'))) { ?>
+					<h3 class="publication" itemprop="publication"><?php echo $publication; ?></h3>
+				<?php } ?>
+      </div>
+    </div>
+
+		<?php
+		$counter++;
+		endwhile; endif; wp_reset_postdata(); ?>
+
+	</div>
+
+	<?php return ob_get_clean();
+});

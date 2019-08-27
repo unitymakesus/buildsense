@@ -1,3 +1,14 @@
+<h4>2.2.4.4 - 08/21/2019</h4>
+<p><strong>Bug Fixes</strong></p>
+<ul>
+	<li>Fixed fallback image and text alignment on Posts module List Layout.</li>
+	<li>Fixed Numbers Module if float value is used.</li>
+	<li>Fixed Subscribe Form module's URL Redirect.</li>
+	<li>Fixed Editor tab missing when using Classic Editor and Yoast plugins.</li>
+	<li>Fixed Beaver Builder sorting link appearing in EDD main settings.</li>
+</ul>
+
+
 <h4>2.2.4.3 - 07/31/2019</h4>
 <p><strong>Bug Fixes</strong></p>
 <ul>

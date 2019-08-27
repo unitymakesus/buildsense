@@ -163,20 +163,29 @@ class FLPostGridModule extends FLBuilderModule {
 	 * @return void
 	 */
 	public function render_post_class() {
-		$settings   = $this->settings;
-		$layout     = $this->get_layout_slug();
-		$show_image = has_post_thumbnail() && $settings->show_image;
+		$settings   		= $this->settings;
+		$layout     		= $this->get_layout_slug();
+		$show_image 		= $settings->show_image;
+		$has_thumbnail 	= has_post_thumbnail();
+		$has_fallback 	= ! $has_thumbnail && '' !== $settings->image_fallback && $settings->show_image ? true : false;
 		$classes    = array( 'fl-post-' . $layout . '-post' );
 
-		if ( $show_image ) {
+		if ( $show_image && $has_thumbnail ) {
+				if ( 'feed' == $layout ) {
+					$classes[] = 'fl-post-feed-image-' . $settings->image_position;
+				}
+				if ( 'grid' == $layout ) {
+					$classes[] = 'fl-post-grid-image-' . $settings->grid_image_position;
+				}
+				if ( 'columns' == $settings->layout ) {
+					$classes[] = 'fl-post-columns-post';
+				}
+		}
+
+		if ( $show_image && $has_fallback ) {
 			if ( 'feed' == $layout ) {
 				$classes[] = 'fl-post-feed-image-' . $settings->image_position;
-			}
-			if ( 'grid' == $layout ) {
-				$classes[] = 'fl-post-grid-image-' . $settings->grid_image_position;
-			}
-			if ( 'columns' == $settings->layout ) {
-				$classes[] = 'fl-post-columns-post';
+				$classes[] = 'fl-post-feed-image-fallback';
 			}
 		}
 

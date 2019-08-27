@@ -4911,7 +4911,7 @@ span.select2-container.select2-container--open {
 }
 
 .fl-field[data-type="link"] .fl-field-connection {
-	bottom: 25px;
+	bottom: 20px;
 }
 .fl-field-connections-menu[data-field="fl-field-text"] {
     margin-top:30px
