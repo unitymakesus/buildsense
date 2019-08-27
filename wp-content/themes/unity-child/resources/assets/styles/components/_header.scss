@@ -2,6 +2,10 @@
   nav {
     box-shadow: none;
 
+    @media #{$small-and-down} {
+      padding: 0 15px;
+    }
+
     .navbar-menu {
       position: relative;
       top: -5px;

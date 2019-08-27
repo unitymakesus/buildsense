@@ -1,6 +1,7 @@
 .team {
   .person {
     padding-left: 0;
+    margin-bottom: 0;
 
     h2 {
       font-size: 18px;
@@ -70,13 +71,13 @@
   color: $color-blue;
   text-transform: uppercase;
   font-weight: 500;
-  line-height: 10px;
+  line-height: 0;
+  position: relative;
 
   &::after {
-    content: '·';
-    font-size: 30px;
+    content: '\25CF';
+    font-size: 12px;
     position: relative;
-    top: 5px;
     left: 2px;
   }
 

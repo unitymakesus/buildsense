@@ -1,0 +1,13 @@
+// Image zoom on hover
+.imglink .fl-photo-content {
+  overflow: hidden;
+}
+
+.imglink .fl-photo-content .fl-photo-img {
+  transition: all 0.3s ease-in-out;
+}
+
+.imglink .fl-photo-content .fl-photo-img:hover {
+  transition: 0.3s ease-in-out;
+  transform: scale(1.1);
+}

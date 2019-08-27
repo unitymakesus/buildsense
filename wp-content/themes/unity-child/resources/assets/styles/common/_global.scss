@@ -6,3 +6,8 @@ body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: $color-grey;
 }
+
+.container {
+  width: 100% !important;
+  max-width: 1050px;
+}

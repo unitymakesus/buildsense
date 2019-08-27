@@ -15,9 +15,16 @@ add_shortcode('team', function($atts) {
 
 	ob_start(); ?>
 
-	<div class="team row">
+	<div class='team row'>
 
-	<?php if ($people->have_posts()) : while ($people->have_posts()) : $people->the_post(); ?>
+	<?php if ($people->have_posts()) :
+		$counter = 0;
+		while ($people->have_posts()) : $people->the_post();
+			if ($counter % 3 == 0) :
+					echo $counter > 0 ? "</div>" : ""; // close div if it's not the first
+					echo "<div class='team row'>";
+			endif;
+		?>
 
     <div class="person col s12 m4">
       <div class="person-img">
@@ -45,13 +52,15 @@ add_shortcode('team', function($atts) {
             echo $short_bio;
 					}
 					if (!empty(get_field('longer_bio'))) {
-            echo '<a href="' . get_permalink() . '">Read more</a>';
+            echo '<p><a href="' . get_permalink() . '">Read more</a>';
           }
         ?>
       </div>
     </div>
+
 		<?php
-	endwhile; endif; wp_reset_postdata(); ?>
+		$counter++;
+		endwhile; endif; wp_reset_postdata(); ?>
 
 	</div>
 
