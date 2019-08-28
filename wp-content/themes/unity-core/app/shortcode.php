@@ -95,15 +95,18 @@ add_shortcode('news', function($atts) {
 				<!-- <img src="https://placekitten.com/200/300"> -->
       </div>
       <div class="article-info">
-				<p><?php echo get_the_date( 'Y' ); ?></p>
-        	<h2 itemprop="title"><?php the_title(); ?></h2>
-
-        <?php if (!empty($description = get_field('description'))) { ?>
-          <h3 class="description" itemprop="description"><?php echo $description; ?></h3>
-        <?php } ?>
+				<h4><?php echo get_the_date( 'Y' ); ?></h4>
+				<?php if (!empty($link = get_field('link'))) {?>
+					<a href="<?php echo $link['url']?>" target="_blank">
+	        	<h3 itemprop="title"><?php the_title(); ?>
+							<?php if (!empty($description = get_field('description'))) {?> |	<?php echo $description;
+			        } ?>
+						</h3>
+					</a>
+				<?php }	?>
 
 				<?php if (!empty($publication = get_field('publication'))) { ?>
-					<h3 class="publication" itemprop="publication"><?php echo $publication; ?></h3>
+					<p class="publication" itemprop="publication"><?php echo $publication; ?></p>
 				<?php } ?>
       </div>
     </div>
