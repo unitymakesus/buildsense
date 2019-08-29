@@ -86,24 +86,29 @@ add_shortcode('news', function($atts) {
 		while ($news->have_posts()) : $news->the_post();
 			if ($counter % 3 == 0) :
 					echo $counter > 0 ? "</div>" : ""; // close div if it's not the first
-					echo "<div class='team row'>";
+					echo "<div class='news row'>";
 			endif;
 		?>
 
     <div class="article col s12 m4">
-      <div class="article-img">
-				<!-- <img src="https://placekitten.com/200/300"> -->
-      </div>
       <div class="article-info">
 				<h4><?php echo get_the_date( 'Y' ); ?></h4>
-				<?php if (!empty($link = get_field('link'))) {?>
-					<a href="<?php echo $link['url']?>" target="_blank">
+
+				<?php
+					$link = get_field('link');
+
+					if (!empty($link['url'])) {  ?>
+						<a href="<?php echo $link['url']?>" target="_blank">
+					<?php }	?>
+
 	        	<h3 itemprop="title"><?php the_title(); ?>
-							<?php if (!empty($description = get_field('description'))) {?> |	<?php echo $description;
-			        } ?>
+							<?php if (!empty($description = get_field('description'))) { ?> |	<?php echo $description;
+							} ?>
 						</h3>
-					</a>
-				<?php }	?>
+
+					<?php if (!empty($link['url'])) {  ?>
+						</a>
+					<?php } ?>
 
 				<?php if (!empty($publication = get_field('publication'))) { ?>
 					<p class="publication" itemprop="publication"><?php echo $publication; ?></p>
