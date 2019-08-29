@@ -74,16 +74,9 @@
   line-height: 0;
   position: relative;
 
-  &::after {
-    content: '\25CF';
-    font-size: 12px;
+  .interpunct {
+    font-size: 25px;
     position: relative;
-    left: 2px;
-  }
-
-  &:last-of-type {
-    &::after {
-      content: '';
-    }
+    top: 4px;
   }
 }

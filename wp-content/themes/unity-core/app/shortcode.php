@@ -15,7 +15,7 @@ add_shortcode('team', function($atts) {
 
 	ob_start(); ?>
 
-	<div class='team row'>
+	<div class='team-container'>
 
 	<?php if ($people->have_posts()) :
 		$counter = 0;
@@ -37,9 +37,12 @@ add_shortcode('team', function($atts) {
 				<?php } ?>
       </div>
       <div class="person-info">
-				<span class="roles">Business Resources</span>
-				<span class="roles">Marketing</span>
-				<span class="roles">Sales and Marketing</span>
+				<span class="roles">
+					<?php
+						$terms = wp_get_post_terms( get_the_id(), 'simple-team-category');
+						echo join(' <span class="interpunct">&#183;</span> ', wp_list_pluck($terms, 'name'));
+					?>
+				</span>
 
         <h2 itemprop="name"><?php the_title(); ?></h2>
 
@@ -52,7 +55,7 @@ add_shortcode('team', function($atts) {
             echo $short_bio;
 					}
 					if (!empty(get_field('longer_bio'))) {
-            echo '<p><a href="' . get_permalink() . '">Read more</a>';
+            echo '<p><a href="' . get_permalink() . '">Read more >></a>';
           }
         ?>
       </div>
@@ -68,8 +71,10 @@ add_shortcode('team', function($atts) {
 });
 
 
-
-add_shortcode('news', function($atts) {
+/**
+ * News shortcode
+ */
+ add_shortcode('news', function($atts) {
 	$news = new \WP_Query([
 		'post_type' => 'simple-news',
 		'posts_per_page' => 24,
@@ -79,7 +84,7 @@ add_shortcode('news', function($atts) {
 
 	ob_start(); ?>
 
-	<div class='news row'>
+	<div class='news-container'>
 
 	<?php if ($news->have_posts()) :
 		$counter = 0;
@@ -113,6 +118,60 @@ add_shortcode('news', function($atts) {
 				<?php if (!empty($publication = get_field('publication'))) { ?>
 					<p class="publication" itemprop="publication"><?php echo $publication; ?></p>
 				<?php } ?>
+      </div>
+    </div>
+
+		<?php
+		$counter++;
+		endwhile; endif; wp_reset_postdata(); ?>
+
+	</div>
+
+	<?php return ob_get_clean();
+});
+
+
+
+/**
+ * Projects shortcode
+ */
+ add_shortcode('projects', function($atts) {
+	$news = new \WP_Query([
+		'post_type' => 'simple-projects',
+		'posts_per_page' => -1,
+		'orderby' => 'DES',
+		'order' => 'DES',
+	]);
+
+	ob_start(); ?>
+
+	<div class='projects-container'>
+
+	<?php if ($news->have_posts()) :
+		$counter = 0;
+		while ($news->have_posts()) : $news->the_post();
+			if ($counter % 3 == 0) :
+					echo $counter > 0 ? "</div>" : ""; // close div if it's not the first
+					echo "<div class='projects row'>";
+			endif;
+		?>
+
+    <div class="project col s12 m4">
+			<div class="project-img">
+				<a href="<?php the_permalink() ?>">
+					<img src="https://placekitten.com/300/200" />
+				</a>
+			</div>
+
+			<div class="project-info">
+				<h4>
+					<?php
+						$terms = wp_get_post_terms( get_the_id(), 'simple-projects-category');
+						echo $terms[0]->name;
+					?>
+				</h4>
+				<h2 itemprop="title"><?php the_title(); ?></h2>
+				<a href="<?php the_permalink() ?>">View project details >></a>
       </div>
     </div>
 
