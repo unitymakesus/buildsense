@@ -1,15 +1,27 @@
-.projects {
+.projects-container {
   .project {
     padding-left: 0;
     margin-bottom: 2em;
+    width: 100%;
 
     .project-img {
       overflow: hidden;
-      height: 300px;
+      height: 0;
+      padding-bottom: 100%;
+      position: relative;
 
       a {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+
         &:hover {
           background-size: 0;
+        }
+
+        figure {
+          width: 100%;
+          height: 100%;
         }
 
         img {
@@ -44,6 +56,49 @@
         font-size: 14px;
         font-weight: 400;
         margin-bottom: 0;
+      }
+    }
+
+    .flex-grid-single {
+      margin: 5em 0;
+
+      .flex-item-single {
+        padding: 0;
+        padding-bottom: 33%;
+        margin: 10px;
+        width: 31.4%;
+
+        @media #{$medium-and-down} {
+          width: 47.5%;
+          padding-bottom: 50%;
+        }
+        @media #{$small-and-down} {
+          width: 100%;
+          padding-bottom: 100%;
+        }
+
+        .post-thumbnail {
+          margin: 0;
+        }
+      }
+
+      .project-info-single {
+        @media #{$medium-and-down} {
+          width: 50%;
+        }
+
+        h4 {
+          margin: 0 0 5px;
+          font-size: 15px;
+          font-weight: 600;
+          color: $color-grey;
+          text-transform: inherit;
+        }
+
+        p {
+          margin-top: 0;
+          margin-bottom: 20px;
+        }
       }
     }
   }
