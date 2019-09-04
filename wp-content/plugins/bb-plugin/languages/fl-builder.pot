@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bb-plugin\n"
 "Report-Msgid-Bugs-To: hello@wpbeaverbuilder.com\n"
-"POT-Creation-Date: 2019-08-21 16:36:55+00:00\n"
+"POT-Creation-Date: 2019-08-28 17:31:05+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -193,7 +193,7 @@ msgstr ""
 msgid "Untitled Shape"
 msgstr ""
 
-#: classes/class-fl-builder-art.php:187 includes/column-settings.php:279
+#: classes/class-fl-builder-art.php:193 includes/column-settings.php:279
 #: includes/row-settings.php:535 includes/ui-field-border.php:35
 #: includes/ui-field-typography.php:141
 #: modules/contact-form/contact-form.php:425 modules/menu/menu.php:310
@@ -202,36 +202,36 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: classes/class-fl-builder-art.php:243
+#: classes/class-fl-builder-art.php:249
 msgid "Top Shape Layer"
 msgstr ""
 
-#: classes/class-fl-builder-art.php:251
+#: classes/class-fl-builder-art.php:257
 msgid "Bottom Shape Layer"
 msgstr ""
 
-#: classes/class-fl-builder-art.php:331 includes/column-settings.php:70
+#: classes/class-fl-builder-art.php:337 includes/column-settings.php:70
 #: includes/row-settings.php:116 includes/ui-field-dimension.php:24
 #: modules/slideshow/slideshow.php:475
 msgid "Top"
 msgstr ""
 
-#: classes/class-fl-builder-art.php:332 includes/column-settings.php:72
+#: classes/class-fl-builder-art.php:338 includes/column-settings.php:72
 #: includes/row-settings.php:118 includes/ui-field-dimension.php:26
 #: modules/post-slider/post-slider.php:689 modules/slideshow/slideshow.php:474
 msgid "Bottom"
 msgstr ""
 
-#: classes/class-fl-builder-art.php:341
+#: classes/class-fl-builder-art.php:347
 #. translators: %s: position label
 msgid "%s Shape"
 msgstr ""
 
-#: classes/class-fl-builder-art.php:345
+#: classes/class-fl-builder-art.php:351
 msgid "Shape"
 msgstr ""
 
-#: classes/class-fl-builder-art.php:368 includes/ui-field-typography.php:202
+#: classes/class-fl-builder-art.php:374 includes/ui-field-typography.php:202
 #: modules/callout/callout.php:629 modules/icon/icon.php:112
 #: modules/icon-group/icon-group.php:52
 #: modules/post-carousel/post-carousel.php:322
@@ -239,7 +239,7 @@ msgstr ""
 msgid "Size"
 msgstr ""
 
-#: classes/class-fl-builder-art.php:429 includes/column-settings.php:14
+#: classes/class-fl-builder-art.php:435 includes/column-settings.php:14
 #: includes/row-settings.php:17 includes/ui-field-border.php:134
 #: modules/button/button.php:314 modules/callout/callout.php:504
 #: modules/content-slider/content-slider.php:647 modules/photo/photo.php:606
@@ -247,76 +247,76 @@ msgstr ""
 msgid "Width"
 msgstr ""
 
-#: classes/class-fl-builder-art.php:430 includes/row-settings.php:69
+#: classes/class-fl-builder-art.php:436 includes/row-settings.php:69
 #: modules/content-slider/content-slider.php:406 modules/map/map.php:43
 #: modules/post-slider/post-slider.php:388 modules/separator/separator.php:84
 #: modules/slideshow/slideshow.php:289
 msgid "Height"
 msgstr ""
 
-#: classes/class-fl-builder-art.php:431
+#: classes/class-fl-builder-art.php:437
 msgid "Y Offset"
 msgstr ""
 
-#: classes/class-fl-builder-art.php:442 includes/ui-field-typography.php:218
+#: classes/class-fl-builder-art.php:448 includes/ui-field-typography.php:218
 #: modules/button/button.php:355 modules/callout/callout.php:527
 #: modules/photo/photo.php:629 modules/separator/separator.php:125
 msgid "Align"
 msgstr ""
 
-#: classes/class-fl-builder-art.php:445
+#: classes/class-fl-builder-art.php:451
 msgid "Top Left"
 msgstr ""
 
-#: classes/class-fl-builder-art.php:446
+#: classes/class-fl-builder-art.php:452
 msgid "Top Center"
 msgstr ""
 
-#: classes/class-fl-builder-art.php:447
+#: classes/class-fl-builder-art.php:453
 msgid "Top Right"
 msgstr ""
 
-#: classes/class-fl-builder-art.php:448
+#: classes/class-fl-builder-art.php:454
 msgid "Center Left"
 msgstr ""
 
-#: classes/class-fl-builder-art.php:449 includes/column-settings.php:71
+#: classes/class-fl-builder-art.php:455 includes/column-settings.php:71
 #: includes/column-settings.php:229 includes/row-settings.php:117
 #: includes/row-settings.php:267 modules/content-slider/content-slider.php:641
 #: modules/social-buttons/social-buttons.php:97
 msgid "Center"
 msgstr ""
 
-#: classes/class-fl-builder-art.php:450
+#: classes/class-fl-builder-art.php:456
 msgid "Center Right"
 msgstr ""
 
-#: classes/class-fl-builder-art.php:451
+#: classes/class-fl-builder-art.php:457
 msgid "Bottom Left"
 msgstr ""
 
-#: classes/class-fl-builder-art.php:452
+#: classes/class-fl-builder-art.php:458
 msgid "Bottom Center"
 msgstr ""
 
-#: classes/class-fl-builder-art.php:453
+#: classes/class-fl-builder-art.php:459
 msgid "Bottom Right"
 msgstr ""
 
-#: classes/class-fl-builder-art.php:468
+#: classes/class-fl-builder-art.php:474
 #. translators: %s: position label
 msgid "%s Shape Style"
 msgstr ""
 
-#: classes/class-fl-builder-art.php:473
+#: classes/class-fl-builder-art.php:479
 msgid "Color Fill"
 msgstr ""
 
-#: classes/class-fl-builder-art.php:474
+#: classes/class-fl-builder-art.php:480
 msgid "Gradient Fill"
 msgstr ""
 
-#: classes/class-fl-builder-art.php:500 includes/column-settings.php:86
+#: classes/class-fl-builder-art.php:506 includes/column-settings.php:86
 #: includes/column-settings.php:161 includes/column-settings.php:280
 #: includes/row-settings.php:536 includes/row-settings.php:577
 #: includes/ui-field-border.php:126 modules/callout/callout.php:576
@@ -327,7 +327,7 @@ msgstr ""
 msgid "Color"
 msgstr ""
 
-#: classes/class-fl-builder-art.php:513 includes/column-settings.php:175
+#: classes/class-fl-builder-art.php:519 includes/column-settings.php:175
 #: includes/column-settings.php:281 includes/row-settings.php:537
 #: includes/row-settings.php:592 modules/button/button.php:451
 #: modules/callout/callout.php:615 modules/callout/callout.php:885
@@ -340,23 +340,23 @@ msgstr ""
 msgid "Gradient"
 msgstr ""
 
-#: classes/class-fl-builder-art.php:525 includes/ui-field-typography.php:242
+#: classes/class-fl-builder-art.php:531 includes/ui-field-typography.php:242
 msgid "Transform"
 msgstr ""
 
-#: classes/class-fl-builder-art.php:538
+#: classes/class-fl-builder-art.php:544
 msgid "Shape Container"
 msgstr ""
 
-#: classes/class-fl-builder-art.php:542
+#: classes/class-fl-builder-art.php:548
 msgid "Clip Within Container"
 msgstr ""
 
-#: classes/class-fl-builder-art.php:544
+#: classes/class-fl-builder-art.php:550
 msgid "No Clip"
 msgstr ""
 
-#: classes/class-fl-builder-art.php:545
+#: classes/class-fl-builder-art.php:551
 msgid "Clip Contents"
 msgstr ""
 

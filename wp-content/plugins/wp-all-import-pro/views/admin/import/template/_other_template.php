@@ -40,7 +40,7 @@ switch ($post_type){
 								<div class="switcher-target-status_xpath">
 									<div class="input">
 										&nbsp;<input type="text" class="smaller-text" name="status_xpath" style="width:190px;" value="<?php echo esc_attr($post['status_xpath']) ?>"/>
-										<a href="#help" class="wpallimport-help" title="<?php _e('The value of presented XPath should be one of the following: (\'publish\', \'draft\', \'trash\').', 'wp_all_import_plugin') ?>" style="position:relative; top:13px; float: right;">?</a>
+										<a href="#help" class="wpallimport-help" title="<?php _e('The value of presented XPath should be one of the following: (\'publish\', \'draft\', \'trash\', \'private\').', 'wp_all_import_plugin') ?>" style="position:relative; top:13px; float: right;">?</a>
 									</div>
 								</div>
 							</div>								
@@ -137,9 +137,8 @@ switch ($post_type){
 					<tr>
 						<td>
 							<h4 style="float:left;"><?php _e('Download & Import Attachments', 'wp_all_import_plugin') ?></h4>
-							<span class="separated_by" style="position:relative; top:15px; margin-right:0px;"><?php _e('Separated by','wp_all_import_plugin');?></span>
-							<div>
-								<input type="text" name="attachments" style="width:93%;" value="<?php echo esc_attr($post['attachments']) ?>" />
+							<div style="clear:both;">
+								<input type="text" name="attachments" style="width:87%;" value="<?php echo esc_attr($post['attachments']) ?>" />
 								<input type="text" class="small" name="atch_delim" value="<?php echo esc_attr($post['atch_delim']) ?>" style="width:5%; text-align:center; float:right;"/>
 							</div>			
 							<div class="input" style="margin:3px;">
@@ -166,8 +165,8 @@ switch ($post_type){
 										foreach ($post_formats[0] as $post_format) {
 											?>
 											<div class="input">
-												<input type="radio" id="post_format_<?php echo $post_format . "_" . $entry; ?>" name="post_format" value="<?php echo $post_format; ?>" <?php echo $post_format == $post['post_format'] ? 'checked="checked"' : '' ?> />
-												<label for="post_format_<?php echo $post_format . "_" . $entry; ?>"><?php _e( ucfirst($post_format), 'wp_all_import_plugin') ?></label>
+												<input type="radio" id="post_format_<?php echo $post_format; ?>" name="post_format" value="<?php echo $post_format; ?>" <?php echo $post_format == $post['post_format'] ? 'checked="checked"' : '' ?> />
+												<label for="post_format_<?php echo $post_format; ?>"><?php _e( ucfirst($post_format), 'wp_all_import_plugin') ?></label>
 											</div>
 											<?php
 										}

@@ -10,8 +10,8 @@
 	Contributors: specialk
 	Requires at least: 4.1
 	Tested up to: 5.2
-	Stable tag: 20190501
-	Version: 20190501
+	Stable tag: 20190902
+	Version: 20190902
 	Requires PHP: 5.6.20
 	Text Domain: ga-google-analytics
 	Domain Path: /languages
@@ -60,7 +60,7 @@ if (!class_exists('GA_Google_Analytics')) {
 		
 		function constants() {
 			
-			if (!defined('GAP_VERSION')) define('GAP_VERSION', '20190501');
+			if (!defined('GAP_VERSION')) define('GAP_VERSION', '20190902');
 			if (!defined('GAP_REQUIRE')) define('GAP_REQUIRE', '4.1');
 			if (!defined('GAP_AUTHOR'))  define('GAP_AUTHOR',  'Jeff Starr');
 			if (!defined('GAP_NAME'))    define('GAP_NAME',    __('GA Google Analytics', 'ga-google-analytics'));

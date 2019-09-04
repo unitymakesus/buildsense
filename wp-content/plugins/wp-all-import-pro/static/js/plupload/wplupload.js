@@ -161,9 +161,9 @@ $.fn.wplupload  = function($options) {
 						{
 							$('.wpallimport-choose-file').find('.wpallimport-upload-resource-step-two').slideDown();
 							$('.wpallimport-choose-file').find('.wpallimport-submit-buttons').show();		
-						}						
+						}
 
-						if (r.OK) {					
+						if (r.OK) {
 
 						} else if (r.error != undefined && '' != r.error.message) {
 							//$('#progressbar').html(r.error.message);

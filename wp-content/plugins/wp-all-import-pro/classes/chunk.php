@@ -88,8 +88,11 @@ class PMXI_Chunk {
 
     $this->parser_type = empty($parser_type) ? 'xmlreader' : $parser_type;
 
+    $sleep = apply_filters( 'wp_all_import_shard_delay', 0 );
+    usleep($sleep);
+
     $is_html = false;
-    $f = @fopen($file, "rb");       
+    $f = @fopen($file, "rb");
     while (!@feof($f)) {
       $chunk = @fread($f, 1024);         
       if (strpos($chunk, "<!DOCTYPE") === 0) $is_html = true;
@@ -174,7 +177,7 @@ class PMXI_Chunk {
             // $simpleXmlNode = simplexml_load_string($node);
             // echo (string)$simpleXmlNode->firstName;            
         }
-
+        
         $this->cloud = $parser->cloud;
 
       }
@@ -282,7 +285,7 @@ class PMXI_Chunk {
 
                     if ($this->loop < $this->options['pointer']){
                       $this->loop++;                              
-                      continue;
+                      continue(2);
                     }                
                     
                     $xml = @$this->reader->readOuterXML();                  

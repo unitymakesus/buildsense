@@ -56,7 +56,7 @@
 			<div class="wpallimport-content-section wpallimport-console wpallimport-orders-complete-warning">
 				<h3><?php printf(__('<span id="skipped_count">%s</span> orders were skipped during this import', 'wp_all_import_plugin'), $update_previous->skipped); ?></h3>
 				<h4>
-					<?php printf(__('WP All Import is unable import an order when it cannot match the products or customer specified. <a href="%s" style="margin: 0;">See the import log</a> for a list of which orders were skipped and why.', 'wp_all_import_plugin'), add_query_arg(array('id' => $update_previous->id, 'page' => 'pmxi-admin-history', 'action' => 'log', 'history_id' => PMXI_Plugin::$session->history_id, '_wpnonce' => wp_create_nonce( '_wpnonce-download_log' )), $this->baseUrl)); ?>
+					<?php printf(__('WP All Import is unable to import an order when it cannot match the products or customer specified. <a href="%s" style="margin: 0;">See the import log</a> for a list of which orders were skipped and why.', 'wp_all_import_plugin'), add_query_arg(array('id' => $update_previous->id, 'page' => 'pmxi-admin-history', 'action' => 'log', 'history_id' => PMXI_Plugin::$session->history_id, '_wpnonce' => wp_create_nonce( '_wpnonce-download_log' )), $this->baseUrl)); ?>
 				</h4>				
 				<input type="button" class="button button-primary button-hero wpallimport-large-button wpallimport-delete-and-edit" rel="<?php echo add_query_arg(array('id' => $update_previous->id, 'page' => 'pmxi-admin-manage', 'action' => 'delete_and_edit'), $this->baseUrl); ?>" value="<?php _e('Delete & Edit', 'wp_all_import_plugin'); ?>"/>				
 			</div>
@@ -209,8 +209,6 @@
 		
 		$('#processbar').css({'visibility':'visible'});		
 
-	
-	
 	<?php if ( $ajax_processing ): ?>
 
 		var import_id = '<?php echo $update_previous->id; ?>';		
@@ -219,7 +217,7 @@
 			
 			$.get('admin.php?page=pmxi-admin-import&action=process&id=' + import_id + '&failures=' + failures + '&_wpnonce=' + wp_all_import_security, {}, function (data) {								
 
-				// responce with error
+				// response with error
 				if (data != null && typeof data.created != "undefined"){
 
 					$('.wpallimport-modal-message').hide();
@@ -232,7 +230,7 @@
 					$('#percents_count').html(data.percentage);
 					$('#processbar div').css({'width': data.percentage + '%'});
 
-				  records_per_request = data.records_per_request;
+				  	records_per_request = data.records_per_request;
 
 					if ( data.done ){
 						clearInterval(update);		
@@ -270,7 +268,7 @@
 						}, 1000);						
 					} 
 					else
-					{ 
+					{
 						$('#loglist').append(data.log);
 						parse_element(0);
 					}
@@ -282,16 +280,24 @@
 					count_failures++;
 					$('.count_failures').val(count_failures);
 
+					if (data != null && typeof data != 'undefined' && typeof data.log != 'undefined'){
+						$('#loglist').append(data.log);
+						write_log();
+					}
+
+					if (data != null && typeof data != 'undefined' && parseInt(data.records_per_request)){
+						records_per_request = data.records_per_request;
+					}
+
 					if (count_failures > 4 || records_per_request < 2){
 						$('#process_notice').hide();
 						$('.wpallimport-modal-message').html($('#wpallimport-error-terminated').html()).show();
+						var errorMessage = "Import failed, please check logs";
+						if (data != null && typeof data != 'undefined' && typeof data.responseText != 'undefined'){
+						    errorMessage = data.responseText;
+						}
+						$('#status').html('Error ' + '<span class="pmxi_error_msg">' + errorMessage + '</span>');
 
-						if (data != null && typeof data != 'undefined'){
-							$('#status').html('Error ' + '<span class="pmxi_error_msg">' + data.responseText + '</span>');
-						}
-						else{
-							$('#status').html('Error');
-						}
 						clearInterval(update);					
 						window.onbeforeunload = false;
 
@@ -321,9 +327,9 @@
 						records_per_request = Math.ceil(parseInt(records_per_request)/2);
 						$('.wpallimport-modal-message').show();
 						//parse_element(1);
-					}				
+					}
 					return;
-				}								
+				}
 
 			}, 'json').fail(function(data) { 													
 
@@ -370,7 +376,6 @@
 					$('.wpallimport-modal-message').show();
 					//parse_element(1);
 				}
-												
 			});			
 		}		
 		

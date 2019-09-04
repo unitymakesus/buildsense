@@ -1,3 +1,15 @@
+<h4>2.2.4.5 - 08/28/2019</h4>
+<p><strong>Enhancements</strong></p>
+<ul>
+	<li>New filter added <code>fl_builder_art_register_shape</code>.</li>
+	<li>Added support for Nginx Helper plugin in cache extension.</li>
+</ul>
+<p><strong>Bug Fixes</strong></p>
+<ul>
+	<li>Fixed Infusionsoft fatal error due to missing library folder.</li>
+	<li>Fixed jQuery Validate issue if no messages object is setup in settings.js</li>
+</ul>
+
 <h4>2.2.4.4 - 08/21/2019</h4>
 <p><strong>Bug Fixes</strong></p>
 <ul>

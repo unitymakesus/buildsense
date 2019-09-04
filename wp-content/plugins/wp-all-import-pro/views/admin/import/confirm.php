@@ -41,7 +41,7 @@
 	<div class="rad4 first-step-errors error-no-root-element" <?php if ($is_valid_root_element === false):?>style="display:block;"<?php endif; ?>>
 		<div class="wpallimport-notify-wrapper">
 			<div class="error-headers exclamation">
-				<?php if ($import->type == 'url'): ?>
+				<?php if (isset($import) && !$import->isEmpty() && $import->type == 'url'): ?>
 				<h3><?php _e('This URL no longer returns an import file', 'wp_all_import_plugin');?></h3>
 				<h4><?php _e("You must provide a URL that returns a valid import file.", "wp_all_import_plugin"); ?></h4>
 				<?php else: ?>
@@ -71,7 +71,7 @@
 				<?php if ($is_new_import):?>
 				<h3><?php _e('Your file is all set up!', 'wp_all_import_plugin'); ?></h3>
 				<?php else: ?>
-				<h3><?php _e('This import did not finish successfuly last time it was run.', 'wp_all_import_plugin'); ?></h3>
+				<h3><?php _e('This import did not finish successfully last time it was run.', 'wp_all_import_plugin'); ?></h3>
 				<?php endif; ?>				
 
 				<?php if ($is_new_import):?>				
@@ -121,10 +121,10 @@
 
 			<?php $max_execution_time = ini_get('max_execution_time');?>			
 
-			<div class="wpallimport-section">
+			<div class="wpallimport-section" style="margin-top: -20px;">
 				<div class="wpallimport-content-section">
 					<div class="wpallimport-collapsed-header" style="padding-left: 30px;">
-						<h3 style="color: #425e99;"><?php _e('Import Summary', 'wp_all_import_plugin'); ?></h3>
+						<h3 style="color: #425e99;"><?php _e('Import Summary', 'wp_all_import_plugin'); ?> <?php if (!$isWizard):?><span style="color:#000;"><?php printf(__(" - ID: %s - %s"), $import->id, empty($import->friendly_name) ? $import->name : $import->friendly_name);?></span><?php endif;?></h3>
 					</div>
 					<div class="wpallimport-collapsed-content" style="padding: 15px 25px 25px;">
 						
@@ -197,8 +197,28 @@
 							<?php
 							$criteria = '';
 							if ( 'pid' == $post['duplicate_indicator']) $criteria = 'has the same ID';
-							if ( 'title' == $post['duplicate_indicator']) $criteria = 'has the same Title';
-							if ( 'content' == $post['duplicate_indicator']) $criteria = 'has the same Content';
+							if ( 'title' == $post['duplicate_indicator']){
+								switch ($post['custom_type']){
+									case 'import_users':
+									case 'shop_customer':
+										$criteria = 'has the same Login';
+										break;
+									default:
+										$criteria = 'has the same Title';
+										break;
+								}
+							}
+							if ( 'content' == $post['duplicate_indicator']){
+								switch ($post['custom_type']){
+									case 'import_users':
+									case 'shop_customer':
+										$criteria = 'has the same Email';
+										break;
+									default:
+										$criteria = 'has the same Content';
+										break;
+								}
+							}
 							if ( 'custom field' == $post['duplicate_indicator']) $criteria = 'has Custom Field named "'. $post['custom_duplicate_name'] .'" with value = ' . $post['custom_duplicate_value'];
 							?>
 							<p><?php printf(__('WP All Import will merge data into existing %ss, matching the following criteria: %s', 'wp_all_import_plugin'), $custom_type->labels->singular_name, $criteria); ?></p>
@@ -341,11 +361,18 @@
 			</td>			
 		</tr>
 	</table>
-	<?php if ($is_new_import):?>
-	<form class="confirm <?php echo ! $isWizard ? 'edit' : '' ?>" method="post">
+
+    <div style="color: #425F9A; font-size: 14px; font-weight: bold; margin: 0 0 15px; line-height: 25px; text-align: center;">
+        <div id="no-subscription" style="display: none;">
+            <?php echo _e("Looks like you're trying out Automatic Scheduling!");?><br/>
+            <?php echo _e("Your Automatic Scheduling settings won't be saved without a subscription.");?>
+        </div>
+    </div>
+    <?php if ($is_new_import):?>
+	<form id="wpai-submit-confirm-form" class="confirm <?php echo ! $isWizard ? 'edit' : '' ?>" method="post">
 		<?php wp_nonce_field('confirm', '_wpnonce_confirm') ?>
 		<input type="hidden" name="is_confirmed" value="1" />
-		<input type="submit" class="rad10" value="<?php _e('Confirm & Run Import', 'wp_all_import_plugin') ?>" />						
+        <input type="submit" class="rad10" value="<?php _e('Confirm & Run Import', 'wp_all_import_plugin') ?>" />
 		<p>
 		<?php if ($isWizard): ?>
 			<a href="<?php echo apply_filters('pmxi_options_back_link', add_query_arg('action', 'options', $this->baseUrl), $isWizard); ?>"><?php _e('or go back to Step 4', 'wp_all_import_plugin') ?></a>

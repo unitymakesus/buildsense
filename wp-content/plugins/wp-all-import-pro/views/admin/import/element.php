@@ -18,12 +18,18 @@
 		case 'taxonomies':
 			$custom_type = new stdClass();
 			$custom_type->labels = new stdClass();
-			$custom_type->labels->singular_name = __('Taxonomy Term', 'wp_all_import_plugin');
+			$custom_type->labels->singular_name = empty($tx->labels->singular_name) ? __('Taxonomy Term', 'wp_all_import_plugin') : $tx->labels->singular_name;
+			$custom_type->labels->name = empty($tx->labels->name) ? __('Taxonomy Terms', 'wp_all_import_plugin') : $tx->labels->name;
 			break;
 		default:
 			$custom_type = get_post_type_object( PMXI_Plugin::$session->custom_type );
 			break;
 	}
+    if (empty($custom_type) && PMXI_Plugin::$session->custom_type) {
+        $custom_type = new stdClass();
+        $custom_type->labels = new stdClass();
+        $custom_type->labels->singular_name = ucwords(preg_replace("%[_-]%", " ", PMXI_Plugin::$session->custom_type));
+    }
 	?>
 	<div class="wpallimport-content-section wpallimport-console">
 		<div class="ajax-console">
