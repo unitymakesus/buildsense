@@ -4,19 +4,21 @@ import './materializejs/core.js';
 
 /** Import local dependencies */
 import Router from './util/Router';
-// import common from './routes/common';
+import common from './routes/common';
 // import home from './routes/home';
 // import aboutUs from './routes/about';
-// import archive from './routes/archive';
+import archive from './routes/archive';
 import team from './routes/team';
+import singleSimpleProjects from './routes/singleSimpleProjects';
 
 /** Populate Router instance with DOM routes */
 const routes = new Router({
-//   common,
+  common,
 //   home,
 //   aboutUs,
-//   archive,
+  archive,
   team,
+  singleSimpleProjects,
 });
 
 /** Load Events */

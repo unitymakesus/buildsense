@@ -4,29 +4,48 @@ export default {
   },
   finalize() {
     // JavaScript to be fired on the archive pages, after the init JS
-    $(document).on('facetwp-loaded', function() {
+    /*
+     Materialize form select
+     */
+    $('.team-filters select').formSelect();
 
-      /*
-       * Materialize form select
-       */
-      $('.facetwp-type-dropdown select').formSelect();
+    /*
+    Isotope layout
+     */
+    var $grid = $('.team-container');
 
+    $grid.isotope({
+      itemSelector: '.flex-item',
+      percentPosition: true,
+      layoutMode: 'fitRows',
+    });
 
-      /*
-       * Add labels above each facet
-       */
-      $('.facetwp-facet').each(function() {
-        let facet_name = $(this).attr('data-name');
-        // eslint-disable-next-line no-undef
-        let facet_label = FWP.settings.labels[facet_name];
-        if ($('.facet-label[data-for="' + facet_name + '"]').length < 1) {
-          $(this).before('<div class="h6 facet-label" data-for="' + facet_name + '">' + facet_label + '</div>');
-        }
-        // Add aria support for search field
-        if (facet_name == 'search') {
-          $(this).find('input').attr('aria-label', facet_label);
-        }
-      });
+    /*
+     Lazy load images a la David Walsh
+     https://davidwalsh.name/lazyload-image-fade
+     */
+    $('noscript.lazy').each(function() {
+      if (!$(this).hasClass('gtm')) {
+        var img = new Image();
+        img.setAttribute('data-src', '');
+        $(this).before(img);
+        img.setAttribute('class', $(this).attr('data-class'));
+        img.setAttribute('alt', $(this).attr('data-alt'));
+        img.onload = function() {
+          img.removeAttribute('data-src');
+          $grid.isotope('layout');
+        };
+        img.src = $(this).attr('data-src');
+      }
+    });
+
+    /*
+    Isotope filtering
+     */
+    $('.team-filters').on('change', 'select', function () {
+      var filterValue = $(this).find(':selected').attr('data-filter');
+      console.log(filterValue);
+      $grid.isotope({filter: filterValue});
     });
   },
 };

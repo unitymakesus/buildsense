@@ -1,9 +1,12 @@
 // Import parent theme styles
 @import "/../../../../unity-core/resources/assets/styles/main";
 
+@import "~modaal/dist/css/modaal.scss";
+
 // Import child theme overrides into this file
 @import "common/global";
 @import "common/typography";
+@import "components/buttons";
 @import "components/header";
 @import "components/footer";
 @import "components/icons";

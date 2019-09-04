@@ -108,6 +108,21 @@ add_filter( 'image_size_names_choose', function( $sizes ) {
 } );
 
 
+/**
+ * Remove prefixes from archive titles
+ */
+add_filter( 'get_the_archive_title', function ($title) {
+  if (is_post_type_archive('simple-projects')) {
+    $title = 'Gallery';
+  } if ( is_category() ) {
+    $title = single_cat_title( '', false );
+  } elseif ( is_tag() ) {
+    $title = single_tag_title( '', false );
+  }
+  return $title;
+});
+
+
 // News Post Type
 function create_post_news() {
   $argsNews = array(
@@ -205,7 +220,7 @@ function create_post_projects() {
     ),
     'has_archive' => true,
     'rewrite' => array(
-      'slug' => 'projects'
+      'slug' => 'gallery'
     )
   );
   register_post_type( 'simple-projects', $argsNews );
@@ -234,12 +249,9 @@ add_action( 'init', __NAMESPACE__.'\\create_projectstax' );
 // Only show 12 results per page
 add_action( 'pre_get_posts', function( $query ) {
     if ( $query->is_post_type_archive('simple-projects')) {
-      $query->set( 'posts_per_page', '12' );
+      $query->set( 'posts_per_page', '-1' );
     }
 } );
-
-// Hide counts from facets
-add_filter( 'facetwp_facet_dropdown_show_counts', '__return_false' );
 
 
 /**
@@ -311,37 +323,56 @@ add_shortcode('filterable-team', function($atts) {
 		'posts_per_page' => -1,
 		'orderby' => 'menu_order',
 		'order' => 'ASC',
-    'facetwp' => true,
 	]);
 
 	ob_start(); ?>
 
-  <?php echo facetwp_display( 'facet', 'team_filter' ); ?>
+  <div class="row team-filters">
+    <label for="filter">Filter</label>
+    <select id="filter" name="filter">
+      <option data-filter="*" selected>View All</option>
+      <?php
+        $terms = get_terms( 'simple-team-category', array(
+          'orderby'    => 'menu_order',
+          'hide_empty' => 1
+        ) );
 
-	<div class="facetwp-template team-container flex-grid l3x m2x s1x">
+        foreach ($terms as $term) {
+          echo '<option data-filter=".' . $term->slug . '">' . $term->name . '</option>';
+        }
+      ?>
+    </select>
+  </div>
+
+	<div class="row team-container flex-grid l3x m2x s1x">
 
 	<?php if ($people->have_posts()) :
 		while ($people->have_posts()) : $people->the_post();
+
+    $terms = wp_get_post_terms( get_the_id(), 'simple-team-category');
 		?>
 
-		<div class="flex-item">
+		<div class="flex-item <?php echo join(' ', wp_list_pluck($terms, 'slug')); ?>">
 	    <div class="person">
 	      <div class="person-img">
 					<?php if (!empty($image = get_field('primary_image'))) { ?>
-						<img class="biopic" src="<?php echo $image['url']; ?>" alt="<?php echo $image['alt']; ?>" />
+            <noscript class="lazy" data-class="biopic" data-src="<?php echo $image['url']; ?>" data-alt="<?php echo $image['alt']; ?>" aria-hidden="true">
+              <img class="biopic" src="<?php echo $image['url']; ?>" data-src="" alt="<?php echo $image['alt']; ?>">
+            </noscript>
 					<?php } ?>
 
 					<?php if (!empty($imagehov = get_field('hover_image'))) { ?>
-						<img class="biopic-hover" src="<?php echo $imagehov['url']; ?>" alt="<?php echo $image['alt']; ?>" />
+            <noscript class="lazy" data-class="biopic-hover" data-src="<?php echo $imagehov['url']; ?>" data-alt="<?php echo $imagehov['alt']; ?>" aria-hidden="true">
+              <img class="biopic-hover" src="<?php echo $imagehov['url']; ?>" data-src="" alt="<?php echo $imagehov['alt']; ?>">
+            </noscript>
 					<?php } ?>
 	      </div>
 	      <div class="person-info">
-					<span class="roles">
+					<div class="h4 roles">
 						<?php
-							$terms = wp_get_post_terms( get_the_id(), 'simple-team-category');
-							echo join(' <span class="interpunct">&#183;</span> ', wp_list_pluck($terms, 'name'));
+							echo join(' <span class="interpunct">&#9642;</span> ', wp_list_pluck($terms, 'name'));
 						?>
-					</span>
+					</div>
 
 	        <h2 itemprop="name"><?php the_title(); ?></h2>
 

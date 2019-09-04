@@ -3913,8 +3913,8 @@ nav,
 .btn,
 .btn-large,
 .btn-small,
-.fl-builder-content.fl-builder-content a.fl-button,
 .ctct-form-wrapper.ctct-form-wrapper .ctct-submit,
+.fl-builder-content.fl-builder-content.fl-builder-content a.fl-button,
 .btn-floating,
 .dropdown-content,
 .collapsible,
@@ -3929,8 +3929,8 @@ nav,
 .btn:hover,
 .btn-large:hover,
 .btn-small:hover,
-.fl-builder-content.fl-builder-content a.fl-button:hover,
 .ctct-form-wrapper.ctct-form-wrapper .ctct-submit:hover,
+.fl-builder-content.fl-builder-content.fl-builder-content a.fl-button:hover,
 .btn-floating:hover {
   -webkit-box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.14), 0 1px 7px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -1px rgba(0, 0, 0, 0.2);
           box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.14), 0 1px 7px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -1px rgba(0, 0, 0, 0.2);
@@ -7204,10 +7204,10 @@ nav ul a {
 nav ul a.btn,
 nav ul a.btn-large,
 nav ul a.btn-small,
-nav ul .fl-builder-content.fl-builder-content a.fl-button,
-.fl-builder-content.fl-builder-content nav ul a.fl-button,
 nav ul .ctct-form-wrapper.ctct-form-wrapper a.ctct-submit,
 .ctct-form-wrapper.ctct-form-wrapper nav ul a.ctct-submit,
+nav ul .fl-builder-content.fl-builder-content.fl-builder-content a.fl-button,
+.fl-builder-content.fl-builder-content.fl-builder-content nav ul a.fl-button,
 nav ul a.btn-large,
 nav ul a.btn-flat,
 nav ul a.btn-floating {
@@ -7221,10 +7221,10 @@ nav ul a.btn-floating {
 nav ul a.btn > .material-icons,
 nav ul a.btn-large > .material-icons,
 nav ul a.btn-small > .material-icons,
-nav ul .fl-builder-content.fl-builder-content a.fl-button > .material-icons,
-.fl-builder-content.fl-builder-content nav ul a.fl-button > .material-icons,
 nav ul .ctct-form-wrapper.ctct-form-wrapper a.ctct-submit > .material-icons,
 .ctct-form-wrapper.ctct-form-wrapper nav ul a.ctct-submit > .material-icons,
+nav ul .fl-builder-content.fl-builder-content.fl-builder-content a.fl-button > .material-icons,
+.fl-builder-content.fl-builder-content.fl-builder-content nav ul a.fl-button > .material-icons,
 nav ul a.btn-large > .material-icons,
 nav ul a.btn-flat > .material-icons,
 nav ul a.btn-floating > .material-icons {
@@ -7676,8 +7676,8 @@ small {
 .btn,
 .btn-large,
 .btn-small,
-.fl-builder-content.fl-builder-content a.fl-button,
 .ctct-form-wrapper.ctct-form-wrapper .ctct-submit,
+.fl-builder-content.fl-builder-content.fl-builder-content a.fl-button,
 .btn-flat {
   border: none;
   border-radius: 2px;
@@ -7695,8 +7695,8 @@ small {
 .btn.disabled,
 .disabled.btn-large,
 .disabled.btn-small,
-.fl-builder-content.fl-builder-content a.disabled.fl-button,
 .ctct-form-wrapper.ctct-form-wrapper .disabled.ctct-submit,
+.fl-builder-content.fl-builder-content.fl-builder-content a.disabled.fl-button,
 .btn-floating.disabled,
 .btn-large.disabled,
 .btn-small.disabled,
@@ -7704,8 +7704,8 @@ small {
 .btn:disabled,
 .btn-large:disabled,
 .btn-small:disabled,
-.fl-builder-content.fl-builder-content a.fl-button:disabled,
 .ctct-form-wrapper.ctct-form-wrapper .ctct-submit:disabled,
+.fl-builder-content.fl-builder-content.fl-builder-content a.fl-button:disabled,
 .btn-floating:disabled,
 .btn-large:disabled,
 .btn-small:disabled,
@@ -7713,8 +7713,8 @@ small {
 .btn[disabled],
 .btn-large[disabled],
 .btn-small[disabled],
-.fl-builder-content.fl-builder-content a.fl-button[disabled],
 .ctct-form-wrapper.ctct-form-wrapper .ctct-submit[disabled],
+.fl-builder-content.fl-builder-content.fl-builder-content a.fl-button[disabled],
 .btn-floating[disabled],
 .btn-large[disabled],
 .btn-small[disabled],
@@ -7732,8 +7732,8 @@ small {
 .btn.disabled:hover,
 .disabled.btn-large:hover,
 .disabled.btn-small:hover,
-.fl-builder-content.fl-builder-content a.disabled.fl-button:hover,
 .ctct-form-wrapper.ctct-form-wrapper .disabled.ctct-submit:hover,
+.fl-builder-content.fl-builder-content.fl-builder-content a.disabled.fl-button:hover,
 .btn-floating.disabled:hover,
 .btn-large.disabled:hover,
 .btn-small.disabled:hover,
@@ -7741,8 +7741,8 @@ small {
 .btn:disabled:hover,
 .btn-large:disabled:hover,
 .btn-small:disabled:hover,
-.fl-builder-content.fl-builder-content a.fl-button:disabled:hover,
 .ctct-form-wrapper.ctct-form-wrapper .ctct-submit:disabled:hover,
+.fl-builder-content.fl-builder-content.fl-builder-content a.fl-button:disabled:hover,
 .btn-floating:disabled:hover,
 .btn-large:disabled:hover,
 .btn-small:disabled:hover,
@@ -7750,8 +7750,8 @@ small {
 .btn[disabled]:hover,
 .btn-large[disabled]:hover,
 .btn-small[disabled]:hover,
-.fl-builder-content.fl-builder-content a.fl-button[disabled]:hover,
 .ctct-form-wrapper.ctct-form-wrapper .ctct-submit[disabled]:hover,
+.fl-builder-content.fl-builder-content.fl-builder-content a.fl-button[disabled]:hover,
 .btn-floating[disabled]:hover,
 .btn-large[disabled]:hover,
 .btn-small[disabled]:hover,
@@ -7765,8 +7765,8 @@ small {
 .btn,
 .btn-large,
 .btn-small,
-.fl-builder-content.fl-builder-content a.fl-button,
 .ctct-form-wrapper.ctct-form-wrapper .ctct-submit,
+.fl-builder-content.fl-builder-content.fl-builder-content a.fl-button,
 .btn-floating,
 .btn-large,
 .btn-small,
@@ -7780,8 +7780,8 @@ small {
 .btn i,
 .btn-large i,
 .btn-small i,
-.fl-builder-content.fl-builder-content a.fl-button i,
 .ctct-form-wrapper.ctct-form-wrapper .ctct-submit i,
+.fl-builder-content.fl-builder-content.fl-builder-content a.fl-button i,
 .btn-floating i,
 .btn-large i,
 .btn-small i,
@@ -7795,8 +7795,8 @@ small {
 .btn:focus,
 .btn-large:focus,
 .btn-small:focus,
-.fl-builder-content.fl-builder-content a.fl-button:focus,
 .ctct-form-wrapper.ctct-form-wrapper .ctct-submit:focus,
+.fl-builder-content.fl-builder-content.fl-builder-content a.fl-button:focus,
 .btn-floating:focus {
   background-color: #4d4d54;
 }
@@ -7806,8 +7806,8 @@ small {
 .btn,
 .btn-large,
 .btn-small,
-.fl-builder-content.fl-builder-content a.fl-button,
-.ctct-form-wrapper.ctct-form-wrapper .ctct-submit {
+.ctct-form-wrapper.ctct-form-wrapper .ctct-submit,
+.fl-builder-content.fl-builder-content.fl-builder-content a.fl-button {
   text-decoration: none;
   color: #fff;
   background-color: #66666E;
@@ -7824,8 +7824,8 @@ small {
 .btn:hover,
 .btn-large:hover,
 .btn-small:hover,
-.fl-builder-content.fl-builder-content a.fl-button:hover,
-.ctct-form-wrapper.ctct-form-wrapper .ctct-submit:hover {
+.ctct-form-wrapper.ctct-form-wrapper .ctct-submit:hover,
+.fl-builder-content.fl-builder-content.fl-builder-content a.fl-button:hover {
   background-color: #72727b;
 }
 
@@ -8378,10 +8378,10 @@ body.keyboard-focused .dropdown-content li:focus {
 .modal .modal-footer .btn,
 .modal .modal-footer .btn-large,
 .modal .modal-footer .btn-small,
-.modal .modal-footer .fl-builder-content.fl-builder-content a.fl-button,
-.fl-builder-content.fl-builder-content .modal .modal-footer a.fl-button,
 .modal .modal-footer .ctct-form-wrapper.ctct-form-wrapper .ctct-submit,
 .ctct-form-wrapper.ctct-form-wrapper .modal .modal-footer .ctct-submit,
+.modal .modal-footer .fl-builder-content.fl-builder-content.fl-builder-content a.fl-button,
+.fl-builder-content.fl-builder-content.fl-builder-content .modal .modal-footer a.fl-button,
 .modal .modal-footer .btn-flat {
   margin: 6px 0;
 }
@@ -8658,10 +8658,10 @@ body.keyboard-focused .dropdown-content li:focus {
 .sidenav li > a.btn,
 .sidenav li > a.btn-large,
 .sidenav li > a.btn-small,
-.sidenav .fl-builder-content.fl-builder-content li > a.fl-button,
-.fl-builder-content.fl-builder-content .sidenav li > a.fl-button,
 .sidenav .ctct-form-wrapper.ctct-form-wrapper li > a.ctct-submit,
 .ctct-form-wrapper.ctct-form-wrapper .sidenav li > a.ctct-submit,
+.sidenav .fl-builder-content.fl-builder-content.fl-builder-content li > a.fl-button,
+.fl-builder-content.fl-builder-content.fl-builder-content .sidenav li > a.fl-button,
 .sidenav li > a.btn-large,
 .sidenav li > a.btn-flat,
 .sidenav li > a.btn-floating {
@@ -8673,10 +8673,10 @@ body.keyboard-focused .dropdown-content li:focus {
 .sidenav li > a.btn,
 .sidenav li > a.btn-large,
 .sidenav li > a.btn-small,
-.sidenav .fl-builder-content.fl-builder-content li > a.fl-button,
-.fl-builder-content.fl-builder-content .sidenav li > a.fl-button,
 .sidenav .ctct-form-wrapper.ctct-form-wrapper li > a.ctct-submit,
 .ctct-form-wrapper.ctct-form-wrapper .sidenav li > a.ctct-submit,
+.sidenav .fl-builder-content.fl-builder-content.fl-builder-content li > a.fl-button,
+.fl-builder-content.fl-builder-content.fl-builder-content .sidenav li > a.fl-button,
 .sidenav li > a.btn-large,
 .sidenav li > a.btn-floating {
   color: #fff;
@@ -8693,10 +8693,10 @@ body.keyboard-focused .dropdown-content li:focus {
 .sidenav li > a.btn:hover,
 .sidenav li > a.btn-large:hover,
 .sidenav li > a.btn-small:hover,
-.sidenav .fl-builder-content.fl-builder-content li > a.fl-button:hover,
-.fl-builder-content.fl-builder-content .sidenav li > a.fl-button:hover,
 .sidenav .ctct-form-wrapper.ctct-form-wrapper li > a.ctct-submit:hover,
 .ctct-form-wrapper.ctct-form-wrapper .sidenav li > a.ctct-submit:hover,
+.sidenav .fl-builder-content.fl-builder-content.fl-builder-content li > a.fl-button:hover,
+.fl-builder-content.fl-builder-content.fl-builder-content .sidenav li > a.fl-button:hover,
 .sidenav li > a.btn-large:hover {
   background-color: #72727b;
 }
@@ -10460,10 +10460,10 @@ body.keyboard-focused .select-dropdown.dropdown-content li:focus {
 .file-field .btn,
 .file-field .btn-large,
 .file-field .btn-small,
-.file-field .fl-builder-content.fl-builder-content a.fl-button,
-.fl-builder-content.fl-builder-content .file-field a.fl-button,
 .file-field .ctct-form-wrapper.ctct-form-wrapper .ctct-submit,
-.ctct-form-wrapper.ctct-form-wrapper .file-field .ctct-submit {
+.ctct-form-wrapper.ctct-form-wrapper .file-field .ctct-submit,
+.file-field .fl-builder-content.fl-builder-content.fl-builder-content a.fl-button,
+.fl-builder-content.fl-builder-content.fl-builder-content .file-field a.fl-button {
   float: left;
   height: 3rem;
   line-height: 3rem;
@@ -12023,10 +12023,10 @@ html[data-contrast="true"] .navbar-menu li.hover {
 html[data-contrast="true"] .btn,
 html[data-contrast="true"] .btn-large,
 html[data-contrast="true"] .btn-small,
-html[data-contrast="true"] .fl-builder-content.fl-builder-content a.fl-button,
-.fl-builder-content.fl-builder-content html[data-contrast="true"] a.fl-button,
 html[data-contrast="true"] .ctct-form-wrapper.ctct-form-wrapper .ctct-submit,
 .ctct-form-wrapper.ctct-form-wrapper html[data-contrast="true"] .ctct-submit,
+html[data-contrast="true"] .fl-builder-content.fl-builder-content.fl-builder-content a.fl-button,
+.fl-builder-content.fl-builder-content.fl-builder-content html[data-contrast="true"] a.fl-button,
 html[data-contrast="true"] .social-icons li a,
 html[data-contrast="true"] .page-footer .widget_nav_menu .menu li a {
   background: #000;
@@ -12038,17 +12038,17 @@ html[data-contrast="true"] .page-footer .widget_nav_menu .menu li a {
 html[data-contrast="true"] .btn:hover,
 html[data-contrast="true"] .btn-large:hover,
 html[data-contrast="true"] .btn-small:hover,
-html[data-contrast="true"] .fl-builder-content.fl-builder-content a.fl-button:hover,
-.fl-builder-content.fl-builder-content html[data-contrast="true"] a.fl-button:hover,
 html[data-contrast="true"] .ctct-form-wrapper.ctct-form-wrapper .ctct-submit:hover,
 .ctct-form-wrapper.ctct-form-wrapper html[data-contrast="true"] .ctct-submit:hover,
+html[data-contrast="true"] .fl-builder-content.fl-builder-content.fl-builder-content a.fl-button:hover,
+.fl-builder-content.fl-builder-content.fl-builder-content html[data-contrast="true"] a.fl-button:hover,
 html[data-contrast="true"] .btn:focus,
 html[data-contrast="true"] .btn-large:focus,
 html[data-contrast="true"] .btn-small:focus,
-html[data-contrast="true"] .fl-builder-content.fl-builder-content a.fl-button:focus,
-.fl-builder-content.fl-builder-content html[data-contrast="true"] a.fl-button:focus,
 html[data-contrast="true"] .ctct-form-wrapper.ctct-form-wrapper .ctct-submit:focus,
 .ctct-form-wrapper.ctct-form-wrapper html[data-contrast="true"] .ctct-submit:focus,
+html[data-contrast="true"] .fl-builder-content.fl-builder-content.fl-builder-content a.fl-button:focus,
+.fl-builder-content.fl-builder-content.fl-builder-content html[data-contrast="true"] a.fl-button:focus,
 html[data-contrast="true"] .social-icons li a:hover,
 html[data-contrast="true"] .social-icons li a:focus,
 html[data-contrast="true"] .page-footer .widget_nav_menu .menu li a:hover,
@@ -12439,10 +12439,10 @@ body[data-font="1"] blockquote {
 body[data-font="1"][data-buttons="1"] .btn,
 body[data-font="1"][data-buttons="1"] .btn-large,
 body[data-font="1"][data-buttons="1"] .btn-small,
-body[data-font="1"][data-buttons="1"] .fl-builder-content.fl-builder-content a.fl-button,
-.fl-builder-content.fl-builder-content body[data-font="1"][data-buttons="1"] a.fl-button,
 body[data-font="1"][data-buttons="1"] .ctct-form-wrapper.ctct-form-wrapper .ctct-submit,
-.ctct-form-wrapper.ctct-form-wrapper body[data-font="1"][data-buttons="1"] .ctct-submit {
+.ctct-form-wrapper.ctct-form-wrapper body[data-font="1"][data-buttons="1"] .ctct-submit,
+body[data-font="1"][data-buttons="1"] .fl-builder-content.fl-builder-content.fl-builder-content a.fl-button,
+.fl-builder-content.fl-builder-content.fl-builder-content body[data-font="1"][data-buttons="1"] a.fl-button {
   font-family: "Bitter", serif;
 }
 
@@ -12489,10 +12489,10 @@ body[data-font="2"] blockquote {
 body[data-font="2"][data-buttons="1"] .btn,
 body[data-font="2"][data-buttons="1"] .btn-large,
 body[data-font="2"][data-buttons="1"] .btn-small,
-body[data-font="2"][data-buttons="1"] .fl-builder-content.fl-builder-content a.fl-button,
-.fl-builder-content.fl-builder-content body[data-font="2"][data-buttons="1"] a.fl-button,
 body[data-font="2"][data-buttons="1"] .ctct-form-wrapper.ctct-form-wrapper .ctct-submit,
-.ctct-form-wrapper.ctct-form-wrapper body[data-font="2"][data-buttons="1"] .ctct-submit {
+.ctct-form-wrapper.ctct-form-wrapper body[data-font="2"][data-buttons="1"] .ctct-submit,
+body[data-font="2"][data-buttons="1"] .fl-builder-content.fl-builder-content.fl-builder-content a.fl-button,
+.fl-builder-content.fl-builder-content.fl-builder-content body[data-font="2"][data-buttons="1"] a.fl-button {
   font-family: "Didact Gothic", sans-serif;
 }
 
@@ -12539,10 +12539,10 @@ body[data-font="3"] blockquote {
 body[data-font="3"][data-buttons="1"] .btn,
 body[data-font="3"][data-buttons="1"] .btn-large,
 body[data-font="3"][data-buttons="1"] .btn-small,
-body[data-font="3"][data-buttons="1"] .fl-builder-content.fl-builder-content a.fl-button,
-.fl-builder-content.fl-builder-content body[data-font="3"][data-buttons="1"] a.fl-button,
 body[data-font="3"][data-buttons="1"] .ctct-form-wrapper.ctct-form-wrapper .ctct-submit,
-.ctct-form-wrapper.ctct-form-wrapper body[data-font="3"][data-buttons="1"] .ctct-submit {
+.ctct-form-wrapper.ctct-form-wrapper body[data-font="3"][data-buttons="1"] .ctct-submit,
+body[data-font="3"][data-buttons="1"] .fl-builder-content.fl-builder-content.fl-builder-content a.fl-button,
+.fl-builder-content.fl-builder-content.fl-builder-content body[data-font="3"][data-buttons="1"] a.fl-button {
   font-family: "Fjalla One", sans-serif;
 }
 
@@ -12589,10 +12589,10 @@ body[data-font="4"] blockquote {
 body[data-font="4"][data-buttons="1"] .btn,
 body[data-font="4"][data-buttons="1"] .btn-large,
 body[data-font="4"][data-buttons="1"] .btn-small,
-body[data-font="4"][data-buttons="1"] .fl-builder-content.fl-builder-content a.fl-button,
-.fl-builder-content.fl-builder-content body[data-font="4"][data-buttons="1"] a.fl-button,
 body[data-font="4"][data-buttons="1"] .ctct-form-wrapper.ctct-form-wrapper .ctct-submit,
-.ctct-form-wrapper.ctct-form-wrapper body[data-font="4"][data-buttons="1"] .ctct-submit {
+.ctct-form-wrapper.ctct-form-wrapper body[data-font="4"][data-buttons="1"] .ctct-submit,
+body[data-font="4"][data-buttons="1"] .fl-builder-content.fl-builder-content.fl-builder-content a.fl-button,
+.fl-builder-content.fl-builder-content.fl-builder-content body[data-font="4"][data-buttons="1"] a.fl-button {
   font-family: "Dancing Script", cursive;
 }
 
@@ -12639,10 +12639,10 @@ body[data-font="5"] blockquote {
 body[data-font="5"][data-buttons="1"] .btn,
 body[data-font="5"][data-buttons="1"] .btn-large,
 body[data-font="5"][data-buttons="1"] .btn-small,
-body[data-font="5"][data-buttons="1"] .fl-builder-content.fl-builder-content a.fl-button,
-.fl-builder-content.fl-builder-content body[data-font="5"][data-buttons="1"] a.fl-button,
 body[data-font="5"][data-buttons="1"] .ctct-form-wrapper.ctct-form-wrapper .ctct-submit,
-.ctct-form-wrapper.ctct-form-wrapper body[data-font="5"][data-buttons="1"] .ctct-submit {
+.ctct-form-wrapper.ctct-form-wrapper body[data-font="5"][data-buttons="1"] .ctct-submit,
+body[data-font="5"][data-buttons="1"] .fl-builder-content.fl-builder-content.fl-builder-content a.fl-button,
+.fl-builder-content.fl-builder-content.fl-builder-content body[data-font="5"][data-buttons="1"] a.fl-button {
   font-family: "Open Sans", sans-serif;
 }
 
@@ -12689,10 +12689,10 @@ body[data-font="6"] blockquote {
 body[data-font="6"][data-buttons="1"] .btn,
 body[data-font="6"][data-buttons="1"] .btn-large,
 body[data-font="6"][data-buttons="1"] .btn-small,
-body[data-font="6"][data-buttons="1"] .fl-builder-content.fl-builder-content a.fl-button,
-.fl-builder-content.fl-builder-content body[data-font="6"][data-buttons="1"] a.fl-button,
 body[data-font="6"][data-buttons="1"] .ctct-form-wrapper.ctct-form-wrapper .ctct-submit,
-.ctct-form-wrapper.ctct-form-wrapper body[data-font="6"][data-buttons="1"] .ctct-submit {
+.ctct-form-wrapper.ctct-form-wrapper body[data-font="6"][data-buttons="1"] .ctct-submit,
+body[data-font="6"][data-buttons="1"] .fl-builder-content.fl-builder-content.fl-builder-content a.fl-button,
+.fl-builder-content.fl-builder-content.fl-builder-content body[data-font="6"][data-buttons="1"] a.fl-button {
   font-family: "Ovo", serif;
 }
 
@@ -13152,8 +13152,8 @@ abbr[title] {
 .btn,
 .btn-large,
 .btn-small,
-.fl-builder-content.fl-builder-content a.fl-button,
-.ctct-form-wrapper.ctct-form-wrapper .ctct-submit {
+.ctct-form-wrapper.ctct-form-wrapper .ctct-submit,
+.fl-builder-content.fl-builder-content.fl-builder-content a.fl-button {
   height: auto;
   font-weight: 700;
 }
@@ -13163,10 +13163,10 @@ abbr[title] {
 [data-font="3"] .btn,
 [data-font="3"] .btn-large,
 [data-font="3"] .btn-small,
-[data-font="3"] .fl-builder-content.fl-builder-content a.fl-button,
-.fl-builder-content.fl-builder-content [data-font="3"] a.fl-button,
 [data-font="3"] .ctct-form-wrapper.ctct-form-wrapper .ctct-submit,
-.ctct-form-wrapper.ctct-form-wrapper [data-font="3"] .ctct-submit {
+.ctct-form-wrapper.ctct-form-wrapper [data-font="3"] .ctct-submit,
+[data-font="3"] .fl-builder-content.fl-builder-content.fl-builder-content a.fl-button,
+.fl-builder-content.fl-builder-content.fl-builder-content [data-font="3"] a.fl-button {
   font-weight: 500;
 }
 
@@ -13175,8 +13175,8 @@ abbr[title] {
 .btn:not(.btn-small),
 .btn-large:not(.btn-small),
 .btn-small:not(.btn-small),
-.fl-builder-content.fl-builder-content a.fl-button:not(.btn-small),
-.ctct-form-wrapper.ctct-form-wrapper .ctct-submit:not(.btn-small) {
+.ctct-form-wrapper.ctct-form-wrapper .ctct-submit:not(.btn-small),
+.fl-builder-content.fl-builder-content.fl-builder-content a.fl-button:not(.btn-small) {
   padding: 10px 2rem;
 }
 
@@ -13185,8 +13185,8 @@ abbr[title] {
 a.btn,
 a.btn-large,
 a.btn-small,
-.fl-builder-content.fl-builder-content a.fl-button,
-.ctct-form-wrapper.ctct-form-wrapper a.ctct-submit {
+.ctct-form-wrapper.ctct-form-wrapper a.ctct-submit,
+.fl-builder-content.fl-builder-content.fl-builder-content a.fl-button {
   color: #FFF;
 }
 
@@ -14985,10 +14985,10 @@ html[data-contrast="true"] .pagination span.current {
 .banner .cta-link .btn,
 .banner .cta-link .btn-large,
 .banner .cta-link .btn-small,
-.banner .cta-link .fl-builder-content.fl-builder-content a.fl-button,
-.fl-builder-content.fl-builder-content .banner .cta-link a.fl-button,
 .banner .cta-link .ctct-form-wrapper.ctct-form-wrapper .ctct-submit,
-.ctct-form-wrapper.ctct-form-wrapper .banner .cta-link .ctct-submit {
+.ctct-form-wrapper.ctct-form-wrapper .banner .cta-link .ctct-submit,
+.banner .cta-link .fl-builder-content.fl-builder-content.fl-builder-content a.fl-button,
+.fl-builder-content.fl-builder-content.fl-builder-content .banner .cta-link a.fl-button {
   height: auto;
   padding: 5px 2rem;
 }
@@ -15055,10 +15055,10 @@ html[data-contrast="true"] .pagination span.current {
   .banner .cta-link .btn,
   .banner .cta-link .btn-large,
   .banner .cta-link .btn-small,
-  .banner .cta-link .fl-builder-content.fl-builder-content a.fl-button,
-  .fl-builder-content.fl-builder-content .banner .cta-link a.fl-button,
   .banner .cta-link .ctct-form-wrapper.ctct-form-wrapper .ctct-submit,
-  .ctct-form-wrapper.ctct-form-wrapper .banner .cta-link .ctct-submit {
+  .ctct-form-wrapper.ctct-form-wrapper .banner .cta-link .ctct-submit,
+  .banner .cta-link .fl-builder-content.fl-builder-content.fl-builder-content a.fl-button,
+  .fl-builder-content.fl-builder-content.fl-builder-content .banner .cta-link a.fl-button {
     padding: 5px 1rem;
   }
 }
@@ -15591,14 +15591,1030 @@ body#tinymce {
   margin: 12px !important;
 }
 
-/* line 5, resources/assets/styles/common/_global.scss */
+/*!
+	Modaal - accessible modals - v0.4.4
+	by Humaan, for all humans.
+	http://humaan.com
+ */
+
+/* line 45, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-noscroll {
+  overflow: hidden;
+}
+
+/* line 48, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-accessible-hide {
+  position: absolute !important;
+  clip: rect(1px 1px 1px 1px);
+  /* IE6, IE7 */
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 0 !important;
+  border: 0 !important;
+  height: 1px !important;
+  width: 1px !important;
+  overflow: hidden;
+}
+
+/* line 52, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+  opacity: 0;
+}
+
+/* line 61, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-wrapper {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  overflow: auto;
+  opacity: 1;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
+  -webkit-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+/* line 74, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-wrapper * {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-backface-visibility: hidden;
+}
+
+/* line 80, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-wrapper .modaal-close {
+  border: none;
+  background: transparent;
+  padding: 0;
+  -webkit-appearance: none;
+}
+
+/* line 87, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-wrapper.modaal-start_none {
+  display: none;
+  opacity: 1;
+}
+
+/* line 91, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-wrapper.modaal-start_fade {
+  opacity: 0;
+}
+
+/* line 95, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-wrapper *[tabindex="0"] {
+  outline: none !important;
+}
+
+/* line 100, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-wrapper.modaal-fullscreen {
+  overflow: hidden;
+}
+
+/* line 104, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-outer-wrapper {
+  display: table;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* line 109, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-fullscreen .modaal-outer-wrapper {
+  display: block;
+}
+
+/* line 113, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-inner-wrapper {
+  display: table-cell;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  vertical-align: middle;
+  text-align: center;
+  padding: 80px 25px;
+}
+
+/* line 123, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-fullscreen .modaal-inner-wrapper {
+  padding: 0;
+  display: block;
+  vertical-align: top;
+}
+
+/* line 129, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-container {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  margin: auto;
+  text-align: left;
+  color: #000;
+  max-width: 1000px;
+  border-radius: 0px;
+  background: #fff;
+  -webkit-box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  cursor: auto;
+}
+
+/* line 143, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-container.is_loading {
+  height: 100px;
+  width: 100px;
+  overflow: hidden;
+}
+
+/* line 149, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-fullscreen .modaal-container {
+  max-width: none;
+  height: 100%;
+  overflow: auto;
+}
+
+/* line 156, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-close {
+  position: fixed;
+  right: 20px;
+  top: 20px;
+  color: #fff;
+  cursor: pointer;
+  opacity: 1;
+  width: 50px;
+  height: 50px;
+  background: rgba(0, 0, 0, 0);
+  border-radius: 100%;
+  -webkit-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+/* line 168, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-close:focus,
+.modaal-close:hover {
+  outline: none;
+  background: #fff;
+}
+
+/* line 172, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-close:focus:before,
+.modaal-close:focus:after,
+.modaal-close:hover:before,
+.modaal-close:hover:after {
+  background: #b93d0c;
+}
+
+/* line 175, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-close span {
+  position: absolute !important;
+  clip: rect(1px 1px 1px 1px);
+  /* IE6, IE7 */
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 0 !important;
+  border: 0 !important;
+  height: 1px !important;
+  width: 1px !important;
+  overflow: hidden;
+}
+
+/* line 178, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-close:before,
+.modaal-close:after {
+  display: block;
+  content: " ";
+  position: absolute;
+  top: 14px;
+  left: 23px;
+  width: 4px;
+  height: 22px;
+  border-radius: 4px;
+  background: #fff;
+  -webkit-transition: background 0.2s ease-in-out;
+  -o-transition: background 0.2s ease-in-out;
+  transition: background 0.2s ease-in-out;
+}
+
+/* line 191, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-close:before {
+  -webkit-transform: rotate(-45deg);
+       -o-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+}
+
+/* line 194, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-close:after {
+  -webkit-transform: rotate(45deg);
+       -o-transform: rotate(45deg);
+          transform: rotate(45deg);
+}
+
+/* line 197, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-fullscreen .modaal-close {
+  background: #afb7bc;
+  right: 10px;
+  top: 10px;
+}
+
+/* line 204, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-content-container {
+  padding: 30px;
+}
+
+/* line 212, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-confirm-wrap {
+  padding: 30px 0 0;
+  text-align: center;
+  font-size: 0;
+}
+
+/* line 217, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-confirm-btn {
+  font-size: 14px;
+  display: inline-block;
+  margin: 0 10px;
+  vertical-align: middle;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+}
+
+/* line 227, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-confirm-btn.modaal-ok {
+  padding: 10px 15px;
+  color: #fff;
+  background: #555;
+  border-radius: 3px;
+  -webkit-transition: background 0.2s ease-in-out;
+  -o-transition: background 0.2s ease-in-out;
+  transition: background 0.2s ease-in-out;
+}
+
+/* line 233, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-confirm-btn.modaal-ok:hover {
+  background: #2f2f2f;
+}
+
+/* line 237, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-confirm-btn.modaal-cancel {
+  text-decoration: underline;
+}
+
+/* line 239, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-confirm-btn.modaal-cancel:hover {
+  text-decoration: none;
+  color: #2f2f2f;
+}
+
+@keyframes instaReveal {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@-o-keyframes instaReveal {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes instaReveal {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+/* line 273, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-instagram .modaal-container {
+  width: auto;
+  background: transparent;
+  -webkit-box-shadow: none !important;
+          box-shadow: none !important;
+}
+
+/* line 278, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-instagram .modaal-content-container {
+  padding: 0;
+  background: transparent;
+}
+
+/* line 282, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-instagram .modaal-content-container > blockquote {
+  width: 1px !important;
+  height: 1px !important;
+  opacity: 0 !important;
+}
+
+/* line 287, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-instagram iframe {
+  opacity: 0;
+  margin: -6px !important;
+  border-radius: 0 !important;
+  width: 1000px !important;
+  max-width: 800px !important;
+  -webkit-box-shadow: none !important;
+          box-shadow: none !important;
+  -webkit-animation: instaReveal 1s linear forwards;
+       -o-animation: instaReveal 1s linear forwards;
+          animation: instaReveal 1s linear forwards;
+}
+
+/* line 304, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-image .modaal-inner-wrapper {
+  padding-left: 140px;
+  padding-right: 140px;
+}
+
+/* line 308, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-image .modaal-container {
+  width: auto;
+  max-width: 100%;
+}
+
+/* line 314, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-gallery-wrap {
+  position: relative;
+  color: #fff;
+}
+
+/* line 318, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-gallery-item {
+  display: none;
+}
+
+/* line 320, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-gallery-item img {
+  display: block;
+}
+
+/* line 324, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-gallery-item.is_active {
+  display: block;
+}
+
+/* line 328, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-gallery-label {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  margin: 20px 0 0;
+  font-size: 18px;
+  text-align: center;
+  color: #fff;
+}
+
+/* line 336, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-gallery-label:focus {
+  outline: none;
+}
+
+/* line 340, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-gallery-control {
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+       -o-transform: translateY(-50%);
+          transform: translateY(-50%);
+  opacity: 1;
+  cursor: pointer;
+  color: #fff;
+  width: 50px;
+  height: 50px;
+  background: rgba(0, 0, 0, 0);
+  border: none;
+  border-radius: 100%;
+  -webkit-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+/* line 353, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-gallery-control.is_hidden {
+  opacity: 0;
+  cursor: default;
+}
+
+/* line 357, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-gallery-control:focus,
+.modaal-gallery-control:hover {
+  outline: none;
+  background: #fff;
+}
+
+/* line 361, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-gallery-control:focus:before,
+.modaal-gallery-control:focus:after,
+.modaal-gallery-control:hover:before,
+.modaal-gallery-control:hover:after {
+  background: #afb7bc;
+}
+
+/* line 366, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-gallery-control span {
+  position: absolute !important;
+  clip: rect(1px 1px 1px 1px);
+  /* IE6, IE7 */
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 0 !important;
+  border: 0 !important;
+  height: 1px !important;
+  width: 1px !important;
+  overflow: hidden;
+}
+
+/* line 370, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-gallery-control:before,
+.modaal-gallery-control:after {
+  display: block;
+  content: " ";
+  position: absolute;
+  top: 16px;
+  left: 25px;
+  width: 4px;
+  height: 18px;
+  border-radius: 4px;
+  background: #fff;
+  -webkit-transition: background 0.2s ease-in-out;
+  -o-transition: background 0.2s ease-in-out;
+  transition: background 0.2s ease-in-out;
+}
+
+/* line 383, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-gallery-control:before {
+  margin: -5px 0 0;
+  -webkit-transform: rotate(-45deg);
+       -o-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+}
+
+/* line 387, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-gallery-control:after {
+  margin: 5px 0 0;
+  -webkit-transform: rotate(45deg);
+       -o-transform: rotate(45deg);
+          transform: rotate(45deg);
+}
+
+/* line 393, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-gallery-next-inner {
+  left: 100%;
+  margin-left: 40px;
+}
+
+/* line 397, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-gallery-next-outer {
+  right: 45px;
+}
+
+/* line 402, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-gallery-prev:before,
+.modaal-gallery-prev:after {
+  left: 22px;
+}
+
+/* line 404, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-gallery-prev:before {
+  margin: 5px 0 0;
+  -webkit-transform: rotate(-45deg);
+       -o-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+}
+
+/* line 408, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-gallery-prev:after {
+  margin: -5px 0 0;
+  -webkit-transform: rotate(45deg);
+       -o-transform: rotate(45deg);
+          transform: rotate(45deg);
+}
+
+/* line 413, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-gallery-prev-inner {
+  right: 100%;
+  margin-right: 40px;
+}
+
+/* line 417, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-gallery-prev-outer {
+  left: 45px;
+}
+
+/* line 425, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-video-wrap {
+  margin: auto 50px;
+  position: relative;
+}
+
+/* line 430, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-video-container {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  max-width: 100%;
+  -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  background: #000;
+  max-width: 1300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* line 441, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-video-container iframe,
+.modaal-video-container object,
+.modaal-video-container embed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* line 454, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-iframe .modaal-content {
+  width: 100%;
+  height: 100%;
+}
+
+/* line 458, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-iframe-elem {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+@media only screen and (min-width: 1400px) {
+  /* line 468, node_modules/modaal/dist/css/modaal.scss */
+
+  .modaal-video-container {
+    padding-bottom: 0;
+    height: 731px;
+  }
+}
+
+@media only screen and (max-width: 1140px) {
+  /* line 476, node_modules/modaal/dist/css/modaal.scss */
+
+  .modaal-image .modaal-inner-wrapper {
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+
+  /* line 481, node_modules/modaal/dist/css/modaal.scss */
+
+  .modaal-gallery-control {
+    top: auto;
+    bottom: 20px;
+    -webkit-transform: none;
+         -o-transform: none;
+            transform: none;
+    background: rgba(0, 0, 0, 0.7);
+  }
+
+  /* line 486, node_modules/modaal/dist/css/modaal.scss */
+
+  .modaal-gallery-control:before,
+  .modaal-gallery-control:after {
+    background: #fff;
+  }
+
+  /* line 491, node_modules/modaal/dist/css/modaal.scss */
+
+  .modaal-gallery-next {
+    left: auto;
+    right: 20px;
+  }
+
+  /* line 495, node_modules/modaal/dist/css/modaal.scss */
+
+  .modaal-gallery-prev {
+    left: 20px;
+    right: auto;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  /* line 502, node_modules/modaal/dist/css/modaal.scss */
+
+  .modaal-instagram iframe {
+    width: 500px !important;
+  }
+}
+
+@media screen and (max-height: 1100px) {
+  /* line 507, node_modules/modaal/dist/css/modaal.scss */
+
+  .modaal-instagram iframe {
+    width: 700px !important;
+  }
+}
+
+@media screen and (max-height: 1000px) {
+  /* line 512, node_modules/modaal/dist/css/modaal.scss */
+
+  .modaal-inner-wrapper {
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+
+  /* line 516, node_modules/modaal/dist/css/modaal.scss */
+
+  .modaal-instagram iframe {
+    width: 600px !important;
+  }
+}
+
+@media screen and (max-height: 900px) {
+  /* line 521, node_modules/modaal/dist/css/modaal.scss */
+
+  .modaal-instagram iframe {
+    width: 500px !important;
+  }
+
+  /* line 524, node_modules/modaal/dist/css/modaal.scss */
+
+  .modaal-video-container {
+    max-width: 900px;
+    max-height: 510px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  /* line 531, node_modules/modaal/dist/css/modaal.scss */
+
+  .modaal-instagram iframe {
+    width: 280px !important;
+  }
+}
+
+@media only screen and (max-height: 820px) {
+  /* line 536, node_modules/modaal/dist/css/modaal.scss */
+
+  .modaal-gallery-label {
+    display: none;
+  }
+}
+
+/* line 545, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-loading-spinner {
+  background: none;
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  top: 50%;
+  left: 50%;
+  margin: -100px 0 0 -100px;
+  -webkit-transform: scale(0.25);
+       -o-transform: scale(0.25);
+          transform: scale(0.25);
+}
+
+@-webkit-keyframes modaal-loading-spinner {
+  0% {
+    opacity: 1;
+    -webkit-transform: scale(1.5);
+    -o-transform: scale(1.5);
+    transform: scale(1.5);
+  }
+
+  100% {
+    opacity: .1;
+    -webkit-transform: scale(1);
+    -o-transform: scale(1);
+    transform: scale(1);
+  }
+}
+
+@-o-keyframes modaal-loading-spinner {
+  0% {
+    opacity: 1;
+    -webkit-transform: scale(1.5);
+    -o-transform: scale(1.5);
+    transform: scale(1.5);
+  }
+
+  100% {
+    opacity: .1;
+    -webkit-transform: scale(1);
+    -o-transform: scale(1);
+    transform: scale(1);
+  }
+}
+
+@keyframes modaal-loading-spinner {
+  0% {
+    opacity: 1;
+    -webkit-transform: scale(1.5);
+    -o-transform: scale(1.5);
+    transform: scale(1.5);
+  }
+
+  100% {
+    opacity: .1;
+    -webkit-transform: scale(1);
+    -o-transform: scale(1);
+    transform: scale(1);
+  }
+}
+
+/* line 555, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-loading-spinner > div {
+  width: 24px;
+  height: 24px;
+  margin-left: 4px;
+  margin-top: 4px;
+  position: absolute;
+}
+
+/* line 555, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-loading-spinner > div > div {
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  background: #fff;
+}
+
+/* line 555, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-loading-spinner > div:nth-of-type(1) > div {
+  -webkit-animation: modaal-loading-spinner 1s linear infinite;
+  -o-animation: modaal-loading-spinner 1s linear infinite;
+  animation: modaal-loading-spinner 1s linear infinite;
+  -webkit-animation-delay: 0s;
+  -o-animation-delay: 0s;
+  animation-delay: 0s;
+}
+
+/* line 555, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-loading-spinner > div:nth-of-type(2) > div,
+.modaal-loading-spinner > div:nth-of-type(3) > div {
+  -ms-animation: modaal-loading-spinner 1s linear infinite;
+  -moz-animation: modaal-loading-spinner 1s linear infinite;
+  -webkit-animation: modaal-loading-spinner 1s linear infinite;
+  -o-animation: modaal-loading-spinner 1s linear infinite;
+}
+
+/* line 555, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-loading-spinner > div:nth-of-type(1) {
+  -webkit-transform: translate(84px, 84px) rotate(45deg) translate(70px, 0);
+  -o-transform: translate(84px, 84px) rotate(45deg) translate(70px, 0);
+  transform: translate(84px, 84px) rotate(45deg) translate(70px, 0);
+}
+
+/* line 555, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-loading-spinner > div:nth-of-type(2) > div {
+  -webkit-animation: modaal-loading-spinner 1s linear infinite;
+       -o-animation: modaal-loading-spinner 1s linear infinite;
+          animation: modaal-loading-spinner 1s linear infinite;
+  -webkit-animation-delay: .12s;
+  -o-animation-delay: .12s;
+  animation-delay: .12s;
+}
+
+/* line 555, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-loading-spinner > div:nth-of-type(2) {
+  -webkit-transform: translate(84px, 84px) rotate(90deg) translate(70px, 0);
+  -o-transform: translate(84px, 84px) rotate(90deg) translate(70px, 0);
+  transform: translate(84px, 84px) rotate(90deg) translate(70px, 0);
+}
+
+/* line 555, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-loading-spinner > div:nth-of-type(3) > div {
+  -webkit-animation: modaal-loading-spinner 1s linear infinite;
+       -o-animation: modaal-loading-spinner 1s linear infinite;
+          animation: modaal-loading-spinner 1s linear infinite;
+  -webkit-animation-delay: .25s;
+  -o-animation-delay: .25s;
+  animation-delay: .25s;
+}
+
+/* line 555, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-loading-spinner > div:nth-of-type(4) > div,
+.modaal-loading-spinner > div:nth-of-type(5) > div {
+  -ms-animation: modaal-loading-spinner 1s linear infinite;
+  -moz-animation: modaal-loading-spinner 1s linear infinite;
+  -webkit-animation: modaal-loading-spinner 1s linear infinite;
+  -o-animation: modaal-loading-spinner 1s linear infinite;
+}
+
+/* line 555, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-loading-spinner > div:nth-of-type(3) {
+  -webkit-transform: translate(84px, 84px) rotate(135deg) translate(70px, 0);
+  -o-transform: translate(84px, 84px) rotate(135deg) translate(70px, 0);
+  transform: translate(84px, 84px) rotate(135deg) translate(70px, 0);
+}
+
+/* line 555, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-loading-spinner > div:nth-of-type(4) > div {
+  -webkit-animation: modaal-loading-spinner 1s linear infinite;
+       -o-animation: modaal-loading-spinner 1s linear infinite;
+          animation: modaal-loading-spinner 1s linear infinite;
+  -webkit-animation-delay: .37s;
+  -o-animation-delay: .37s;
+  animation-delay: .37s;
+}
+
+/* line 555, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-loading-spinner > div:nth-of-type(4) {
+  -webkit-transform: translate(84px, 84px) rotate(180deg) translate(70px, 0);
+  -o-transform: translate(84px, 84px) rotate(180deg) translate(70px, 0);
+  transform: translate(84px, 84px) rotate(180deg) translate(70px, 0);
+}
+
+/* line 555, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-loading-spinner > div:nth-of-type(5) > div {
+  -webkit-animation: modaal-loading-spinner 1s linear infinite;
+       -o-animation: modaal-loading-spinner 1s linear infinite;
+          animation: modaal-loading-spinner 1s linear infinite;
+  -webkit-animation-delay: .5s;
+  -o-animation-delay: .5s;
+  animation-delay: .5s;
+}
+
+/* line 555, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-loading-spinner > div:nth-of-type(6) > div,
+.modaal-loading-spinner > div:nth-of-type(7) > div {
+  -ms-animation: modaal-loading-spinner 1s linear infinite;
+  -moz-animation: modaal-loading-spinner 1s linear infinite;
+  -webkit-animation: modaal-loading-spinner 1s linear infinite;
+  -o-animation: modaal-loading-spinner 1s linear infinite;
+}
+
+/* line 555, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-loading-spinner > div:nth-of-type(5) {
+  -webkit-transform: translate(84px, 84px) rotate(225deg) translate(70px, 0);
+  -o-transform: translate(84px, 84px) rotate(225deg) translate(70px, 0);
+  transform: translate(84px, 84px) rotate(225deg) translate(70px, 0);
+}
+
+/* line 555, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-loading-spinner > div:nth-of-type(6) > div {
+  -webkit-animation: modaal-loading-spinner 1s linear infinite;
+       -o-animation: modaal-loading-spinner 1s linear infinite;
+          animation: modaal-loading-spinner 1s linear infinite;
+  -webkit-animation-delay: .62s;
+  -o-animation-delay: .62s;
+  animation-delay: .62s;
+}
+
+/* line 555, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-loading-spinner > div:nth-of-type(6) {
+  -webkit-transform: translate(84px, 84px) rotate(270deg) translate(70px, 0);
+  -o-transform: translate(84px, 84px) rotate(270deg) translate(70px, 0);
+  transform: translate(84px, 84px) rotate(270deg) translate(70px, 0);
+}
+
+/* line 555, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-loading-spinner > div:nth-of-type(7) > div {
+  -webkit-animation: modaal-loading-spinner 1s linear infinite;
+       -o-animation: modaal-loading-spinner 1s linear infinite;
+          animation: modaal-loading-spinner 1s linear infinite;
+  -webkit-animation-delay: .75s;
+  -o-animation-delay: .75s;
+  animation-delay: .75s;
+}
+
+/* line 555, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-loading-spinner > div:nth-of-type(7) {
+  -webkit-transform: translate(84px, 84px) rotate(315deg) translate(70px, 0);
+  -o-transform: translate(84px, 84px) rotate(315deg) translate(70px, 0);
+  transform: translate(84px, 84px) rotate(315deg) translate(70px, 0);
+}
+
+/* line 555, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-loading-spinner > div:nth-of-type(8) > div {
+  -webkit-animation: modaal-loading-spinner 1s linear infinite;
+  -o-animation: modaal-loading-spinner 1s linear infinite;
+  animation: modaal-loading-spinner 1s linear infinite;
+  -webkit-animation-delay: .87s;
+  -o-animation-delay: .87s;
+  animation-delay: .87s;
+}
+
+/* line 555, node_modules/modaal/dist/css/modaal.scss */
+
+.modaal-loading-spinner > div:nth-of-type(8) {
+  -webkit-transform: translate(84px, 84px) rotate(360deg) translate(70px, 0);
+  -o-transform: translate(84px, 84px) rotate(360deg) translate(70px, 0);
+  transform: translate(84px, 84px) rotate(360deg) translate(70px, 0);
+}
+
+/* line 8, resources/assets/styles/common/_global.scss */
 
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
   color: #2D2D2D;
 }
 
-/* line 10, resources/assets/styles/common/_global.scss */
+/* line 13, resources/assets/styles/common/_global.scss */
 
 .container,
 .container-wide,
@@ -15607,17 +16623,28 @@ body {
   max-width: 1050px;
 }
 
+/* line 18, resources/assets/styles/common/_global.scss */
+
+.row.flex-grid,
+.sidebar-primary .flex-grid.wrap {
+  margin-left: -10px;
+  margin-right: -10px;
+  width: calc(100% + 20px);
+}
+
 /* line 2, resources/assets/styles/common/_typography.scss */
 
 body h1,
 body .h1 {
   font-size: 40px;
   font-weight: 400;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   line-height: 1.2em;
   color: #2E3398;
+  text-align: left;
 }
 
-/* line 9, resources/assets/styles/common/_typography.scss */
+/* line 11, resources/assets/styles/common/_typography.scss */
 
 body h2,
 body .h2 {
@@ -15626,7 +16653,7 @@ body .h2 {
   line-height: 1.2em;
 }
 
-/* line 15, resources/assets/styles/common/_typography.scss */
+/* line 17, resources/assets/styles/common/_typography.scss */
 
 body h3,
 body .h3 {
@@ -15635,26 +16662,26 @@ body .h3 {
   margin: 15px 0;
 }
 
-/* line 21, resources/assets/styles/common/_typography.scss */
+/* line 23, resources/assets/styles/common/_typography.scss */
 
 body h4,
 body .h4 {
   text-transform: uppercase;
   color: #2E3398;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   padding: 0;
   margin: 0;
 }
 
-/* line 30, resources/assets/styles/common/_typography.scss */
+/* line 32, resources/assets/styles/common/_typography.scss */
 
 body p {
   font-size: 17px;
   line-height: 1.4em;
 }
 
-/* line 35, resources/assets/styles/common/_typography.scss */
+/* line 37, resources/assets/styles/common/_typography.scss */
 
 body .content a {
   color: #000;
@@ -15671,17 +16698,79 @@ body .content a {
   transition: background-size 0.3s ease;
 }
 
-/* line 44, resources/assets/styles/common/_typography.scss */
+/* line 46, resources/assets/styles/common/_typography.scss */
 
 body .content a:hover {
   background-size: 100% 100%;
   cursor: pointer;
 }
 
-/* line 50, resources/assets/styles/common/_typography.scss */
+/* line 52, resources/assets/styles/common/_typography.scss */
 
 body .content a > h3 {
   display: inline;
+}
+
+/* line 59, resources/assets/styles/common/_typography.scss */
+
+.entry-content ul:not(.select-dropdown) li {
+  list-style: none;
+  position: relative;
+  padding-left: 30px;
+}
+
+/* line 64, resources/assets/styles/common/_typography.scss */
+
+.entry-content ul:not(.select-dropdown) li::before {
+  content: '\25A0';
+  display: block;
+  position: absolute;
+  left: 5px;
+  speak: none;
+  color: #FCE700;
+}
+
+/* line 72, resources/assets/styles/common/_typography.scss */
+
+html[data-contrast="true"] .entry-content ul:not(.select-dropdown) li::before {
+  color: #FFF;
+}
+
+/* line 1, resources/assets/styles/components/_buttons.scss */
+
+.btn,
+.btn-large,
+.btn-small,
+.ctct-form-wrapper.ctct-form-wrapper .ctct-submit,
+.fl-builder-content.fl-builder-content.fl-builder-content a.fl-button {
+  background: none;
+  border: 2px solid #FCE700;
+  color: #000;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  font-size: 0.9rem;
+}
+
+/* line 8, resources/assets/styles/components/_buttons.scss */
+
+.btn:hover,
+.btn-large:hover,
+.btn-small:hover,
+.ctct-form-wrapper.ctct-form-wrapper .ctct-submit:hover,
+.fl-builder-content.fl-builder-content.fl-builder-content a.fl-button:hover,
+.btn:active,
+.btn-large:active,
+.btn-small:active,
+.ctct-form-wrapper.ctct-form-wrapper .ctct-submit:active,
+.fl-builder-content.fl-builder-content.fl-builder-content a.fl-button:active,
+.btn:focus,
+.btn-large:focus,
+.btn-small:focus,
+.ctct-form-wrapper.ctct-form-wrapper .ctct-submit:focus,
+.fl-builder-content.fl-builder-content.fl-builder-content a.fl-button:focus {
+  background: #FCE700;
+  -webkit-box-shadow: none;
+          box-shadow: none;
 }
 
 /* line 2, resources/assets/styles/components/_header.scss */
@@ -15710,6 +16799,7 @@ body .content a > h3 {
 
 .banner nav .navbar-menu ul a {
   font-size: 16px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 500;
   width: 90px;
   height: 90px;
@@ -15722,14 +16812,23 @@ body .content a > h3 {
   background: transparent;
 }
 
-/* line 25, resources/assets/styles/components/_header.scss */
+/* line 26, resources/assets/styles/components/_header.scss */
 
-.banner nav .navbar-menu ul a:hover {
+.banner nav .navbar-menu ul a:hover,
+.banner nav .navbar-menu ul a:focus,
+.banner nav .navbar-menu ul a:active {
   background: #FCE700;
   text-decoration: none;
 }
 
-/* line 34, resources/assets/styles/components/_header.scss */
+/* line 33, resources/assets/styles/components/_header.scss */
+
+.banner nav .navbar-menu ul li.current-menu-item a {
+  background: #FCE700;
+  text-decoration: none;
+}
+
+/* line 42, resources/assets/styles/components/_header.scss */
 
 .banner .logo {
   max-width: 150px;
@@ -15771,7 +16870,7 @@ body .content a > h3 {
 .page-footer .footer-content h3 {
   text-transform: uppercase;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   color: #2E3398;
 }
 
@@ -15995,15 +17094,51 @@ body .content a > h3 {
   text-decoration: underline;
 }
 
-/* line 2, resources/assets/styles/layouts/_people.scss */
+/* line 1, resources/assets/styles/layouts/_people.scss */
 
-.team .person {
-  padding-left: 0;
+.team-filters {
+  text-align: right;
+}
+
+/* line 4, resources/assets/styles/layouts/_people.scss */
+
+.team-filters label {
+  display: inline-block;
+  text-transform: uppercase;
+  color: #000;
+  padding-right: 1em;
+}
+
+/* line 11, resources/assets/styles/layouts/_people.scss */
+
+.team-filters .select-wrapper {
+  display: inline-block;
+  width: 250px;
+  text-align: left;
+}
+
+/* line 16, resources/assets/styles/layouts/_people.scss */
+
+.team-filters .select-wrapper input.select-dropdown {
+  border: 2px solid #FCE700;
+  line-height: 2em;
+  height: 2em;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
   margin-bottom: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   width: 100%;
 }
 
-/* line 7, resources/assets/styles/layouts/_people.scss */
+/* line 29, resources/assets/styles/layouts/_people.scss */
+
+.team .person {
+  padding-left: 0;
+  margin: 0 0 2em;
+  width: 100%;
+}
+
+/* line 34, resources/assets/styles/layouts/_people.scss */
 
 .team .person h2 {
   font-size: 18px;
@@ -16012,7 +17147,7 @@ body .content a > h3 {
   margin-top: 10px;
 }
 
-/* line 14, resources/assets/styles/layouts/_people.scss */
+/* line 41, resources/assets/styles/layouts/_people.scss */
 
 .team .person h3 {
   text-transform: uppercase;
@@ -16021,7 +17156,7 @@ body .content a > h3 {
   margin-top: 5px;
 }
 
-/* line 21, resources/assets/styles/layouts/_people.scss */
+/* line 48, resources/assets/styles/layouts/_people.scss */
 
 .team .person p,
 .team .person a {
@@ -16030,7 +17165,15 @@ body .content a > h3 {
   margin-bottom: 0;
 }
 
-/* line 28, resources/assets/styles/layouts/_people.scss */
+/* line 55, resources/assets/styles/layouts/_people.scss */
+
+.team .roles {
+  font-size: 13px;
+  line-height: 1.2em;
+  padding-top: 4px;
+}
+
+/* line 61, resources/assets/styles/layouts/_people.scss */
 
 .team .person-img {
   position: relative;
@@ -16039,7 +17182,7 @@ body .content a > h3 {
   width: 100%;
 }
 
-/* line 34, resources/assets/styles/layouts/_people.scss */
+/* line 67, resources/assets/styles/layouts/_people.scss */
 
 .team .person-img .biopic {
   width: 100%;
@@ -16051,7 +17194,7 @@ body .content a > h3 {
   left: 0;
 }
 
-/* line 43, resources/assets/styles/layouts/_people.scss */
+/* line 76, resources/assets/styles/layouts/_people.scss */
 
 .team .person-img .biopic-hover {
   width: 100%;
@@ -16067,44 +17210,18 @@ body .content a > h3 {
   transition: all 0.5s;
 }
 
-/* line 53, resources/assets/styles/layouts/_people.scss */
+/* line 86, resources/assets/styles/layouts/_people.scss */
 
 .team .person-img .biopic-hover:hover {
   opacity: 1;
 }
 
-/* line 61, resources/assets/styles/layouts/_people.scss */
-
-.single h1 {
-  font-weight: 400;
-  margin: 10px 0;
-}
-
-/* line 66, resources/assets/styles/layouts/_people.scss */
+/* line 94, resources/assets/styles/layouts/_people.scss */
 
 .single h2 {
   font-size: 20px;
   font-weight: 400;
   margin-bottom: 3.5em;
-}
-
-/* line 73, resources/assets/styles/layouts/_people.scss */
-
-.roles {
-  font-size: 10px;
-  color: #2E3398;
-  text-transform: uppercase;
-  font-weight: 500;
-  line-height: 0;
-  position: relative;
-}
-
-/* line 81, resources/assets/styles/layouts/_people.scss */
-
-.roles .interpunct {
-  font-size: 25px;
-  position: relative;
-  top: 4px;
 }
 
 /* line 2, resources/assets/styles/layouts/_news.scss */
@@ -16125,7 +17242,29 @@ body .content a > h3 {
   margin: 0;
 }
 
-/* line 2, resources/assets/styles/layouts/_projects.scss */
+/* line 1, resources/assets/styles/layouts/_projects.scss */
+
+.project-filters {
+  margin-bottom: 0;
+}
+
+/* line 4, resources/assets/styles/layouts/_projects.scss */
+
+.project-filters a {
+  display: inline-block;
+  margin-right: 2em;
+  text-transform: uppercase;
+  color: #66666E !important;
+}
+
+/* line 10, resources/assets/styles/layouts/_projects.scss */
+
+.project-filters a.active {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #000 !important;
+}
+
+/* line 18, resources/assets/styles/layouts/_projects.scss */
 
 .projects-container .project {
   padding-left: 0;
@@ -16133,7 +17272,7 @@ body .content a > h3 {
   width: 100%;
 }
 
-/* line 7, resources/assets/styles/layouts/_projects.scss */
+/* line 23, resources/assets/styles/layouts/_projects.scss */
 
 .projects-container .project .project-img {
   overflow: hidden;
@@ -16142,7 +17281,7 @@ body .content a > h3 {
   position: relative;
 }
 
-/* line 13, resources/assets/styles/layouts/_projects.scss */
+/* line 29, resources/assets/styles/layouts/_projects.scss */
 
 .projects-container .project .project-img a {
   position: absolute;
@@ -16150,20 +17289,33 @@ body .content a > h3 {
   height: 100%;
 }
 
-/* line 18, resources/assets/styles/layouts/_projects.scss */
+/* line 34, resources/assets/styles/layouts/_projects.scss */
 
-.projects-container .project .project-img a:hover {
+.projects-container .project .project-img a:hover,
+.projects-container .project .project-img a:focus,
+.projects-container .project .project-img a:active {
   background-size: 0;
 }
 
-/* line 22, resources/assets/styles/layouts/_projects.scss */
+/* line 37, resources/assets/styles/layouts/_projects.scss */
+
+.projects-container .project .project-img a:hover img,
+.projects-container .project .project-img a:focus img,
+.projects-container .project .project-img a:active img {
+  -webkit-transform: scale(1.1);
+       -o-transform: scale(1.1);
+          transform: scale(1.1);
+}
+
+/* line 42, resources/assets/styles/layouts/_projects.scss */
 
 .projects-container .project .project-img a figure {
   width: 100%;
   height: 100%;
+  margin: 0;
 }
 
-/* line 27, resources/assets/styles/layouts/_projects.scss */
+/* line 48, resources/assets/styles/layouts/_projects.scss */
 
 .projects-container .project .project-img a img {
   width: 100%;
@@ -16173,27 +17325,23 @@ body .content a > h3 {
   -webkit-transition: all 0.3s ease-in-out;
   -o-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
+  opacity: 1;
 }
 
-/* line 33, resources/assets/styles/layouts/_projects.scss */
+/* line 55, resources/assets/styles/layouts/_projects.scss */
 
-.projects-container .project .project-img a img:hover {
-  -webkit-transition: 0.3s ease-in-out;
-  -o-transition: 0.3s ease-in-out;
-  transition: 0.3s ease-in-out;
-  -webkit-transform: scale(1.1);
-       -o-transform: scale(1.1);
-          transform: scale(1.1);
+.projects-container .project .project-img a img[data-src] {
+  opacity: 0;
 }
 
-/* line 42, resources/assets/styles/layouts/_projects.scss */
+/* line 63, resources/assets/styles/layouts/_projects.scss */
 
 .projects-container .project .project-info h4 {
   margin-top: 10px;
   font-size: 10px;
 }
 
-/* line 47, resources/assets/styles/layouts/_projects.scss */
+/* line 68, resources/assets/styles/layouts/_projects.scss */
 
 .projects-container .project .project-info h2 {
   font-size: 18px;
@@ -16203,7 +17351,7 @@ body .content a > h3 {
   margin-bottom: 5px;
 }
 
-/* line 55, resources/assets/styles/layouts/_projects.scss */
+/* line 76, resources/assets/styles/layouts/_projects.scss */
 
 .projects-container .project .project-info a {
   font-size: 14px;
@@ -16211,13 +17359,13 @@ body .content a > h3 {
   margin-bottom: 0;
 }
 
-/* line 62, resources/assets/styles/layouts/_projects.scss */
+/* line 83, resources/assets/styles/layouts/_projects.scss */
 
 .projects-container .project .flex-grid-single {
-  margin: 5em 0;
+  margin: 3em 0;
 }
 
-/* line 65, resources/assets/styles/layouts/_projects.scss */
+/* line 86, resources/assets/styles/layouts/_projects.scss */
 
 .projects-container .project .flex-grid-single .flex-item-single {
   padding: 0;
@@ -16227,7 +17375,7 @@ body .content a > h3 {
 }
 
 @media only screen and (max-width: 992px) {
-  /* line 65, resources/assets/styles/layouts/_projects.scss */
+  /* line 86, resources/assets/styles/layouts/_projects.scss */
 
   .projects-container .project .flex-grid-single .flex-item-single {
     width: 47.5%;
@@ -16236,7 +17384,7 @@ body .content a > h3 {
 }
 
 @media only screen and (max-width: 768px) {
-  /* line 65, resources/assets/styles/layouts/_projects.scss */
+  /* line 86, resources/assets/styles/layouts/_projects.scss */
 
   .projects-container .project .flex-grid-single .flex-item-single {
     width: 100%;
@@ -16244,21 +17392,21 @@ body .content a > h3 {
   }
 }
 
-/* line 80, resources/assets/styles/layouts/_projects.scss */
+/* line 101, resources/assets/styles/layouts/_projects.scss */
 
 .projects-container .project .flex-grid-single .flex-item-single .post-thumbnail {
   margin: 0;
 }
 
 @media only screen and (max-width: 992px) {
-  /* line 85, resources/assets/styles/layouts/_projects.scss */
+  /* line 106, resources/assets/styles/layouts/_projects.scss */
 
   .projects-container .project .flex-grid-single .project-info-single {
     width: 50%;
   }
 }
 
-/* line 90, resources/assets/styles/layouts/_projects.scss */
+/* line 111, resources/assets/styles/layouts/_projects.scss */
 
 .projects-container .project .flex-grid-single .project-info-single h4 {
   margin: 0 0 5px;
@@ -16268,7 +17416,7 @@ body .content a > h3 {
   text-transform: inherit;
 }
 
-/* line 98, resources/assets/styles/layouts/_projects.scss */
+/* line 119, resources/assets/styles/layouts/_projects.scss */
 
 .projects-container .project .flex-grid-single .project-info-single p {
   margin-top: 0;

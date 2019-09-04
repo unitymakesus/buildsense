@@ -2,12 +2,21 @@ $color-yellow: #FCE700;
 $color-blue: #2E3398;
 $color-grey: #2D2D2D;
 
+$font-light: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+$font-regular: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: $font-light;
   color: $color-grey;
 }
 
 .container {
   width: 100% !important;
   max-width: 1050px;
+}
+
+.row.flex-grid {
+  margin-left: -10px;
+  margin-right: -10px;
+  width: calc(100% + 20px);
 }

@@ -76,9 +76,11 @@
     "yargs": "~11.0.0"
   },
   "dependencies": {
+    "isotope-layout": "^3.0.6",
     "jquery": "^3.3.1",
     "macy": "^2.3.1",
     "materialize-css": "^1.0.0",
+    "modaal": "^0.4.4",
     "webfontloader": "^1.6.28"
   }
 }
