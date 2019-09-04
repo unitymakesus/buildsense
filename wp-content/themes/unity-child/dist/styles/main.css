@@ -17082,13 +17082,15 @@ html[data-contrast="true"] .entry-content ul:not(.select-dropdown) li::before {
 /* line 34, resources/assets/styles/layouts/_homepage.scss */
 
 .home-projects-link a {
-  color: #000;
+  color: #2E3398;
   text-decoration: none;
   font-size: 14px;
   font-weight: normal;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  text-transform: uppercase;
 }
 
-/* line 40, resources/assets/styles/layouts/_homepage.scss */
+/* line 42, resources/assets/styles/layouts/_homepage.scss */
 
 .home-projects-link a:hover {
   text-decoration: underline;

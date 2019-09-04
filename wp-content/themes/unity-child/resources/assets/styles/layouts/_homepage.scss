@@ -32,10 +32,12 @@
   right: 40px;
 
   a {
-    color: $color-black;
+    color: $color-blue;
     text-decoration: none;
     font-size: 14px;
     font-weight: normal;
+    font-family: $font-regular;
+    text-transform: uppercase;
 
     &:hover {
       text-decoration: underline;
