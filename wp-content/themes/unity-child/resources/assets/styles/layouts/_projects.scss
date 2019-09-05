@@ -1,5 +1,5 @@
 .project-filters {
-  margin-bottom: 0;
+  margin: 10px 0;
 
   a {
     display: inline-block;
@@ -123,4 +123,8 @@
       }
     }
   }
+}
+
+figure.post-thumbnail {
+  margin: 0;
 }

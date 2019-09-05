@@ -20,3 +20,9 @@ body {
   margin-right: -10px;
   width: calc(100% + 20px);
 }
+
+.archive .content {
+  @media(max-width:1070px) {
+    margin: 20px;
+  }
+}
