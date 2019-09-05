@@ -57,6 +57,10 @@
         font-weight: 400;
         margin-bottom: 0;
       }
+
+      .post-thumbnail {
+        margin: 0;
+      }
     }
 
     .flex-grid-single {
@@ -75,10 +79,6 @@
         @media #{$small-and-down} {
           width: 100%;
           padding-bottom: 100%;
-        }
-
-        .post-thumbnail {
-          margin: 0;
         }
       }
 
