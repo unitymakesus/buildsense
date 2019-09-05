@@ -28,7 +28,7 @@
       display: inline-block;
     }
 
-    @media #{$medium-and-down} {
+    @media #{$small-and-down} {
       padding-left: 0;
       min-height: 120px;
       display: flex;
@@ -170,7 +170,7 @@ nav {
       a {
         cursor: default;
 
-        @media #{$medium-and-down} {
+        @media #{$small-and-down} {
           cursor: pointer;
         }
       }
@@ -189,7 +189,7 @@ nav {
           cursor: pointer;
         }
 
-        @media #{$large-and-up} {
+        @media #{$medium-and-up} {
           max-height: 300em;
           flex-direction: column;
           position: absolute;
@@ -239,7 +239,7 @@ nav {
       }
     }
   }
-  @media #{$medium-and-down} {
+  @media #{$small-and-down} {
     flex-direction: column;
     flex-wrap: nowrap;
     margin: 0;

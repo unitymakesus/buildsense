@@ -2,7 +2,7 @@
   nav {
     box-shadow: none;
 
-    @media #{$small-and-down} {
+    @media #{$medium-and-down} {
       padding: 0 15px;
     }
 

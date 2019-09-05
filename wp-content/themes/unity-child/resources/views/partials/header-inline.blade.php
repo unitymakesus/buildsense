@@ -37,7 +37,7 @@
         @endif
       </a>
       @if (has_nav_menu('primary_navigation'))
-        <div class="menu-trigger-wrapper hide-on-large-only">
+        <div class="menu-trigger-wrapper hide-on-med-and-up">
           <input type="checkbox" name="menu-trigger" id="menu-trigger" value="true" />
           <label for="menu-trigger"><em class="material-icons" aria-label="Show navigation menu">menu</em></label>
         </div>
