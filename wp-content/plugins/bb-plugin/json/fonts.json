@@ -939,6 +939,11 @@
   "fallback": "sans-serif"
  }
 }, {
+ "Chilanka": {
+  "variants": ["regular"],
+  "fallback": "cursive"
+ }
+}, {
  "Chivo": {
   "variants": ["300", "300italic", "regular", "italic", "700", "700italic", "900", "900italic"],
   "fallback": "sans-serif"
@@ -1662,6 +1667,11 @@
  "Gamja Flower": {
   "variants": ["regular"],
   "fallback": "cursive"
+ }
+}, {
+ "Gayathri": {
+  "variants": ["100", "regular", "700"],
+  "fallback": "sans-serif"
  }
 }, {
  "Gentium Basic": {
@@ -2651,6 +2661,11 @@
 }, {
  "Mandali": {
   "variants": ["regular"],
+  "fallback": "sans-serif"
+ }
+}, {
+ "Manjari": {
+  "variants": ["100", "regular", "700"],
   "fallback": "sans-serif"
  }
 }, {
@@ -4205,7 +4220,7 @@
  }
 }, {
  "Source Code Pro": {
-  "variants": ["200", "300", "regular", "500", "600", "700", "900"],
+  "variants": ["200", "200italic", "300", "300italic", "regular", "italic", "500", "500italic", "600", "600italic", "700", "700italic", "900", "900italic"],
   "fallback": "monospace"
  }
 }, {

@@ -106,3 +106,296 @@ add_filter( 'image_size_names_choose', function( $sizes ) {
     'medium-square-thumbnail' => __( 'Medium Square Thumbnail' ),
   ) );
 } );
+
+
+/**
+ * Remove prefixes from archive titles
+ */
+add_filter( 'get_the_archive_title', function ($title) {
+  if (is_post_type_archive('simple-projects')) {
+    $title = 'Gallery';
+  } if ( is_category() ) {
+    $title = single_cat_title( '', false );
+  } elseif ( is_tag() ) {
+    $title = single_tag_title( '', false );
+  }
+  return $title;
+});
+
+
+// News Post Type
+function create_post_news() {
+  $argsNews = array(
+    'labels' => array(
+				'name' => 'News',
+				'singular_name' => 'Article',
+				'add_new' => 'Add New',
+				'add_new_item' => 'Add News Article',
+				'edit' => 'Edit',
+				'edit_item' => 'Edit News Article',
+				'new_item' => 'New Article',
+				'view_item' => 'View News Article',
+				'search_items' => 'Search News',
+				'not_found' =>  'Nothing found in the Database.',
+				'not_found_in_trash' => 'Nothing found in Trash',
+				'parent_item_colon' => ''
+    ),
+    'public' => true,
+    'exclude_from_search' => false,
+    'publicly_queryable' => true,
+    'show_ui' => true,
+    'show_in_nav_menus' => false,
+    'menu_position' => 20,
+    'menu_icon' => 'dashicons-format-quote',
+    'capability_type' => 'page',
+    'hierarchical' => false,
+    'supports' => array(
+      'title',
+      'editor',
+      'revisions',
+      'page-attributes',
+      'thumbnail'
+    ),
+    'has_archive' => false,
+    'rewrite' => array(
+      'slug' => 'news'
+    )
+  );
+  register_post_type( 'simple-news', $argsNews );
+}
+add_action( 'init', __NAMESPACE__.'\\create_post_news' );
+
+function create_newstax() {
+
+	$argsNewsCategories = array(
+		'labels' => array(
+			'name' => __( 'Types' ),
+			'singular_name' => __( 'Type' )
+		),
+		'publicly_queryable' => true,
+		'show_ui' => true,
+    'show_admin_column' => true,
+		'show_in_nav_menus' => false,
+		'hierarchical' => true,
+		'rewrite' => false
+	);
+	register_taxonomy('simple-news-category', 'simple-news', $argsNewsCategories);
+
+}
+add_action( 'init', __NAMESPACE__.'\\create_newstax' );
+
+
+// Projects Post Type
+function create_post_projects() {
+  $argsNews = array(
+    'labels' => array(
+				'name' => 'Projects',
+				'singular_name' => 'Project',
+				'add_new' => 'Add New',
+				'add_new_item' => 'Add Project',
+				'edit' => 'Edit',
+				'edit_item' => 'Edit Project',
+				'new_item' => 'New Project',
+				'view_item' => 'View Project',
+				'search_items' => 'Search Projects',
+				'not_found' =>  'Nothing found in the Database.',
+				'not_found_in_trash' => 'Nothing found in Trash',
+				'parent_item_colon' => ''
+    ),
+    'public' => true,
+    'exclude_from_search' => false,
+    'publicly_queryable' => true,
+    'show_ui' => true,
+    'show_in_nav_menus' => false,
+    'menu_position' => 20,
+    'menu_icon' => 'dashicons-admin-multisite',
+    'capability_type' => 'page',
+    'hierarchical' => false,
+    'supports' => array(
+      'title',
+      'editor',
+      'revisions',
+      'page-attributes',
+      'thumbnail'
+    ),
+    'has_archive' => true,
+    'rewrite' => array(
+      'slug' => 'gallery'
+    )
+  );
+  register_post_type( 'simple-projects', $argsNews );
+}
+add_action( 'init', __NAMESPACE__.'\\create_post_projects' );
+
+function create_projectstax() {
+
+	$argsProjectsCategories = array(
+		'labels' => array(
+			'name' => __( 'Project Types' ),
+			'singular_name' => __( 'Project Type' )
+		),
+		'publicly_queryable' => true,
+		'show_ui' => true,
+    'show_admin_column' => true,
+		'show_in_nav_menus' => false,
+		'hierarchical' => true,
+		'rewrite' => false
+	);
+	register_taxonomy('simple-projects-category', 'simple-projects', $argsProjectsCategories);
+
+}
+add_action( 'init', __NAMESPACE__.'\\create_projectstax' );
+
+// Only show 12 results per page
+add_action( 'pre_get_posts', function( $query ) {
+    if ( $query->is_post_type_archive('simple-projects')) {
+      $query->set( 'posts_per_page', '-1' );
+    }
+} );
+
+
+/**
+ * News shortcode
+ */
+ add_shortcode('news', function($atts) {
+	$news = new \WP_Query([
+		'post_type' => 'simple-news',
+		'posts_per_page' => 24,
+		'orderby' => 'DES',
+		'order' => 'DES',
+	]);
+
+	ob_start(); ?>
+
+	<div class='news-container'>
+
+	<?php if ($news->have_posts()) :
+		$counter = 0;
+		while ($news->have_posts()) : $news->the_post();
+			if ($counter % 3 == 0) :
+					echo $counter > 0 ? "</div>" : ""; // close div if it's not the first
+					echo "<div class='news row'>";
+			endif;
+		?>
+
+    <div class="article col s12 m4">
+      <div class="article-info">
+				<h4><?php echo get_the_date( 'Y' ); ?></h4>
+
+				<?php
+					$link = get_field('link');
+
+					if (!empty($link['url'])) {  ?>
+						<a href="<?php echo $link['url']?>" target="_blank">
+					<?php }	?>
+
+	        	<h3 itemprop="title"><?php the_title(); ?>
+							<?php if (!empty($description = get_field('description'))) { ?> |	<?php echo $description;
+							} ?>
+						</h3>
+
+					<?php if (!empty($link['url'])) {  ?>
+						</a>
+					<?php } ?>
+
+				<?php if (!empty($publication = get_field('publication'))) { ?>
+					<p class="publication" itemprop="publication"><?php echo $publication; ?></p>
+				<?php } ?>
+      </div>
+    </div>
+
+		<?php
+		$counter++;
+		endwhile; endif; wp_reset_postdata(); ?>
+
+	</div>
+
+	<?php return ob_get_clean();
+});
+
+
+/**
+ * Staff list shortcode
+ */
+add_shortcode('filterable-team', function($atts) {
+	$people = new \WP_Query([
+		'post_type' => 'simple-team',
+		'posts_per_page' => -1,
+		'orderby' => 'menu_order',
+		'order' => 'ASC',
+	]);
+
+	ob_start(); ?>
+
+  <div class="row team-filters">
+    <label for="filter">Filter</label>
+    <select id="filter" name="filter">
+      <option data-filter="*" selected>View All</option>
+      <?php
+        $terms = get_terms( 'simple-team-category', array(
+          'orderby'    => 'menu_order',
+          'hide_empty' => 1
+        ) );
+
+        foreach ($terms as $term) {
+          echo '<option data-filter=".' . $term->slug . '">' . $term->name . '</option>';
+        }
+      ?>
+    </select>
+  </div>
+
+	<div class="row team-container flex-grid l3x m2x s1x">
+
+	<?php if ($people->have_posts()) :
+		while ($people->have_posts()) : $people->the_post();
+
+    $terms = wp_get_post_terms( get_the_id(), 'simple-team-category');
+		?>
+
+		<div class="flex-item <?php echo join(' ', wp_list_pluck($terms, 'slug')); ?>">
+	    <div class="person">
+	      <div class="person-img">
+					<?php if (!empty($image = get_field('primary_image'))) { ?>
+            <noscript class="lazy" data-class="biopic" data-src="<?php echo $image['url']; ?>" data-alt="<?php echo $image['alt']; ?>" aria-hidden="true">
+              <img class="biopic" src="<?php echo $image['url']; ?>" data-src="" alt="<?php echo $image['alt']; ?>">
+            </noscript>
+					<?php } ?>
+
+					<?php if (!empty($imagehov = get_field('hover_image'))) { ?>
+            <noscript class="lazy" data-class="biopic-hover" data-src="<?php echo $imagehov['url']; ?>" data-alt="<?php echo $imagehov['alt']; ?>" aria-hidden="true">
+              <img class="biopic-hover" src="<?php echo $imagehov['url']; ?>" data-src="" alt="<?php echo $imagehov['alt']; ?>">
+            </noscript>
+					<?php } ?>
+	      </div>
+	      <div class="person-info">
+					<div class="h4 roles">
+						<?php
+							echo join(' <span class="interpunct">&#9642;</span> ', wp_list_pluck($terms, 'name'));
+						?>
+					</div>
+
+	        <h2 itemprop="name"><?php the_title(); ?></h2>
+
+	        <?php if (!empty($title = get_field('title'))) { ?>
+	          <h3 class="title" itemprop="jobTitle"><?php echo $title; ?></h3>
+	        <?php } ?>
+
+	        <?php
+	          if (!empty($short_bio = get_field('short_bio'))) {
+	            echo $short_bio;
+						}
+						if (!empty(get_field('longer_bio'))) {
+	            echo '<p><a href="' . get_permalink() . '">Read more >></a>';
+	          }
+	        ?>
+	      </div>
+	    </div>
+		</div>
+
+		<?php
+		endwhile; endif; wp_reset_postdata(); ?>
+
+	</div>
+
+	<?php return ob_get_clean();
+});

@@ -1,11 +1,38 @@
+.team-filters {
+  text-align: right;
+
+  label {
+    display: inline-block;
+    text-transform: uppercase;
+    color: $color-grey;
+    padding-right: 1em;
+  }
+
+  .select-wrapper {
+    display: inline-block;
+    width: 250px;
+    text-align: left;
+
+    input.select-dropdown {
+      border: 2px solid $color-yellow;
+      line-height: 2em;
+      height: 2em;
+      font-family: $font-light;
+      margin-bottom: 0;
+      box-sizing: border-box;
+      width: 100%;
+    }
+  }
+}
+
 .team {
   .person {
     padding-left: 0;
-    margin-bottom: 0;
+    margin: 0 0 2em;
     width: 100%;
 
     h2 {
-      font-size: 18px;
+      font-size: rem-calc(18px);
       font-weight: 400;
       letter-spacing: 1px;
       margin-top: 10px;
@@ -14,15 +41,21 @@
     h3 {
       text-transform: uppercase;
       font-weight: 400;
-      font-size: 14px;
+      font-size: rem-calc(14px);
       margin-top: 5px;
     }
 
     p, a {
-      font-size: 14px;
+      font-size: rem-calc(14px);
       font-weight: 400;
       margin-bottom: 0;
     }
+  }
+
+  .roles {
+    font-size: rem-calc(13px);
+    line-height: 1.2em;
+    padding-top: 4px;
   }
 
   .person-img {
@@ -50,7 +83,7 @@
       opacity: 0;
       transition: all 0.5s;
 
-      &:hover {
+      &:hover, &:focus, &:active {
         opacity: 1;
       }
     }
@@ -58,29 +91,9 @@
 }
 
 .single {
-  h1 {
-    font-weight: 400;
-    margin: 10px 0;
-  }
-
   h2 {
-    font-size: 20px;
+    font-size: rem-calc(20px);
     font-weight: 400;
     margin-bottom: 3.5em;
-  }
-}
-
-.roles {
-  font-size: 10px;
-  color: $color-blue;
-  text-transform: uppercase;
-  font-weight: 500;
-  line-height: 0;
-  position: relative;
-
-  .interpunct {
-    font-size: 25px;
-    position: relative;
-    top: 4px;
   }
 }

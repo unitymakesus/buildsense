@@ -1,58 +1,56 @@
 <article class="container projects-container" {!! post_class() !!}>
   <div class="project">
-    <h1 itemprop="name"><?php the_title(); ?></h1>
+    <h1 itemprop="name">{{ the_title() }}</h1>
 
     <div class='flex-grid flex-grid-single l3x m2x s1x'>
       <div class="project-info flex-item project-info-single">
         <div>
-          <?php if (!empty($location = get_field('location'))) { ?>
+          @if (!empty($location = get_field('location')))
             <h4>Location</h4>
-            <p><?php echo $location; ?></p>
-          <?php } ?>
+            <p>{{ $location }}</p>
+          @endif
 
-          <?php if (!empty($designer = get_field('designer'))) { ?>
+          @if (!empty($designer = get_field('designer')))
             <h4>Designer</h4>
-            <p><?php echo $designer; ?></p>
-          <?php } ?>
+            <p>{{ $designer }}</p>
+          @endif
 
-          <?php if (!empty($builder = get_field('builder'))) { ?>
+          @if (!empty($builder = get_field('builder')))
             <h4>Builder</h4>
-            <p><?php echo $builder; ?></p>
-          <?php } ?>
+            <p>{{ $builder }}</p>
+          @endif
         </div>
       </div>
 
       <div class="project-img flex-item flex-item-single">
-        <a href="#">
-          <?php if (has_post_thumbnail()) :
-              $thumbnail_id = get_post_thumbnail_id( get_the_ID() );
-              $alt = get_post_meta($thumbnail_id, '_wp_attachment_image_alt', true);
-              $thumb_caption = get_the_post_thumbnail_caption(get_the_ID());
-          ?>
-            <figure class="post-thumbnail">
-              <?php echo get_the_post_thumbnail( get_the_ID(), 'large', ['alt' => $alt] );
-
-              if (!empty($thumb_caption)) : ?>
-                <figcaption class="thumb-caption"><?php echo $thumb_caption ?></figcaption>
-              <?php endif ?>
-            </figure>
-          <?php endif ?>
-        </a>
+        @if (has_post_thumbnail())
+          @php
+            $thumbnail_id = get_post_thumbnail_id( get_the_ID() );
+            $alt = get_post_meta($thumbnail_id, '_wp_attachment_image_alt', true);
+            $image_src = get_the_post_thumbnail_url( get_the_ID() );
+          @endphp
+          <figure class="post-thumbnail">
+            <a href="{{ $image_src }}" data-group="project-gallery">
+              {!! get_the_post_thumbnail( get_the_ID(), 'large', ['alt' => $alt] ) !!}
+            </a>
+          </figure>
+        @endif
       </div>
 
-      <?php
+      @php
         $images = get_field('addl-images');
         $size = 'full';
+      @endphp
 
-        if( $images ):
-          foreach( $images as $image ): ?>
-            <div class="project-img flex-item flex-item-single">
-              <a href="#">
-                <?php echo wp_get_attachment_image( $image['ID'], $size ); ?>
-              </a>
-            </div>
-          <?php endforeach; ?>
-      <?php endif; ?>
+      @if( !empty($images) )
+        @foreach( $images as $image )
+          <div class="project-img flex-item flex-item-single">
+            <a href="{{ $image['url'] }}" data-group="project-gallery">
+              {!! wp_get_attachment_image( $image['ID'], $size ) !!}
+            </a>
+          </div>
+        @endforeach
+      @endif
 
     </div>
   </div>

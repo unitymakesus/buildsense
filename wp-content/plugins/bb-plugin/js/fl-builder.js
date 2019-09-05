@@ -6187,6 +6187,10 @@
 		{
 			var form = $('.fl-builder-settings').last();
 
+			if ( ! messages ) {
+				messages = {}
+			}
+
 			form.validate({
 				ignore: '.fl-ignore-validation',
 				rules: rules,

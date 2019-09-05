@@ -77,6 +77,7 @@ function ga_google_analytics_universal() {
 	extract(ga_google_analytics_options());
 	
 	$custom_code = ga_google_analytics_custom($custom_code);
+	$custom_code = explode(PHP_EOL, $custom_code);
 	
 	$ga_display = "ga('require', 'displayfeatures');";
 	$ga_link    = "ga('require', 'linkid');";
@@ -90,8 +91,12 @@ function ga_google_analytics_universal() {
 			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 			})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-<?php if ($custom_code) echo "\t\t\t" . $custom_code . "\n"; ?>
 			ga('create', '<?php echo $tracking_id; ?>', 'auto'<?php if ($tracker_object) echo ', '. $tracker_object; ?>);
+<?php 
+			if ($custom_code) {
+				foreach ($custom_code as $c) echo "\t\t\t" . trim($c) . "\n";
+			}
+?>
 			<?php 
 				if ($display_ads) echo $ga_display . "\n\t\t\t";
 				if ($link_attr)   echo $ga_link    . "\n\t\t\t";
@@ -109,6 +114,7 @@ function ga_google_analytics_global() {
 	extract(ga_google_analytics_options());
 	
 	$custom_code = ga_google_analytics_custom($custom_code);
+	$custom_code = explode(PHP_EOL, $custom_code);
 	
 	?>
 
@@ -116,8 +122,12 @@ function ga_google_analytics_global() {
 		<script>
 			window.dataLayer = window.dataLayer || [];
 			function gtag(){dataLayer.push(arguments);}
-<?php if ($custom_code) echo "\t\t\t" . $custom_code . "\n"; ?>
 			gtag('js', new Date());
+<?php 
+			if ($custom_code) {
+				foreach ($custom_code as $c) echo "\t\t\t" . trim($c) . "\n";
+			}
+?>
 			gtag('config', '<?php echo $tracking_id; ?>'<?php if ($tracker_object) echo ', '. $tracker_object; ?>);
 		</script>
 

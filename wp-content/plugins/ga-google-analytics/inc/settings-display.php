@@ -174,7 +174,7 @@ if (!function_exists('add_action')) die(); ?>
 											<?php esc_html_e('for Global Site Tag. This is useful for things like', 'ga-google-analytics'); ?> 
 											<a target="_blank" rel="noopener noreferrer" href="https://developers.google.com/analytics/devguides/collection/analyticsjs/creating-trackers"><?php esc_html_e('tracker objects', 'ga-google-analytics'); ?></a> 
 											<?php esc_html_e('and', 'ga-google-analytics'); ?> 
-											<a target="_blank" rel="noopener noreferrer" href="https://support.google.com/360suite/optimize/"><?php esc_html_e('optimize', 'ga-google-analytics'); ?></a>.
+											<a target="_blank" rel="noopener noreferrer" href="https://support.google.com/optimize/answer/6262084"><?php esc_html_e('optimize', 'ga-google-analytics'); ?></a>.
 										</div>
 									</td>
 								</tr>
@@ -213,7 +213,7 @@ if (!function_exists('add_action')) die(); ?>
 									<th><label for="gap_options[admin_area]"><?php esc_html_e('Admin Area', 'ga-google-analytics') ?></label></th>
 									<td>
 										<input id="gap_options[admin_area]" name="gap_options[admin_area]" type="checkbox" value="1" <?php if (isset($gap_options['admin_area'])) checked('1', $gap_options['admin_area']); ?>> 
-										<?php esc_html_e('Enable GA in the WordPress Admin Area', 'ga-google-analytics'); ?>
+										<?php esc_html_e('Enable GA tracking in the WordPress Admin Area', 'ga-google-analytics'); ?>
 									</td>
 								</tr>
 								<tr>

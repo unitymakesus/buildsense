@@ -918,26 +918,19 @@ class PMXI_CsvParser
      * @access protected
      * @return boolean
      */
-    protected function parse()
-    {
+    protected function parse() {
         if (!$this->validates()) {            
             return false;
         }                      
 
         $tmpname = wp_unique_filename($this->targetDir, str_replace("csv", "xml", basename($this->_filename)));
-        if ("" == $this->xml_path) 
-            $this->xml_path = $this->targetDir  .'/'. wp_all_import_url_title($tmpname);            
-        
-        $this->toXML(true);        
+        if ("" == $this->xml_path) {
+            $this->xml_path = $this->targetDir  .'/'. wp_all_import_url_title($tmpname);
+        }
 
-        /*$file = new PMXI_Chunk($this->xml_path, array('element' => 'node'));
-
-        if ( empty($file->options['element']) ){
-            $this->toXML(true); // Remove non ASCII symbols and write CDATA
-        }*/
-
+        $ignore_special_characters = apply_filters('wp_all_import_csv_to_xml_remove_non_ascii_characters', true);
+        $this->toXML($ignore_special_characters);
         return true;
-
     }
 
     function toXML( $fixBrokenSymbols = false ){
@@ -974,70 +967,72 @@ class PMXI_CsvParser
 
         if ( ! empty($_GET['import_id']) ) $import_id = $_GET['import_id'];        
 
-        $create_new_headers = apply_filters('wp_all_import_auto_create_csv_headers', false, $import_id);
+        $create_new_headers = false;
         $skip_x_rows = apply_filters('wp_all_import_skip_x_csv_rows', false, $import_id);
-        $headers = array();    
+        $headers = array();
         while ($keys = fgetcsv($res, $l, $d, $e)) {
 
-            if ($skip_x_rows !== false && $skip_x_rows > $c){
+            if ($skip_x_rows !== false && $skip_x_rows > $c) {
                 $c++;
                 continue;
             }
-            if ($skip_x_rows !== false && $skip_x_rows <= $c){
+            if ($skip_x_rows !== false && $skip_x_rows <= $c) {
                 $skip_x_rows = false;
                 $c = 0;
             }
             $empty_columns = 0;
             foreach ($keys as $key) {
-                if ($key == '') $empty_columns++;
+                if (preg_replace("%\s%", "", $key) == '') $empty_columns++;
             }
-            // skip empty lines
+            // Skip empty lines.
             if ($empty_columns == count($keys)) continue;
 
             if ($c == 0) {
                 $buf_keys = $keys;
                 foreach ($keys as $key => $value) {
-                    $value = trim(strtolower(preg_replace('/[^a-z0-9_]/i', '', urlencode(str_replace(array("(", ")"),"", $value)))));
-                    if (preg_match('/^[0-9]{1}/', $value)){
+
+                    if (!$create_new_headers and (preg_match('%\W(http:|https:|ftp:)$%i', $value) or is_numeric($value))) {
+                        $create_new_headers = true;
+                    }
+
+                    $value = trim(strtolower(preg_replace('/[^a-z0-9_]/i', '', $value)));
+                    if (preg_match('/^[0-9]{1}/', $value)) {
                         $value = 'el_' . trim(strtolower($value));
                     }
                     $value = (!empty($value)) ? $value : 'undefined' . $key;
 
-                    if (!$create_new_headers and (preg_match('%\W(http:|https:|ftp:)$%i', $value) or is_numeric($value))) $create_new_headers = true;
-
-                    if (empty($headers[$value]))
+                    if (empty($headers[$value])) {
                         $headers[$value] = 1;
-                    else
+                    }
+                    else {
                         $headers[$value]++;
+                    }
 
                     $keys[$key] = ($headers[$value] === 1) ? $value : $value . '_' . $headers[$value];
                 }            
                 $this->headers = $keys;
-                if ($create_new_headers){ 
+                $create_new_headers = apply_filters('wp_all_import_auto_create_csv_headers', $create_new_headers, $import_id);
+                if ($create_new_headers) {
                     $this->createHeaders('column');      
                     $keys = $buf_keys;
                 }
             }
             if ( $c or $create_new_headers ) {
-
-               if (!empty($keys)){                                   
-
+               if (!empty($keys)) {
                     $chunk = array();
-
-                    foreach ($this->headers as $key => $header) $chunk[$header] = $this->fixEncoding( $keys[$key] );
-
-                    if ( ! empty($chunk) )
-                    {                                                                                        
+                    foreach ($this->headers as $key => $header) {
+                        $chunk[$header] = $this->fixEncoding( $keys[$key] );
+                    }
+                    if ( ! empty($chunk) ) {
                         $xmlWriter->startElement('node');
-                        foreach ($chunk as $header => $value) 
-                        {
+                        foreach ($chunk as $header => $value) {
                             $xmlWriter->startElement($header);
                                 $value = preg_replace('/\]\]>/s', '', preg_replace('/<!\[CDATA\[/s', '', $value ));
-                                if ($fixBrokenSymbols){
-                                    // Remove non ASCII symbols and write CDATA
+                                if ($fixBrokenSymbols) {
+                                    // Remove non ASCII symbols and write CDATA.
                                     $xmlWriter->writeCData(preg_replace('/[^\x{0009}\x{000a}\x{000d}\x{0020}-\x{D7FF}\x{E000}-\x{FFFD}]+/u', ' ', $value));                                                                                              
                                 }
-                                else{
+                                else {
                                     $xmlWriter->writeCData($value);                                
                                 }
                             $xmlWriter->endElement();
@@ -1046,24 +1041,18 @@ class PMXI_CsvParser
                     }                                        
                 }                
             }
-
-            $c ++;
+            $c++;
         }
 
-        if($c === 1)
-        {
+        if ($c === 1 && !$create_new_headers) {
             $xmlWriter->startElement('node');
             $xmlWriter->endElement();    
         }
-        
         fclose($res);
-        
         $xmlWriter->endElement();
+        $xmlWriter->flush(TRUE);
 
-        $xmlWriter->flush(true);    
-
-        return true;    
-
+        return TRUE;
     }
 
     /**
@@ -1074,8 +1063,7 @@ class PMXI_CsvParser
      * @access protected
      * @return array containing only the rows that have data
      */
-    protected function removeEmpty()
-    {
+    protected function removeEmpty() {
         $ret_arr = array();
         foreach ($this->rows as $row) {
             $line = trim(join('', $row));
@@ -1094,18 +1082,15 @@ class PMXI_CsvParser
      * @access protected
      * @return boolean
      */
-    protected function validates()
-    {        
+    protected function validates(){
         // file existance
         if (!file_exists($this->_filename)) {
             return false;
         }
-
         // file readability
         if (!is_readable($this->_filename)) {
             return false;
         }
-
         return true;
     }
 
@@ -1115,8 +1100,7 @@ class PMXI_CsvParser
      * @access protected
      * @return void
      */
-    protected function moveHeadersToRows()
-    {
+    protected function moveHeadersToRows() {
         $arr   = array();
         $arr[] = $this->headers;
         foreach ($this->rows as $row) {
