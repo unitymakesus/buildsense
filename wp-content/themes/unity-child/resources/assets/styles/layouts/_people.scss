@@ -32,7 +32,7 @@
     width: 100%;
 
     h2 {
-      font-size: rem-calc(18px);
+      font-size: rem-calc(20px);
       font-weight: 400;
       letter-spacing: 1px;
       margin-top: 10px;
@@ -41,19 +41,19 @@
     h3 {
       text-transform: uppercase;
       font-weight: 400;
-      font-size: rem-calc(14px);
+      font-size: rem-calc(15px);
       margin-top: 5px;
     }
 
     p, a {
-      font-size: rem-calc(14px);
+      font-size: rem-calc(15px);
       font-weight: 400;
       margin-bottom: 0;
     }
   }
 
   .roles {
-    font-size: rem-calc(13px);
+    font-size: rem-calc(12px);
     line-height: 1.2em;
     padding-top: 4px;
   }
@@ -91,6 +91,11 @@
 }
 
 .single {
+  h1 {
+    margin: 0;
+    color: $color-grey;
+  }
+
   h2 {
     font-size: rem-calc(20px);
     font-weight: 400;

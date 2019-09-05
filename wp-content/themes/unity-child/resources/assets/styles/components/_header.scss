@@ -10,11 +10,16 @@
       position: relative;
       top: -5px;
 
+      @media #{$small-and-down} {
+        align-items: flex-start;
+        display: block;
+        padding: 0;
+      }
+
       ul {
         a {
           font-size: 16px;
           font-family: $font-regular;
-          font-weight: 500;
           width: 90px;
           height: 90px;
           line-height: 7em;
@@ -22,6 +27,13 @@
           text-align: center;
           transition: all 0.5s;
           background: transparent;
+
+          @media #{$small-and-down} {
+            width: auto;
+            height: auto;
+            line-height: 3em;
+            text-align: left;
+          }
 
           &:hover, &:focus, &:active {
             background: $color-yellow;
@@ -44,5 +56,10 @@
     position: relative;
     top: 5px;
     padding: 10px 0;
+  }
+
+  .material-icons {
+    position: relative;
+    top: 15px;
   }
 }

@@ -1,6 +1,7 @@
 .home {
   h1 {
     font-weight: 300;
+    font-size: rem-calc(44px);
     color: $color-grey;
   }
 }
@@ -30,6 +31,10 @@
   bottom: 25px;
   z-index: 1000;
   right: 40px;
+
+  @media #{$small-and-down} {
+    bottom: -10px;
+  }
 
   a {
     color: $color-blue;

@@ -1,12 +1,12 @@
 <article class="container" {!! post_class() !!}>
   <div class="row person">
-    <span class="roles">
+    <span class="h4 roles">
       <?php
         $terms = wp_get_post_terms( get_the_id(), 'simple-team-category');
         echo join(' <span class="interpunct">&#183;</span> ', wp_list_pluck($terms, 'name'));
       ?>
     </span>
-    
+
     <h1 itemprop="name"><?php the_title(); ?></h1>
     <?php if (!empty($title = get_field('title'))) { ?>
       <h2 class="title" itemprop="jobTitle"><?php echo $title; ?></h2>

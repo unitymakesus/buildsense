@@ -30,12 +30,20 @@
     .footer-left {
       padding-left: 0;
       margin: 0;
+
+      @media #{$small-and-down} {
+        text-align: left;
+      }
     }
 
     .footer-center {
       text-align: left;
       display: flex;
       justify-content: space-between;
+
+      @media #{$small-and-down} {
+        display: block;
+      }
     }
 
     .footer-right {
@@ -43,6 +51,10 @@
       padding-right: 0;
       display: flex;
       justify-content: flex-end;
+
+      @media #{$small-and-down} {
+        justify-content: flex-start;
+      }
     }
   }
 
@@ -62,6 +74,12 @@
 
       &:hover {
         text-decoration-style: double !important;
+      }
+    }
+
+    .container {
+      @media #{$small-and-down} {
+        justify-content: center;
       }
     }
   }
