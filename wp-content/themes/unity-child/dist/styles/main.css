@@ -16632,6 +16632,14 @@ body {
   width: calc(100% + 20px);
 }
 
+@media (max-width: 1070px) {
+  /* line 24, resources/assets/styles/common/_global.scss */
+
+  .archive .content {
+    margin: 20px;
+  }
+}
+
 /* line 2, resources/assets/styles/common/_typography.scss */
 
 body h1,
@@ -17010,9 +17018,9 @@ html[data-contrast="true"] .entry-content ul:not(.select-dropdown) li::before {
   .page-footer .footer-copyright .container-wide,
   .page-footer .footer-copyright .sidebar-primary .content,
   .sidebar-primary .page-footer .footer-copyright .content {
-    -webkit-box-pack: center;
-        -ms-flex-pack: center;
-            justify-content: center;
+    -webkit-box-pack: start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
   }
 }
 
@@ -17367,7 +17375,7 @@ html[data-contrast="true"] .entry-content ul:not(.select-dropdown) li::before {
 /* line 1, resources/assets/styles/layouts/_projects.scss */
 
 .project-filters {
-  margin-bottom: 0;
+  margin: 10px 0;
 }
 
 /* line 4, resources/assets/styles/layouts/_projects.scss */
@@ -17543,6 +17551,12 @@ html[data-contrast="true"] .entry-content ul:not(.select-dropdown) li::before {
 .projects-container .project .flex-grid-single .project-info-single p {
   margin-top: 0;
   margin-bottom: 20px;
+}
+
+/* line 128, resources/assets/styles/layouts/_projects.scss */
+
+figure.post-thumbnail {
+  margin: 0;
 }
 
 
