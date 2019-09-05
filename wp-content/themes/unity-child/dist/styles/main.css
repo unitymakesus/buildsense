@@ -16636,7 +16636,7 @@ body {
 
 body h1,
 body .h1 {
-  font-size: 40px;
+  font-size: 2.22222rem;
   font-weight: 400;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   line-height: 1.2em;
@@ -16648,7 +16648,7 @@ body .h1 {
 
 body h2,
 body .h2 {
-  font-size: 33px;
+  font-size: 1.83333rem;
   font-weight: 300;
   line-height: 1.2em;
 }
@@ -16657,7 +16657,7 @@ body .h2 {
 
 body h3,
 body .h3 {
-  font-size: 22px;
+  font-size: 1.22222rem;
   font-weight: 400;
   margin: 15px 0;
 }
@@ -16668,7 +16668,7 @@ body h4,
 body .h4 {
   text-transform: uppercase;
   color: #2E3398;
-  font-size: 14px;
+  font-size: 0.77778rem;
   font-weight: 600;
   padding: 0;
   margin: 0;
@@ -16677,14 +16677,14 @@ body .h4 {
 /* line 32, resources/assets/styles/common/_typography.scss */
 
 body p {
-  font-size: 17px;
+  font-size: 0.94444rem;
   line-height: 1.4em;
 }
 
 /* line 37, resources/assets/styles/common/_typography.scss */
 
 body .content a {
-  color: #000;
+  color: #2D2D2D;
   text-decoration: none !important;
   font-weight: 400 !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(88%, transparent), color-stop(0, #FCE700));
@@ -16700,18 +16700,19 @@ body .content a {
 
 /* line 46, resources/assets/styles/common/_typography.scss */
 
-body .content a:hover {
+body .content a:hover,
+body .content a:focus,
+body .content a:active {
   background-size: 100% 100%;
-  cursor: pointer;
 }
 
-/* line 52, resources/assets/styles/common/_typography.scss */
+/* line 51, resources/assets/styles/common/_typography.scss */
 
 body .content a > h3 {
   display: inline;
 }
 
-/* line 59, resources/assets/styles/common/_typography.scss */
+/* line 58, resources/assets/styles/common/_typography.scss */
 
 .entry-content ul:not(.select-dropdown) li {
   list-style: none;
@@ -16719,7 +16720,7 @@ body .content a > h3 {
   padding-left: 30px;
 }
 
-/* line 64, resources/assets/styles/common/_typography.scss */
+/* line 63, resources/assets/styles/common/_typography.scss */
 
 .entry-content ul:not(.select-dropdown) li::before {
   content: '\25A0';
@@ -16730,7 +16731,7 @@ body .content a > h3 {
   color: #FCE700;
 }
 
-/* line 72, resources/assets/styles/common/_typography.scss */
+/* line 71, resources/assets/styles/common/_typography.scss */
 
 html[data-contrast="true"] .entry-content ul:not(.select-dropdown) li::before {
   color: #FFF;
@@ -16745,7 +16746,7 @@ html[data-contrast="true"] .entry-content ul:not(.select-dropdown) li::before {
 .fl-builder-content.fl-builder-content.fl-builder-content a.fl-button {
   background: none;
   border: 2px solid #FCE700;
-  color: #000;
+  color: #2D2D2D;
   -webkit-box-shadow: none;
           box-shadow: none;
   font-size: 0.9rem;
@@ -16855,33 +16856,44 @@ html[data-contrast="true"] .entry-content ul:not(.select-dropdown) li::before {
 
 .page-footer .footer-content a {
   color: #2D2D2D;
-  text-decoration: underline;
-}
-
-/* line 13, resources/assets/styles/components/_footer.scss */
-
-.page-footer .footer-content a:hover {
-  -webkit-text-decoration-style: double !important;
-          text-decoration-style: double !important;
+  text-decoration: none !important;
+  font-weight: 400 !important;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(88%, transparent), color-stop(0, #FCE700));
+  background-image: -webkit-linear-gradient(top, transparent 88%, #FCE700 0);
+  background-image: -o-linear-gradient(top, transparent 88%, #FCE700 0);
+  background-image: linear-gradient(180deg, transparent 88%, #FCE700 0);
+  background-size: 0 100%;
+  background-repeat: no-repeat;
+  -webkit-transition: background-size 0.3s ease;
+  -o-transition: background-size 0.3s ease;
+  transition: background-size 0.3s ease;
 }
 
 /* line 18, resources/assets/styles/components/_footer.scss */
 
+.page-footer .footer-content a:hover,
+.page-footer .footer-content a:focus,
+.page-footer .footer-content a:active {
+  background-size: 100% 100%;
+}
+
+/* line 23, resources/assets/styles/components/_footer.scss */
+
 .page-footer .footer-content h3 {
   text-transform: uppercase;
-  font-size: 14px;
+  font-size: 0.77778rem;
   font-weight: 600;
   color: #2E3398;
 }
 
-/* line 25, resources/assets/styles/components/_footer.scss */
+/* line 30, resources/assets/styles/components/_footer.scss */
 
 .page-footer .footer-content .footer-left {
   padding-left: 0;
   margin: 0;
 }
 
-/* line 30, resources/assets/styles/components/_footer.scss */
+/* line 35, resources/assets/styles/components/_footer.scss */
 
 .page-footer .footer-content .footer-center {
   text-align: left;
@@ -16893,7 +16905,7 @@ html[data-contrast="true"] .entry-content ul:not(.select-dropdown) li::before {
           justify-content: space-between;
 }
 
-/* line 36, resources/assets/styles/components/_footer.scss */
+/* line 41, resources/assets/styles/components/_footer.scss */
 
 .page-footer .footer-content .footer-right {
   text-align: left;
@@ -16906,29 +16918,29 @@ html[data-contrast="true"] .entry-content ul:not(.select-dropdown) li::before {
           justify-content: flex-end;
 }
 
-/* line 44, resources/assets/styles/components/_footer.scss */
+/* line 49, resources/assets/styles/components/_footer.scss */
 
 .page-footer .footer-copyright {
   background: #2E3398;
 }
 
-/* line 47, resources/assets/styles/components/_footer.scss */
+/* line 52, resources/assets/styles/components/_footer.scss */
 
 .page-footer .footer-copyright .copyright {
-  font-size: 13px;
+  font-size: 0.72222rem;
   margin: 0;
   line-height: inherit;
   margin-right: 1em;
 }
 
-/* line 54, resources/assets/styles/components/_footer.scss */
+/* line 59, resources/assets/styles/components/_footer.scss */
 
 .page-footer .footer-copyright a {
   text-decoration: underline !important;
-  font-size: 13px;
+  font-size: 0.72222rem;
 }
 
-/* line 58, resources/assets/styles/components/_footer.scss */
+/* line 63, resources/assets/styles/components/_footer.scss */
 
 .page-footer .footer-copyright a:hover {
   -webkit-text-decoration-style: double !important;
@@ -17006,15 +17018,15 @@ html[data-contrast="true"] .entry-content ul:not(.select-dropdown) li::before {
   background-image: url(/wp-content/themes/unity-child/dist/images/socialiconscustom/quality.png);
 }
 
-/* line 2, resources/assets/styles/components/_beaverbuilder.scss */
+/* line 3, resources/assets/styles/components/_beaverbuilder.scss */
 
 .imglink .fl-photo-content {
   overflow: hidden;
 }
 
-/* line 6, resources/assets/styles/components/_beaverbuilder.scss */
+/* line 7, resources/assets/styles/components/_beaverbuilder.scss */
 
-.imglink .fl-photo-content .fl-photo-img {
+.imglink .fl-photo-content .fl-photo-content .fl-photo-img {
   -webkit-transition: all 0.3s ease-in-out;
   -o-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
@@ -17022,13 +17034,32 @@ html[data-contrast="true"] .entry-content ul:not(.select-dropdown) li::before {
 
 /* line 10, resources/assets/styles/components/_beaverbuilder.scss */
 
-.imglink .fl-photo-content .fl-photo-img:hover {
+.imglink .fl-photo-content .fl-photo-content .fl-photo-img:hover,
+.imglink .fl-photo-content .fl-photo-content .fl-photo-img:focus,
+.imglink .fl-photo-content .fl-photo-content .fl-photo-img:active {
   -webkit-transition: 0.3s ease-in-out;
   -o-transition: 0.3s ease-in-out;
   transition: 0.3s ease-in-out;
   -webkit-transform: scale(1.1);
        -o-transform: scale(1.1);
           transform: scale(1.1);
+}
+
+/* line 20, resources/assets/styles/components/_beaverbuilder.scss */
+
+.bx-wrapper .bx-pager .bx-pager-item a {
+  border-radius: 0;
+  border: 2px solid #FCE700;
+  background: #FFF !important;
+  width: 14px;
+  height: 14px;
+  opacity: 1 !important;
+}
+
+/* line 28, resources/assets/styles/components/_beaverbuilder.scss */
+
+.bx-wrapper .bx-pager .bx-pager-item a.active {
+  background: #FCE700 !important;
 }
 
 /* line 2, resources/assets/styles/layouts/_homepage.scss */
@@ -17084,7 +17115,7 @@ html[data-contrast="true"] .entry-content ul:not(.select-dropdown) li::before {
 .home-projects-link a {
   color: #2E3398;
   text-decoration: none;
-  font-size: 14px;
+  font-size: 0.77778rem;
   font-weight: normal;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   text-transform: uppercase;
@@ -17092,7 +17123,9 @@ html[data-contrast="true"] .entry-content ul:not(.select-dropdown) li::before {
 
 /* line 42, resources/assets/styles/layouts/_homepage.scss */
 
-.home-projects-link a:hover {
+.home-projects-link a:hover,
+.home-projects-link a:focus,
+.home-projects-link a:active {
   text-decoration: underline;
 }
 
@@ -17107,7 +17140,7 @@ html[data-contrast="true"] .entry-content ul:not(.select-dropdown) li::before {
 .team-filters label {
   display: inline-block;
   text-transform: uppercase;
-  color: #000;
+  color: #2D2D2D;
   padding-right: 1em;
 }
 
@@ -17143,7 +17176,7 @@ html[data-contrast="true"] .entry-content ul:not(.select-dropdown) li::before {
 /* line 34, resources/assets/styles/layouts/_people.scss */
 
 .team .person h2 {
-  font-size: 18px;
+  font-size: 1rem;
   font-weight: 400;
   letter-spacing: 1px;
   margin-top: 10px;
@@ -17154,7 +17187,7 @@ html[data-contrast="true"] .entry-content ul:not(.select-dropdown) li::before {
 .team .person h3 {
   text-transform: uppercase;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 0.77778rem;
   margin-top: 5px;
 }
 
@@ -17162,7 +17195,7 @@ html[data-contrast="true"] .entry-content ul:not(.select-dropdown) li::before {
 
 .team .person p,
 .team .person a {
-  font-size: 14px;
+  font-size: 0.77778rem;
   font-weight: 400;
   margin-bottom: 0;
 }
@@ -17170,7 +17203,7 @@ html[data-contrast="true"] .entry-content ul:not(.select-dropdown) li::before {
 /* line 55, resources/assets/styles/layouts/_people.scss */
 
 .team .roles {
-  font-size: 13px;
+  font-size: 0.72222rem;
   line-height: 1.2em;
   padding-top: 4px;
 }
@@ -17214,14 +17247,16 @@ html[data-contrast="true"] .entry-content ul:not(.select-dropdown) li::before {
 
 /* line 86, resources/assets/styles/layouts/_people.scss */
 
-.team .person-img .biopic-hover:hover {
+.team .person-img .biopic-hover:hover,
+.team .person-img .biopic-hover:focus,
+.team .person-img .biopic-hover:active {
   opacity: 1;
 }
 
 /* line 94, resources/assets/styles/layouts/_people.scss */
 
 .single h2 {
-  font-size: 20px;
+  font-size: 1.11111rem;
   font-weight: 400;
   margin-bottom: 3.5em;
 }
@@ -17263,7 +17298,7 @@ html[data-contrast="true"] .entry-content ul:not(.select-dropdown) li::before {
 
 .project-filters a.active {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  color: #000 !important;
+  color: #2D2D2D !important;
 }
 
 /* line 18, resources/assets/styles/layouts/_projects.scss */

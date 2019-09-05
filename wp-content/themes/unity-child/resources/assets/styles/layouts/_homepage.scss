@@ -34,12 +34,12 @@
   a {
     color: $color-blue;
     text-decoration: none;
-    font-size: 14px;
+    font-size: rem-calc(14px);
     font-weight: normal;
     font-family: $font-regular;
     text-transform: uppercase;
 
-    &:hover {
+    &:hover, &:focus, &:active {
       text-decoration: underline;
     }
   }

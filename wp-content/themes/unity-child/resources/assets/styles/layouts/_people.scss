@@ -4,7 +4,7 @@
   label {
     display: inline-block;
     text-transform: uppercase;
-    color: $color-black;
+    color: $color-grey;
     padding-right: 1em;
   }
 
@@ -32,7 +32,7 @@
     width: 100%;
 
     h2 {
-      font-size: 18px;
+      font-size: rem-calc(18px);
       font-weight: 400;
       letter-spacing: 1px;
       margin-top: 10px;
@@ -41,19 +41,19 @@
     h3 {
       text-transform: uppercase;
       font-weight: 400;
-      font-size: 14px;
+      font-size: rem-calc(14px);
       margin-top: 5px;
     }
 
     p, a {
-      font-size: 14px;
+      font-size: rem-calc(14px);
       font-weight: 400;
       margin-bottom: 0;
     }
   }
 
   .roles {
-    font-size: 13px;
+    font-size: rem-calc(13px);
     line-height: 1.2em;
     padding-top: 4px;
   }
@@ -83,7 +83,7 @@
       opacity: 0;
       transition: all 0.5s;
 
-      &:hover {
+      &:hover, &:focus, &:active {
         opacity: 1;
       }
     }
@@ -92,7 +92,7 @@
 
 .single {
   h2 {
-    font-size: 20px;
+    font-size: rem-calc(20px);
     font-weight: 400;
     margin-bottom: 3.5em;
   }

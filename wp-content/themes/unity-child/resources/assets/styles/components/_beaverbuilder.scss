@@ -1,13 +1,32 @@
 // Image zoom on hover
-.imglink .fl-photo-content {
-  overflow: hidden;
+.imglink {
+  .fl-photo-content {
+    overflow: hidden;
+
+    .fl-photo-content {
+      .fl-photo-img {
+        transition: all 0.3s ease-in-out;
+
+        &:hover, &:focus, &:active {
+          transition: 0.3s ease-in-out;
+          transform: scale(1.1);
+        }
+      }
+    }
+  }
 }
 
-.imglink .fl-photo-content .fl-photo-img {
-  transition: all 0.3s ease-in-out;
-}
+.bx-wrapper .bx-pager {
+  .bx-pager-item a {
+    border-radius: 0;
+    border: 2px solid $color-yellow;
+    background: $color-white !important;
+    width: 14px;
+    height: 14px;
+    opacity: 1 !important;
 
-.imglink .fl-photo-content .fl-photo-img:hover {
-  transition: 0.3s ease-in-out;
-  transform: scale(1.1);
+    &.active {
+      background: $color-yellow !important;
+    }
+  }
 }
