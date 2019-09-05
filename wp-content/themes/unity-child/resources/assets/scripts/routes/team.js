@@ -44,7 +44,6 @@ export default {
      */
     $('.team-filters').on('change', 'select', function () {
       var filterValue = $(this).find(':selected').attr('data-filter');
-      console.log(filterValue);
       $grid.isotope({filter: filterValue});
     });
   },
