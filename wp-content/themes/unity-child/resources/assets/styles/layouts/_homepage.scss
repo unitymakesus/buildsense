@@ -26,6 +26,24 @@
   }
 }
 
+.fl-module.square {
+  height: 0;
+  padding-bottom: 100%;
+  position: relative;
+
+  .fl-module-content {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: calc(100% - 40px);
+
+    .uabb-module-content {
+      top: 50%;
+      transform: translate(0, -50%);
+    }
+  }
+}
+
 .home-projects-link {
   position: absolute;
   bottom: 25px;

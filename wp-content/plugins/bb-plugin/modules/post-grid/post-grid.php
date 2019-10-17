@@ -213,7 +213,12 @@ class FLPostGridModule extends FLBuilderModule {
 		$render   = false;
 		$position = ! is_array( $position ) ? array( $position ) : $position;
 		$layout   = $this->get_layout_slug();
-		$fallback = ! has_post_thumbnail() && '' !== $settings->image_fallback && $settings->show_image ? true : false;
+		/**
+		 * @since 2.2.5
+		 * @see fl_render_featured_image_fallback
+		 */
+		$fallback_image = apply_filters( 'fl_render_featured_image_fallback', $settings->image_fallback, $settings );
+		$fallback       = ! has_post_thumbnail() && '' !== $fallback_image && $settings->show_image ? true : false;
 		if ( ( has_post_thumbnail() || $fallback ) && $settings->show_image ) {
 
 			if ( 'feed' == $settings->layout && in_array( $settings->image_position, $position ) ) {
@@ -266,6 +271,11 @@ class FLPostGridModule extends FLBuilderModule {
 	 * @return void
 	 */
 	public function render_content() {
+
+		if ( ! has_filter( 'the_content', 'wpautop' ) && empty( $this->settings->content_length ) ) {
+			add_filter( 'the_content', 'wpautop' );
+		}
+
 		ob_start();
 		the_content();
 		$content = ob_get_clean();
@@ -346,6 +356,28 @@ class FLPostGridModule extends FLBuilderModule {
 		if ( self::schema_enabled() ) {
 			echo $schema;
 		}
+	}
+
+	/**
+	 * Renders the schema itemtype for the collection
+	 *
+	 * @since 2.2.5
+	 * @return string
+	 */
+	static public function schema_collection_type( $data_source = 'custom_query', $post_type = 'post' ) {
+		$schema = '';
+
+		if ( ! self::schema_enabled() ) {
+			return $schema;
+		}
+
+		if ( is_archive() && 'main_query' === $data_source ) {
+			$schema = is_post_type_archive( 'post' ) ? 'https://schema.org/Blog' : 'https://schema.org/Collection';
+		} else {
+			$schema = ( 'post' === $post_type ) ? 'https://schema.org/Blog' : 'https://schema.org/Collection';
+		}
+
+		return $schema;
 	}
 
 	/**

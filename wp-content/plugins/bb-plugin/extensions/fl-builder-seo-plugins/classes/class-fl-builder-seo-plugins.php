@@ -26,6 +26,7 @@ class FLBuilderSeoPlugins {
 		if ( FLBuilderAJAX::doing_ajax() || 'post.php' !== $pagenow ) {
 			return;
 		}
+
 		if ( defined( 'WPSEO_VERSION' ) ) {
 			$this->enqueue_script( 'yoast' );
 		} elseif ( class_exists( 'RankMath' ) ) {
@@ -131,6 +132,7 @@ class FLBuilderSeoPlugins {
 		ob_start();
 		echo do_shortcode( "[fl_builder_insert_layout id=$id]" );
 		$data = ob_get_clean();
+		FLBuilderModel::delete_all_asset_cache( $id );
 		return str_replace( PHP_EOL, '', $data );
 	}
 
