@@ -32,7 +32,7 @@
           @php
             $thumbnail_id = get_post_thumbnail_id( get_the_ID() );
             $alt = get_post_meta($thumbnail_id, '_wp_attachment_image_alt', true);
-            $image_src = get_the_post_thumbnail_url( get_the_ID() );
+            $image_src = get_the_post_thumbnail_url( get_the_ID(), 'medium' );
           @endphp
           <figure class="post-thumbnail">
             <a href="{{ $image_src }}" data-group="project-gallery" data-modaal-desc="{!! get_the_excerpt($image['ID']) !!}">
@@ -44,14 +44,13 @@
 
       @php
         $images = get_field('addl-images');
-        $size = 'full';
       @endphp
 
       @if( !empty($images) )
         @foreach( $images as $image )
           <div class="project-img flex-item flex-item-single">
             <a href="{{ $image['url'] }}" data-group="project-gallery" data-modaal-desc="{!! get_the_excerpt($image['ID']) !!}">
-              {!! wp_get_attachment_image( $image['ID'], $size ) !!}
+              {!! wp_get_attachment_image( $image['ID'], 'medium' ) !!}
             </a>
           </div>
         @endforeach

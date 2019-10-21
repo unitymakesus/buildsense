@@ -10,7 +10,7 @@
           @php
   					$thumbnail_id = get_post_thumbnail_id( get_the_ID() );
   					$alt = get_post_meta($thumbnail_id, '_wp_attachment_image_alt', true);
-            $image_src = get_the_post_thumbnail_url( get_the_ID() );
+            $image_src = get_the_post_thumbnail_url( get_the_ID(), 'medium' );
             $image_srcset = wp_get_attachment_image_srcset($thumbnail_id, 'medium-large')
   				@endphp
 					<figure class="post-thumbnail">

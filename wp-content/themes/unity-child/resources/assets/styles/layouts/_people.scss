@@ -88,17 +88,22 @@
       }
     }
   }
-}
 
-.single {
-  h1 {
-    margin: 0;
-    color: $color-grey;
+  .modaal-hidden {
+    display: none;
+    visibility: hidden;
+    speak: none;
   }
 
-  h2 {
-    font-size: rem-calc(20px);
-    font-weight: 400;
-    margin-bottom: 3.5em;
+  .modaal-content-container {
+    h4 {
+      color: $color-grey;
+      font-size: 1rem;
+      text-transform: none;
+
+      & + p {
+        margin-top: 0;
+      }
+    }
   }
 }

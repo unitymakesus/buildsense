@@ -46,5 +46,10 @@ export default {
       var filterValue = $(this).find(':selected').attr('data-filter');
       $grid.isotope({filter: filterValue});
     });
+
+    /*
+    Modaal for leadership team bios
+     */
+    $('a.person').modaal();
   },
 };

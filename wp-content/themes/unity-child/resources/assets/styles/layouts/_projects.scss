@@ -1,3 +1,9 @@
+.single-simple-projects {
+  h1 {
+    margin-bottom: 0;
+  }
+}
+
 .project-filters {
   margin: 10px 0;
 
@@ -60,23 +66,10 @@
     }
 
     .project-info {
-      h4 {
-        margin-top: 10px;
-        font-size: 10px;
-      }
-
       h2 {
-        font-size: 18px;
-        font-weight: 400;
-        letter-spacing: 1px;
-        margin-top: 10px;
-        margin-bottom: 5px;
-      }
-
-      a {
-        font-size: 14px;
-        font-weight: 400;
-        margin-bottom: 0;
+        color: $color-grey;
+        font-size: 1rem;
+        text-transform: none;
       }
 
       .post-thumbnail {

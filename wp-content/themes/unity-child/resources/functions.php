@@ -348,12 +348,18 @@ add_shortcode('filterable-team', function($atts) {
 
 	<?php if ($people->have_posts()) :
 		while ($people->have_posts()) : $people->the_post();
-
+    global $post;
     $terms = wp_get_post_terms( get_the_id(), 'simple-team-category');
 		?>
 
 		<div class="flex-item <?php echo join(' ', wp_list_pluck($terms, 'slug')); ?>">
-	    <div class="person">
+      <?php
+        if (!empty($longer_bio = get_field('longer_bio'))) {
+  	       echo '<a class="person" href="#' . $post->post_name . '">';
+        } else {
+           echo '<div class="person">';
+        }
+      ?>
 	      <div class="person-img">
 					<?php if (!empty($image = get_field('primary_image'))) { ?>
             <noscript class="lazy" data-class="biopic" data-src="<?php echo $image['url']; ?>" data-alt="<?php echo $image['alt']; ?>" aria-hidden="true">
@@ -384,12 +390,57 @@ add_shortcode('filterable-team', function($atts) {
 	          if (!empty($short_bio = get_field('short_bio'))) {
 	            echo $short_bio;
 						}
-						if (!empty(get_field('longer_bio'))) {
-	            echo '<p><a href="' . get_permalink() . '">Read more >></a>';
-	          }
 	        ?>
 	      </div>
-	    </div>
+      <?php
+        if (!empty($longer_bio)) {
+  	       echo '</a>';
+        } else {
+           echo '</div>';
+        }
+      ?>
+
+      <div id="<?php echo $post->post_name; ?>" class="modaal-hidden">
+        <div class="row">
+          <div class="col m6">
+            <div class="h4 roles">
+  						<?php
+  							echo join(' <span class="interpunct">&#9642;</span> ', wp_list_pluck($terms, 'name'));
+  						?>
+  					</div>
+
+  	        <h2 itemprop="name"><?php the_title(); ?></h2>
+
+  	        <?php if (!empty($title = get_field('title'))) { ?>
+  	          <h3 class="title" itemprop="jobTitle"><?php echo $title; ?></h3>
+  	        <?php } ?>
+
+  	        <?php
+  	          if (!empty($short_bio = get_field('short_bio'))) {
+  	            echo $short_bio;
+  						}
+  						if (!empty($longer_bio = get_field('longer_bio'))) {
+  	            echo $longer_bio;
+  	          }
+  	        ?>
+          </div>
+          <div class="col m6">
+            <div class="person-img">
+              <?php if (!empty($image = get_field('primary_image'))) { ?>
+                <noscript class="lazy" data-class="biopic" data-src="<?php echo $image['url']; ?>" data-alt="<?php echo $image['alt']; ?>" aria-hidden="true">
+                  <img class="biopic" src="<?php echo $image['url']; ?>" data-src="" alt="<?php echo $image['alt']; ?>">
+                </noscript>
+              <?php } ?>
+
+              <?php if (!empty($imagehov = get_field('hover_image'))) { ?>
+                <noscript class="lazy" data-class="biopic-hover" data-src="<?php echo $imagehov['url']; ?>" data-alt="<?php echo $imagehov['alt']; ?>" aria-hidden="true">
+                  <img class="biopic-hover" src="<?php echo $imagehov['url']; ?>" data-src="" alt="<?php echo $imagehov['alt']; ?>">
+                </noscript>
+              <?php } ?>
+            </div>
+          </div>
+        </div>
+      </div>
 		</div>
 
 		<?php
