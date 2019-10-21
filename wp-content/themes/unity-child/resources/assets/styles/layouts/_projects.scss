@@ -2,6 +2,21 @@
   h1 {
     margin-bottom: 0;
   }
+
+  @media #{$medium-and-up} {
+    .modaal-gallery-item-wrap {
+      max-height: calc(100vh - 120px);
+      height: auto !important;
+      width: auto !important;
+    }
+
+    .modaal-gallery-item {
+      img {
+        width: auto !important;
+        max-height: calc(100vh - 120px);
+      }
+    }
+  }
 }
 
 .project-filters {
