@@ -26,7 +26,7 @@
 
 		<div class="project-info" itemprop="description">
 			<div class="h4">{{ $terms[0]->name }}</div>
-			<h2 itemprop="title" itemprop="name">{{ get_the_title() }}</h2>
+			<h2 itemprop="title" itemprop="name">{!! get_the_title() !!}</h2>
 			<a href="{{ get_permalink() }}">View project details &raquo;</a>
     </div>
   </article>

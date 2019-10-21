@@ -1,23 +1,28 @@
 <article class="container projects-container" {!! post_class() !!}>
   <div class="project">
-    <h1 itemprop="name">{{ the_title() }}</h1>
+    <h1 itemprop="name">{!! get_the_title() !!}</h1>
 
     <div class='flex-grid flex-grid-single l3x m2x s1x'>
       <div class="project-info flex-item project-info-single">
         <div>
           @if (!empty($location = get_field('location')))
-            <h4>Location</h4>
+            <h2 class="h4">Location</h2>
             <p>{{ $location }}</p>
           @endif
 
           @if (!empty($designer = get_field('designer')))
-            <h4>Designer</h4>
+            <h2 class="h4">Designer</h2>
             <p>{{ $designer }}</p>
           @endif
 
           @if (!empty($builder = get_field('builder')))
-            <h4>Builder</h4>
+            <h2 class="h4">Builder</h2>
             <p>{{ $builder }}</p>
+          @endif
+
+          @if (!empty($photographer = get_field('photographer')))
+            <h2 class="h4">Photographer</h2>
+            <p>{{ $photographer }}</p>
           @endif
         </div>
       </div>
