@@ -35,7 +35,7 @@
             $image_src = get_the_post_thumbnail_url( get_the_ID() );
           @endphp
           <figure class="post-thumbnail">
-            <a href="{{ $image_src }}" data-group="project-gallery">
+            <a href="{{ $image_src }}" data-group="project-gallery" data-modaal-desc="{!! get_the_excerpt($image['ID']) !!}">
               {!! get_the_post_thumbnail( get_the_ID(), 'large', ['alt' => $alt] ) !!}
             </a>
           </figure>
@@ -50,7 +50,7 @@
       @if( !empty($images) )
         @foreach( $images as $image )
           <div class="project-img flex-item flex-item-single">
-            <a href="{{ $image['url'] }}" data-group="project-gallery">
+            <a href="{{ $image['url'] }}" data-group="project-gallery" data-modaal-desc="{!! get_the_excerpt($image['ID']) !!}">
               {!! wp_get_attachment_image( $image['ID'], $size ) !!}
             </a>
           </div>
