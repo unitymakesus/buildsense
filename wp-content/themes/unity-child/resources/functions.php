@@ -230,9 +230,10 @@ add_action( 'init', function () {
 	register_taxonomy('project-category', 'project', $argsProjectsCategories);
 });
 
-// Only show 12 results per page
+
+// Show all projects on archive
 add_action( 'pre_get_posts', function( $query ) {
-    if ( $query->is_post_type_archive('projects')) {
+    if ( $query->is_post_type_archive('project')) {
       $query->set( 'posts_per_page', '-1' );
     }
 } );
