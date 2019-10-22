@@ -50,6 +50,6 @@ export default {
     /*
     Modaal for leadership team bios
      */
-    $('a.person').modaal();
+    $('.person a').modaal();
   },
 };

@@ -112,7 +112,7 @@ add_filter( 'image_size_names_choose', function( $sizes ) {
  * Remove prefixes from archive titles
  */
 add_filter( 'get_the_archive_title', function ($title) {
-  if (is_post_type_archive('simple-projects')) {
+  if (is_post_type_archive('project')) {
     $title = 'Gallery';
   } if ( is_category() ) {
     $title = single_cat_title( '', false );
@@ -123,8 +123,8 @@ add_filter( 'get_the_archive_title', function ($title) {
 });
 
 
-// News Post Type
-function create_post_news() {
+// Custom Post Types
+add_action( 'init', function () {
   $argsNews = array(
     'labels' => array(
 				'name' => 'News',
@@ -162,10 +162,6 @@ function create_post_news() {
     )
   );
   register_post_type( 'simple-news', $argsNews );
-}
-add_action( 'init', __NAMESPACE__.'\\create_post_news' );
-
-function create_newstax() {
 
 	$argsNewsCategories = array(
 		'labels' => array(
@@ -181,13 +177,7 @@ function create_newstax() {
 	);
 	register_taxonomy('simple-news-category', 'simple-news', $argsNewsCategories);
 
-}
-add_action( 'init', __NAMESPACE__.'\\create_newstax' );
-
-
-// Projects Post Type
-function create_post_projects() {
-  $argsNews = array(
+  $argsProjects = array(
     'labels' => array(
 				'name' => 'Projects',
 				'singular_name' => 'Project',
@@ -223,11 +213,7 @@ function create_post_projects() {
       'slug' => 'gallery'
     )
   );
-  register_post_type( 'simple-projects', $argsNews );
-}
-add_action( 'init', __NAMESPACE__.'\\create_post_projects' );
-
-function create_projectstax() {
+  register_post_type( 'project', $argsProjects );
 
 	$argsProjectsCategories = array(
 		'labels' => array(
@@ -241,14 +227,12 @@ function create_projectstax() {
 		'hierarchical' => true,
 		'rewrite' => false
 	);
-	register_taxonomy('simple-projects-category', 'simple-projects', $argsProjectsCategories);
-
-}
-add_action( 'init', __NAMESPACE__.'\\create_projectstax' );
+	register_taxonomy('project-category', 'project', $argsProjectsCategories);
+});
 
 // Only show 12 results per page
 add_action( 'pre_get_posts', function( $query ) {
-    if ( $query->is_post_type_archive('simple-projects')) {
+    if ( $query->is_post_type_archive('projects')) {
       $query->set( 'posts_per_page', '-1' );
     }
 } );
@@ -353,14 +337,13 @@ add_shortcode('filterable-team', function($atts) {
 		?>
 
 		<div class="flex-item <?php echo join(' ', wp_list_pluck($terms, 'slug')); ?>">
-      <?php
-        if (!empty($longer_bio = get_field('longer_bio'))) {
-  	       echo '<a class="person" href="#' . $post->post_name . '">';
-        } else {
-           echo '<div class="person">';
-        }
-      ?>
+      <div class="person">
 	      <div class="person-img">
+          <?php
+            if (!empty($longer_bio = get_field('longer_bio'))) {
+              echo '<a href="#' . $post->post_name . '">';
+            }
+          ?>
 					<?php if (!empty($image = get_field('primary_image'))) { ?>
             <noscript class="lazy" data-class="biopic" data-src="<?php echo $image['url']; ?>" data-alt="<?php echo $image['alt']; ?>" aria-hidden="true">
               <img class="biopic" src="<?php echo $image['url']; ?>" data-src="" alt="<?php echo $image['alt']; ?>">
@@ -372,6 +355,11 @@ add_shortcode('filterable-team', function($atts) {
               <img class="biopic-hover" src="<?php echo $imagehov['url']; ?>" data-src="" alt="<?php echo $imagehov['alt']; ?>">
             </noscript>
 					<?php } ?>
+          <?php
+            if (!empty($longer_bio = get_field('longer_bio'))) {
+              echo '</a>';
+            }
+          ?>
 	      </div>
 	      <div class="person-info">
 					<div class="h4 roles">
@@ -380,7 +368,7 @@ add_shortcode('filterable-team', function($atts) {
 						?>
 					</div>
 
-	        <h2 itemprop="name"><?php the_title(); ?></h2>
+	        <h2 class="h3" itemprop="name"><?php the_title(); ?></h2>
 
 	        <?php if (!empty($title = get_field('title'))) { ?>
 	          <h3 class="title" itemprop="jobTitle"><?php echo $title; ?></h3>
@@ -390,15 +378,12 @@ add_shortcode('filterable-team', function($atts) {
 	          if (!empty($short_bio = get_field('short_bio'))) {
 	            echo $short_bio;
 						}
+            if (!empty($longer_bio = get_field('longer_bio'))) {
+              echo '<p><a href="#' . $post->post_name . '">Read more &raquo;</a></p>';
+            }
 	        ?>
 	      </div>
-      <?php
-        if (!empty($longer_bio)) {
-  	       echo '</a>';
-        } else {
-           echo '</div>';
-        }
-      ?>
+      </div>
 
       <div id="<?php echo $post->post_name; ?>" class="modaal-hidden">
         <div class="row">
@@ -409,7 +394,7 @@ add_shortcode('filterable-team', function($atts) {
   						?>
   					</div>
 
-  	        <h2 itemprop="name"><?php the_title(); ?></h2>
+  	        <h2 class="h3" itemprop="name"><?php the_title(); ?></h2>
 
   	        <?php if (!empty($title = get_field('title'))) { ?>
   	          <h3 class="title" itemprop="jobTitle"><?php echo $title; ?></h3>

@@ -1,4 +1,4 @@
-.single-simple-projects {
+.single-project {
   h1 {
     margin-bottom: 0;
   }
@@ -80,16 +80,8 @@
       }
     }
 
-    .project-info {
-      h2 {
-        color: $color-grey;
-        font-size: 1rem;
-        text-transform: none;
-      }
-
-      .post-thumbnail {
-        margin: 0;
-      }
+    .post-thumbnail {
+      margin: 0;
     }
 
     .flex-grid-single {

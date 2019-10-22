@@ -9,7 +9,7 @@ import common from './routes/common';
 // import aboutUs from './routes/about';
 import archive from './routes/archive';
 import team from './routes/team';
-import singleSimpleProjects from './routes/singleSimpleProjects';
+import singleProject from './routes/singleProject';
 
 /** Populate Router instance with DOM routes */
 const routes = new Router({
@@ -18,7 +18,7 @@ const routes = new Router({
 //   aboutUs,
   archive,
   team,
-  singleSimpleProjects,
+  singleProject,
 });
 
 /** Load Events */

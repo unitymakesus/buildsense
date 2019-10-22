@@ -1,5 +1,5 @@
 @php
-  $terms = wp_get_post_terms( get_the_id(), 'simple-projects-category');
+  $terms = wp_get_post_terms( get_the_id(), 'project-category');
 @endphp
 
 <div class="flex-item {{ $terms[0]->slug }}">
@@ -26,7 +26,7 @@
 
 		<div class="project-info" itemprop="description">
 			<div class="h4">{{ $terms[0]->name }}</div>
-			<h2 itemprop="title" itemprop="name">{!! get_the_title() !!}</h2>
+			<h2 class="h3" itemprop="title" itemprop="name">{!! get_the_title() !!}</h2>
 			<a href="{{ get_permalink() }}">View project details &raquo;</a>
     </div>
   </article>
