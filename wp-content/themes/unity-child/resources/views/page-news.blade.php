@@ -43,7 +43,7 @@
                 @php $link = get_field('link') @endphp
 
                 <h2 itemprop="title">
-                  @if (!empty($link['url']))<a href="{{ $link['url'] }}" target="_blank">@endif
+                  @if (!empty($link['url']))<a href="{{ $link['url'] }}" target="_blank" rel="noopener">@endif
                     {{ get_the_title() }}
                   @if (!empty($link['url']))</a>@endif
                 </h2>
@@ -65,7 +65,7 @@
       @php
         $news = new \WP_Query([
       		'post_type' => 'simple-news',
-      		'posts_per_page' => 24,
+      		'posts_per_page' => -1,
           'offset' => 1,
       	]);
         $counter = 0;
@@ -89,7 +89,7 @@
         				@php $link = get_field('link') @endphp
 
     	        	<h3 itemprop="title">
-        					@if (!empty($link['url']))<a href="{{ $link['url'] }}" target="_blank">@endif
+        					@if (!empty($link['url']))<a href="{{ $link['url'] }}" target="_blank" rel="noopener">@endif
                     {{ get_the_title() }}
                   @if (!empty($link['url']))</a>@endif
                 </h3>

@@ -140,11 +140,8 @@ add_action( 'init', function () {
 				'not_found_in_trash' => 'Nothing found in Trash',
 				'parent_item_colon' => ''
     ),
-    'public' => true,
-    'exclude_from_search' => false,
-    'publicly_queryable' => true,
+    'public' => false,
     'show_ui' => true,
-    'show_in_nav_menus' => false,
     'menu_position' => 20,
     'menu_icon' => 'dashicons-format-quote',
     'capability_type' => 'page',
@@ -157,9 +154,7 @@ add_action( 'init', function () {
       'thumbnail'
     ),
     'has_archive' => false,
-    'rewrite' => array(
-      'slug' => 'news'
-    )
+    'rewrite' => false
   );
   register_post_type( 'simple-news', $argsNews );
 
