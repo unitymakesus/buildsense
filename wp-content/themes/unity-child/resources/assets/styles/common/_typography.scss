@@ -35,22 +35,32 @@ body {
     line-height: 1.4em;
   }
 
-  .content a {
-    color: $color-grey;
-    text-decoration: none !important;
-    font-weight: 400 !important;
-    background-image: linear-gradient(180deg, transparent 88%, $color-yellow 0);
-    background-size: 0 100%;
-    background-repeat: no-repeat;
-    transition: background-size 0.3s ease;
+  .content {
+    a {
+      color: $color-blue;
+      text-decoration: none !important;
+      font-weight: 400 !important;
+      background-image: linear-gradient(180deg, transparent 88%, $color-yellow 0);
+      background-size: 0 100%;
+      background-repeat: no-repeat;
+      transition: background-size 0.3s ease;
 
-    &:hover, &:focus, &:active {
-      background-size: 100% 100%;
+      &:hover, &:focus, &:active {
+        background-size: 100% 100%;
+      }
+
+      & > h3 {
+        display: inline;
+        color: $color-grey;
+      }
     }
-  }
 
-  .content a > h3 {
-    display: inline;
+    h2, h3 {
+      a {
+        display: inline;
+        color: $color-grey;
+      }
+    }
   }
 }
 

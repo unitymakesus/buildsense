@@ -239,65 +239,6 @@ add_action( 'pre_get_posts', function( $query ) {
 } );
 
 
-/**
- * News shortcode
- */
- add_shortcode('news', function($atts) {
-	$news = new \WP_Query([
-		'post_type' => 'simple-news',
-		'posts_per_page' => 24,
-		'orderby' => 'DES',
-		'order' => 'DES',
-	]);
-
-	ob_start(); ?>
-
-	<div class='news-container'>
-
-	<?php if ($news->have_posts()) :
-		$counter = 0;
-		while ($news->have_posts()) : $news->the_post();
-			if ($counter % 3 == 0) :
-					echo $counter > 0 ? "</div>" : ""; // close div if it's not the first
-					echo "<div class='news row'>";
-			endif;
-		?>
-
-    <div class="article col s12 m4">
-      <div class="article-info">
-				<h4><?php echo get_the_date( 'Y' ); ?></h4>
-
-				<?php
-					$link = get_field('link');
-
-					if (!empty($link['url'])) {  ?>
-						<a href="<?php echo $link['url']?>" target="_blank">
-					<?php }	?>
-
-	        	<h3 itemprop="title"><?php the_title(); ?>
-							<?php if (!empty($description = get_field('description'))) { ?> |	<?php echo $description;
-							} ?>
-						</h3>
-
-					<?php if (!empty($link['url'])) {  ?>
-						</a>
-					<?php } ?>
-
-				<?php if (!empty($publication = get_field('publication'))) { ?>
-					<p class="publication" itemprop="publication"><?php echo $publication; ?></p>
-				<?php } ?>
-      </div>
-    </div>
-
-		<?php
-		$counter++;
-		endwhile; endif; wp_reset_postdata(); ?>
-
-	</div>
-
-	<?php return ob_get_clean();
-});
-
 
 /**
  * Staff list shortcode
