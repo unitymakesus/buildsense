@@ -65,7 +65,7 @@
       @php
         $news = new \WP_Query([
       		'post_type' => 'simple-news',
-      		'posts_per_page' => -1,
+      		'posts_per_page' => 999,
           'offset' => 1,
       	]);
         $counter = 0;
