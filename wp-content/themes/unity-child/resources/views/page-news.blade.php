@@ -44,12 +44,12 @@
 
                 <h2 itemprop="title">
                   @if (!empty($link['url']))<a href="{{ $link['url'] }}" target="_blank" rel="noopener">@endif
-                    {{ get_the_title() }}
+                    {!! get_the_title() !!}
                   @if (!empty($link['url']))</a>@endif
                 </h2>
 
                 @if (!empty($publication = get_field('publication')))
-                  <p class="publication" itemprop="publication">{{ $publication }}</p>
+                  <p class="publication" itemprop="publication">{!! $publication !!}</p>
                 @endif
               </div>
 
@@ -90,12 +90,12 @@
 
     	        	<h3 itemprop="title">
         					@if (!empty($link['url']))<a href="{{ $link['url'] }}" target="_blank" rel="noopener">@endif
-                    {{ get_the_title() }}
+                    {!! get_the_title() !!}
                   @if (!empty($link['url']))</a>@endif
                 </h3>
 
         				@if (!empty($publication = get_field('publication')))
-        					<p class="publication" itemprop="publication">{{ $publication }}</p>
+        					<p class="publication" itemprop="publication">{!! $publication !!}</p>
         				@endif
               </div>
             </div>
