@@ -17,7 +17,7 @@
             @include('partials.lazy-image', [
               'src'   => $image_src[0],
               'srcset' => $image_srcset,
-              'alt' => $al,
+              'alt' => $alt,
             ])
 					</figure>
   			</a>
