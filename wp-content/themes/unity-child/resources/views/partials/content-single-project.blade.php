@@ -19,12 +19,13 @@
             <h2 class="h4">Builder</h2>
             <p>{{ $builder }}</p>
           @endif
-
-          @if (!empty($photographer = get_field('photographer')))
-            <h2 class="h4">Photographer</h2>
-            <p>{{ $photographer }}</p>
-          @endif
         </div>
+
+        @if (!empty($photographer = get_field('photographer')))
+          <div class="photographer">
+            Photographer: {{ $photographer }}
+          </div>
+        @endif
       </div>
 
       <div class="project-img flex-item flex-item-single">
