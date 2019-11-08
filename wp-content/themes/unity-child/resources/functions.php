@@ -233,6 +233,18 @@ add_action( 'pre_get_posts', function( $query ) {
     }
 } );
 
+/**
+ * Remove single page from people post type
+ */
+function change_public_people( $args, $post_type ){
+
+  if ( 'simple-team' == $post_type ) {
+    $args['publicly_queryable'] = false;
+  }
+
+  return $args;
+}
+add_filter( 'register_post_type_args', __NAMESPACE__ . '\\change_public_people' , 10, 2 );
 
 
 /**
