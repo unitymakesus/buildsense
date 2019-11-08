@@ -45,20 +45,48 @@ class Janitor {
      */ 
     public function upgrade_complete( $upgrader_object, $options ) {
 
-        if ( $options['action'] == 'update' && $options['type'] == 'plugin' ) {
+        if ( 
+            isset( $options['action'] ) && $options['action'] == 'update' && 
+            isset( $options['type'] ) && $options['type'] == 'plugin' 
+        ) {
 
-           foreach( $options['plugins'] as $plugin ) {
+            if ( isset( $options['plugins'] ) ) {
 
-              if ( $plugin == SECSAFE_SLUG ) {
+                if ( is_array() ) {
 
-                // Log Activity
-                $args = [];
-                $args['details'] = sprintf( __( '%s plugin updated.', SECSAFE_SLUG ), SECSAFE_NAME );
-                $this->enable_plugin( $args );
+                    foreach( $options['plugins'] as $plugin ) {
 
-              }
+                      if ( $plugin == SECSAFE_SLUG ) {
 
-           } // foreach()
+                        // Log Activity
+                        $args = [];
+                        $args['details'] = sprintf( __( '%s plugin updated.', SECSAFE_SLUG ), SECSAFE_NAME ) . '[2]';
+                        $this->enable_plugin( $args );
+
+                      }
+
+                    } // foreach()
+
+                } else {
+
+                    /**
+                     * @todo  I am making an assumption here that needs to be verified.
+                     * I have noticed in the past the variable can be an array or a string depending 
+                     * on how the update was initiated by the user. I wish WP would make this 
+                     * functionality consistent. 
+                     */ 
+                    if ( $options['plugins'] == SECSAFE_SLUG ) {
+
+                        // Log Activity
+                        $args = [];
+                        $args['details'] = sprintf( __( '%s plugin updated.', SECSAFE_SLUG ), SECSAFE_NAME ) . '[1]';
+                        $this->enable_plugin( $args );
+
+                    }
+
+                }
+
+            }
 
         }
 
@@ -360,7 +388,7 @@ class Janitor {
             $args['date'] = current_time('mysql');
             
             if ( 
-                $args['type'] != 'activty' && 
+                $args['type'] != 'activity' && 
                 $args['type'] != 'allow_deny' 
             ) {
 
@@ -471,6 +499,33 @@ class Janitor {
         }
 
     } // add_stats()
+
+
+    /**
+     * Prevent plugins like WP Super Cache and W3TC from caching any data on this page.
+     * @since  2.2.3
+     */ 
+    static function prevent_caching() {
+
+        if ( ! defined( 'DONOTCACHEOBJECT' ) ) {
+
+            define( 'DONOTCACHEOBJECT', true );
+
+        }
+
+        if ( ! defined( 'DONOTCACHEDB' ) ) {
+
+            define( 'DONOTCACHEDB', true );
+            
+        }
+
+        if ( ! defined( 'DONOTCACHEPAGE' ) ) {
+
+            define( 'DONOTCACHEPAGE', true );
+            
+        }
+
+    } // prevent_caching()
 
 
     /**

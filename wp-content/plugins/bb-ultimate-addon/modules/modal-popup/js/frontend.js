@@ -311,10 +311,10 @@ jQuery(document).ready(function( $ ) {
 						current_this.modal_trigger.addClass('uabb-perspective' );
 					}, 25 );
 				}
-
 				if ( this.esc_keypress == 1 ) {
 					$(document).on('keyup.uabb-modal',function(e) {
-						if (e.keyCode == 27) { 
+
+						if ( e.keyCode == 27) { 
 							current_this._removeModalHandler();
 						}
 					});
@@ -540,7 +540,7 @@ jQuery(document).ready(function( $ ) {
 			},
 			_initModalPopupVideo : function(){
 
-				var play_icon = 'fa fa-play-circle';
+				var play_icon = 'far fa-play-circle';
 
 				if ( this.modal_content === 'youtube' || this.modal_content === 'vimeo' ) {
 

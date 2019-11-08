@@ -14,7 +14,14 @@ class FLBuilderImporter extends WP_Import {
 	 * @return array
 	 */
 	function parse( $file ) {
-		if ( extension_loaded( 'xml' ) ) {
+		$data = file_get_contents( $file );
+		$bad  = preg_match( '#[^\x00-\x7F]#', $data );
+
+		/**
+		 * If XML parser is not available or there are illegal chars in the file
+		 * fallback to regex parser and attempt to fix.
+		 */
+		if ( extension_loaded( 'xml' ) && ! $bad ) {
 			$parser = new FLBuilderImportParserXML();
 			return $parser->parse( $file );
 		} else {
@@ -243,6 +250,10 @@ final class FLBuilderImporterDataFix {
 			return $data;
 		}
 
+		$data = preg_replace_callback('!s:(\d+):"(.*?)";!', function( $m ) {
+			return 's:' . strlen( $m[2] ) . ':"' . $m[2] . '";';
+		}, self::sanitize_from_word( $data ) );
+
 		$data = maybe_unserialize( $data );
 
 		// return if maybe_unserialize() returns an object or array, this is good.
@@ -252,6 +263,31 @@ final class FLBuilderImporterDataFix {
 
 		return preg_replace_callback( '!s:(\d+):([\\\\]?"[\\\\]?"|[\\\\]?"((.*?)[^\\\\])[\\\\]?");!', 'FLBuilderImporterDataFix::regex_callback', $data );
 	}
+
+	/**
+	 * Remove quotes etc pasted from a certain word processor.
+	 */
+	public static function sanitize_from_word( $content ) {
+		// Convert microsoft special characters
+		$replace = array(
+			'‘' => "\'",
+			'’' => "\'",
+			'”' => '\"',
+			'“' => '\"',
+			'–' => '-',
+			'—' => '-',
+			'…' => '&#8230;',
+		);
+
+		foreach ( $replace as $k => $v ) {
+			$content = str_replace( $k, $v, $content );
+		}
+
+		// Remove any non-ascii character
+		$content = preg_replace( '/[^\x20-\x7E]*/', '', $content );
+		return $content;
+	}
+
 
 	/**
 	 * @since 1.8

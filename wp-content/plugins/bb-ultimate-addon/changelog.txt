@@ -1,4 +1,161 @@
-Version 1.14.3 - Monday, 14th January 2019
+Version 1.23.1 - Thursday, 24th October 2019
+- Fixed: Off Canvas - Resolved PHP notice error in Off Canvas Module
+- Fixed: Forms can't be selected in CF7 Styler, Gravity Form Styler & WPForms Styler Modules if Beaver Builder version is less than 2.2
+- Fixed: Table of Contents - Resolved unable to get headings while using Beaver Builder theme.
+
+Version 1.23.0 - Tuesday, 22th October 2019
+- New: Introduced Table of Contents
+- Improvement: Optimized database calls while fetching CF7 Styler, Gravity Form Styler, WPForms Styler Forms
+- Improvement: Added opacity support to the UABB Global Settings
+- Fixed: Background Process Notice appears after sometime even after dismissing
+- Fixed: User Registration Form - Calls to Password Strength Meter Script even if Module is not enabled on the page
+
+Version 1.22.0 - Monday, 7th October 2019
+- New: Introduced User Registration Form
+- Improvement: Price Box - Added WPML support
+- Improvement: Slide Box - Added WPML support
+- Improvement: Business Reviews - Deprecated Reviews schema support
+- Fixed: Video Gallery - Resolved PHP error when video module is disabled from UABB settings
+
+Version 1.21.0 - Tuesday, 24th September 2019
+- New: Introduced Retina Image
+- Improvement: Video - Added Wistia  hosted videos support
+- Improvement: Video Gallery - Added Wistia  hosted videos support
+- Improvement: Heading: Added opacity support to the separator color field
+- Fixed: Branding is not applying correctly to the Background process notice
+
+Version 1.20.2 - Thursday, 12th September 2019
+- Improvement: Introduced background process to change all the HotLink Image URLs.This process will download images from the UABB Template Cloud and upload it to your media library.Earlier all the Image URLs used to come from our server. With this update all of them will be uploaded to your media library.
+- Fixed: Heading - Resolved font issue of text being enlarged
+
+Version 1.20.1 - Monday, 19th August 2019
+- Improvement: Advanced Menu - Added Responsive support for Navigation Alignment settings options
+- Improvement: Heading - Added Background color and Padding setting options for Heading
+- Improvement: Heading - Added Filter for removing default space between Description Paragraph
+- Improvement: Price Box - Added Padding settings option for Price Box
+- Improvement: Added filter for Carousel Next & Previous Arrows
+- Fixed: Woo - Add To Cart - Resolved fatal error when WooCommerce plugin is deactivated and Add to Cart module is used
+- Fixed: Line breaks in paragraphs not working while editing certain modules in the editor
+- Fixed: Resolved JavaScript error when Photo field is empty in some cases
+
+Version 1.20.0 - Monday, 5th August 2019
+- New: Introduced WPForms Styler
+- Improvement: Business Hours - Added WPML support
+- Fixed: Heading - Heading Font size not overriding Theme's Font size in some cases
+
+Version 1.19.0 - Wednesday, 17th July 2019
+- New: Introduced Off Canvas
+- Improvement: Image / Icon - Added Responsive field support to the Alignment
+- Improvement: Heading - Added opacity support to the color field
+- Fixed: Advanced Menu - Link Padding settings not reflecting in preview mode
+- Fixed: Fancy Text - Fancy Text color overriding Row Text color
+- Fixed: Fancy Text - Text color overriding Column Text color
+- Fixed: Particle Backgrounds - Resolved JavaScript error when Column Group is used
+
+Version 1.18.2 - Monday, 1st July 2019
+- Improvement: Business Reviews - Improved Schema Rating.
+
+Version 1.18.1 - Thursday, 27th June 2019
+- Fixed: Business Reviews - Missing required field value for all schema types in case of Google reviews
+
+Version 1.18.0 - Wednesday, 26th June 2019
+- New: Introduced Business Reviews
+- Improvement: Price Box - Add field connection support to the module
+- Fixed: Advanced Menu - Resolved menu's Link padding issue on mobile devices for OffCanavs layout
+- Fixed: Contact Form - Submit Button Text overriding Beaver Builder Theme Button Text color
+- Fixed: Fixed Font Awesome-5 icon not visible in some cases
+- Fixed: Gravity Form Styler - Resolved CheckBox Background color issue when the Background color set to RGB
+- Fixed: Row Separator - Resolved overlapping issue with all module content
+- Fixed: Resolved Font awesome icon conflict with Shortcode for Font Awesome plugin
+- Fixed: Video Gallery - Hover Animation settings not working correctly
+
+Version 1.17.1 - Tuesday, 28th May 2019
+- Fixed: Gravity Form Styler - Resolved Checkbox Background color issue when the Background color is set to RGB
+- Fixed: Particle Backgrounds - Resolved JavaScript error on IE browser
+
+Version 1.17.0 - Monday, 20th May 2019
+- New: Introduced Column Particle Backgrounds
+- New: Introduced Row Particle Backgrounds
+- Improvement: Added Font Awesome-5 support to Carousel Layout of all modules
+- Improvement: Video - Added ALT tag for thumbnail
+- Improvement: Video - Added aspect ratio of 1:1
+- Fixed: Advanced Menu - Resolved Toggle menu label Typography issue
+- Fixed: Heading - Fixed Heading Font weight issue when <strong> tag used in heading content
+- Fixed: Modal Popup - Resolved Thumbnail issue for Vimeo video type
+- Fixed: Photo Gallery - Fixed Filterable Tab not clickable when category name is multiple words
+- Fixed: Subscribe Form - Resolved the Terms and Conditions Checkbox not clicking issue when using same Saved Module multiple times on the same page
+- Fixed: Video - Fixed Enable Double Click on Mobile setting not working correctly
+- Fixed: Video Gallery - Resolved Light Box Navigation issue with multiple Video Gallery on the same page
+
+Version 1.16.5 - Monday, 22nd April 2019
+- Improvement: Photo Gallery - Added Filterable Photo Gallery feature
+- Improvement: Image Carousel - Added nofollow settings option
+- Fixed: Advanced Tabs - Resolved Content Alignment issue
+- Fixed: iHover - Non Numeric value notice for Spacing in rare cases
+
+Version 1.16.4 - Thursday, 11th April 2019
+- Fixed: Hotspot - Resolved curved tooltip pointer style issue with the icon
+- Fixed: Hotspot - Resolved link not clickable issue with tour tooltip
+
+Version 1.16.3 - Friday, 5th April 2019
+- Improvement: Added Font Awesome-5 support to all modules
+
+Version 1.16.2 - Tuesday, 2nd April 2019
+- Fixed: Hotspot - Resolved Action Link extending issue with the same row content
+- Fixed: Text translation issue on Dashboard and Frontend while your site is not in default English language
+
+Version 1.16.1 - Monday, 1st April 2019
+- Improvement: Hotspot - Added Hotspot Tour feature
+- Improvement: Video - Added settings to enable Double Click over Custom Thumbnail on mobile view
+- Improvement: Video - Added a filter for Video URL to modify YouTube or Vimeo Query Strings
+- Improvement: Defined constant to disable the Branding settings permanently
+- Improvement: Optimized database calls while fetching Saved Modules, Saved Rows and Saved Templates
+- Fixed: Advanced Posts - Taxonomy Filter settings not working for Custom Post Type
+- Fixed: Contact Form - Resolved preview issue of Terms and Condition Typography settings
+- Fixed: Heading - Fixed Heading Line Height issue with lower values
+- Fixed: Hotspot - Resolved Marker Padding issue on adding new markers
+- Fixed: Video - Fixed AutoPlay settings not working correctly
+
+Version 1.16.0 - Tuesday, 12th March 2019
+- New: Introduced Marketing Button
+- Improvement: Fancy Text - Added p Tag support for Title
+- Improvement: Hotspot - Individual Marker name added to the module editor's initial form
+- Fixed: Advanced Posts - Fixed extra space around the comma separator for the tag
+- Fixed: Info Circle - Resolved Background Image overlay issue on mobile devices
+
+Version 1.15.1 - Tuesday, February 26, 2019
+- Improvement: Video - Added sticky video feature
+- Fixed: Countdown - Resolved Border Width issue
+
+Version 1.15.0 - Thursday, February 14, 2019
+- New: Introduced Price List
+- Improvement: Dual Button - Added nofollow settings option
+- Improvement: Info Circle - Added nofollow settings option
+- Improvement: Slide Box - Added nofollow settings option
+- Improvement: Gravity Form Styler - Optimized database calls while fetching forms
+- Fixed: Advanced Posts - Fixed Taxonomy Filter settings not working correctly
+- Fixed: Advanced Posts - PHP 7.1 compatibility errors
+- Fixed: Advanced Tabs - Fixed Tab is not closing on the mobile devices
+- Fixed: Modal Popup - Resolved warning related to HTTP with Vimeo video type for private videos.
+- Fixed: Photo Gallery - Resolved Column Width issue on mobile devices
+- Fixed: Woo Products -  Resolved Carousel layout overlapping issue on IE browser
+
+Version 1.14.4 - Thursday, 31st January 2019
+- Fixed: Advanced Menu - Fixed Show Border settings not working correctly
+- Fixed: Advanced Menu - Resolved default Sub Menu Border Width issue
+- Fixed: Advanced Icon - Resolved Background Color Opacity issue
+- Fixed: Button - Fixed Link nofollow option not working correctly
+- Fixed: CF7 Styler - Resolved default Border Width issue
+- Fixed: Gravity Form Styler - Resolved default Border Width issue
+- Fixed: Heading - Fixed Mobile alignment not working correctly
+- Fixed: Info Box - Fixed Background Color Opacity settings
+- Fixed: Info Box - Resolved Text  nofollow option not working
+- Fixed: Modal Popup - Fixed Mobile alignment not working correctly
+- Fixed: Table - Typography settings not reflecting for preview mode
+- Fixed: Video Gallery - Resolved default Border Width issue
+- Fixed: Woo Products - Resolved console error of Invalid or Unexpected Token
+
+Version 1.14.3 - Tuesday, 15th January 2019
 - Fixed: Advanced Menu - Sub menu Typography settings not working in case of Beaver Builder 2.2
 - Fixed: Advanced Posts - Fixed Date Box background color issue
 - Fixed: Contact Form - Resolved undefined error when Terms and Conditions Checkbox is enabled
@@ -7,9 +164,9 @@ Version 1.14.3 - Monday, 14th January 2019
 - Fixed: Info Box - Link option not working in case of Beaver Builder 2.2
 - Fixed: Info List - Description Typography settings not working in case of Beaver Builder 2.2
 
-Version 1.14.2 - Friday, 11th January 2019 
+Version 1.14.2 - Friday, 11th January 2019
 - Fixed: Info Box - Fixed Icon and Image alignment issue
-- Fixed: Advanced Separator - Fixed Text Content width issue 
+- Fixed: Advanced Separator - Fixed Text Content width issue
 - Fixed: Non Numeric value notice for line height in rare cases
 
 Version 1.14.1 - Thursday, 10th January 2019

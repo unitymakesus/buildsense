@@ -22,6 +22,8 @@ jQuery(document).ready(function( $ ) {
 			autoplaySpeed: <?php echo ( '' != $settings->animation_speed ) ? $settings->animation_speed : '1000'; ?>,
 			small_breakpoint: <?php echo $global_settings->responsive_breakpoint; ?>,
 			medium_breakpoint: <?php echo $global_settings->medium_breakpoint; ?>,
+			next_arrow: '<?php echo apply_filters( 'uabb_image_carousel_next_arrow_icon', 'fas fa-angle-right' ); ?>',
+			prev_arrow: '<?php echo apply_filters( 'uabb_image_carousel_previous_arrow_icon', 'fas fa-angle-left' ); ?>'
 		};
 
 	UABBImageCarousel_<?php echo $id; ?> = new UABBImageCarousel( args );
@@ -57,4 +59,14 @@ jQuery(document).ready(function( $ ) {
 		}
 	});
 	<?php endif; ?>
+	$(function() {
+		$( '.fl-node-<?php echo $id; ?> .uabb-gallery-img' )
+			.on( 'mouseenter', function( e ) {
+				$( this ).data( 'title', $( this ).attr( 'title' ) ).removeAttr( 'title' );
+			} )
+			.on( 'mouseleave', function( e ){
+				$( this ).attr( 'title', $( this ).data( 'title' ) ).data( 'title', null );
+			} );
+	});
+
 });

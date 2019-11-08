@@ -310,8 +310,8 @@ class AdminPageFiles extends AdminPage
         // https://endoflife.software/programming-languages/server-side-scripting/php
         // https://secure.php.net/ChangeLog-7.php
         $latest_versions['PHP'] = [
-            '7.3.0' => '7.3.9',
-            '7.2.0' => '7.2.22',
+            '7.3.0' => '7.3.10',
+            '7.2.0' => '7.2.23',
             '7.1.0' => '7.1.32',
         ];
         $php_min = '7.1.0';
@@ -987,7 +987,7 @@ class AdminPageFiles extends AdminPage
                 $message = sprintf( __( 'You have %d directories with safe but unique file permissions. This might cause functionality issues.', SECSAFE_SLUG ), $ok['dirs'] );
             } else {
                 // Singular
-                $message = sprintf( __( 'You have %d directory with safe but unique file permissions. This might cause functionality issues.', SECSAFE_SLUG ), $ok['files'] );
+                $message = sprintf( __( 'You have %d directory with safe but unique file permissions. This might cause functionality issues.', SECSAFE_SLUG ), $ok['dirs'] );
             }
             
             $SecuritySafe->messages[] = [ $message, 2, 1 ];

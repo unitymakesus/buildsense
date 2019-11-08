@@ -47,6 +47,10 @@ if ( ! class_exists( 'UABB_WPML_Translatable' ) ) {
 				require_once BB_ULTIMATE_ADDON_DIR . 'classes/wpml/class-wpml-uabb-advanced-icon.php';
 				require_once BB_ULTIMATE_ADDON_DIR . 'classes/wpml/class-wpml-uabb-list-icon.php';
 				require_once BB_ULTIMATE_ADDON_DIR . 'classes/wpml/class-wpml-uabb-video-gallery.php';
+				require_once BB_ULTIMATE_ADDON_DIR . 'classes/wpml/class-wpml-uabb-price-list.php';
+				require_once BB_ULTIMATE_ADDON_DIR . 'classes/wpml/class-wpml-uabb-business-hours.php';
+				require_once BB_ULTIMATE_ADDON_DIR . 'classes/wpml/class-wpml-uabb-pricing-box.php';
+				require_once BB_ULTIMATE_ADDON_DIR . 'classes/wpml/class-wpml-uabb-slide-box.php';
 			}
 
 		}
@@ -747,8 +751,8 @@ if ( ! class_exists( 'UABB_WPML_Translatable' ) ) {
 
 			// Slide Box Module.
 			$form['slide-box'] = array(
-				'conditions' => array( 'type' => 'slide-box' ),
-				'fields'     => array(
+				'conditions'        => array( 'type' => 'slide-box' ),
+				'fields'            => array(
 					array(
 						'field'       => 'title_front',
 						'type'        => __( 'Slide Box : Title on Front', 'uabb' ),
@@ -780,6 +784,7 @@ if ( ! class_exists( 'UABB_WPML_Translatable' ) ) {
 						'editor_type' => 'LINE',
 					),
 				),
+				'integration-class' => 'WPML_UABB_Slide_Box',
 			);
 
 			// Advanced Separator Module.
@@ -1004,20 +1009,10 @@ if ( ! class_exists( 'UABB_WPML_Translatable' ) ) {
 			);
 
 			// Business Hours.
-			$form['business-hours'] = array(
-				'conditions' => array( 'type' => 'business-hours' ),
-				'fields'     => array(
-					array(
-						'field'       => 'days',
-						'type'        => __( 'Business Hours : Enter Day', 'uabb' ),
-						'editor_type' => 'LINE',
-					),
-					array(
-						'field'       => 'hours',
-						'type'        => __( 'Business Hours : Enter Time', 'uabb' ),
-						'editor_type' => 'LINE',
-					),
-				),
+			$form['uabb-business-hours'] = array(
+				'conditions'        => array( 'type' => 'uabb-business-hours' ),
+				'fields'            => array(),
+				'integration-class' => 'WPML_UABB_Business_Hours',
 			);
 
 			// Woo - Add to Cart.
@@ -1069,6 +1064,11 @@ if ( ! class_exists( 'UABB_WPML_Translatable' ) ) {
 					'type'        => __( 'Video : Subscribe to channel text', 'uabb' ),
 					'editor_type' => 'LINE',
 				),
+				array(
+					'field'       => 'sticky_info_bar_text',
+					'type'        => __( 'Video : This is info bar', 'uabb' ),
+					'editor_type' => 'LINE',
+				),
 			);
 
 			// Video Gallery module.
@@ -1078,6 +1078,104 @@ if ( ! class_exists( 'UABB_WPML_Translatable' ) ) {
 				'integration-class' => 'WPML_UABB_VideoGallery',
 			);
 
+			// Price List module.
+			$form['uabb-price-list'] = array(
+				'conditions'        => array( 'type' => 'uabb-price-list' ),
+				'fields'            => array(),
+				'integration-class' => 'WPML_UABB_Pricelist',
+			);
+
+			// Marketing Button Module.
+			$form['uabb-marketing-button'] = array(
+				'conditions' => array( 'type' => 'uabb-marketing-button' ),
+				'fields'     => array(
+					array(
+						'field'       => 'title',
+						'type'        => __( 'Marketing Button : Title', 'uabb' ),
+						'editor_type' => 'LINE',
+					),
+					array(
+						'field'       => 'sub_title',
+						'type'        => __( 'Marketing Button : Description', 'uabb' ),
+						'editor_type' => 'LINE',
+					),
+					array(
+						'field'       => 'link',
+						'type'        => __( 'Marketing Button : Link', 'uabb' ),
+						'editor_type' => 'LINK',
+					),
+				),
+			);
+
+			// Photo Gallery Module.
+			$form['photo-gallery'] = array(
+				'conditions' => array( 'type' => 'photo-gallery' ),
+				'fields'     => array(
+					array(
+						'field'       => 'filters_all_text',
+						'type'        => __( 'Photo Gallery : "All" Tab Label', 'uabb' ),
+						'editor_type' => 'LINE',
+					),
+					array(
+						'field'       => 'default_filter',
+						'type'        => __( 'Photo Gallery : Enter Default Category Name', 'uabb' ),
+						'editor_type' => 'LINE',
+					),
+					array(
+						'field'       => 'filters_heading_text',
+						'type'        => __( 'Photo Gallery : Title Text', 'uabb' ),
+						'editor_type' => 'LINE',
+					),
+				),
+			);
+
+			// Business Reviews Module.
+			$form['uabb-business-reviews'] = array(
+				'conditions' => array( 'type' => 'uabb-business-reviews' ),
+				'fields'     => array(
+					array(
+						'field'       => 'read_more',
+						'type'        => __( 'Business Reviews : Read More Text', 'uabb' ),
+						'editor_type' => 'LINE',
+					),
+				),
+			);
+
+			// Off Canvas Module.
+			$form['uabb-off-canvas'] = array(
+				'conditions' => array( 'type' => 'uabb-off-canvas' ),
+				'fields'     => array(
+					array(
+						'field'       => 'ct_content',
+						'type'        => __( 'Off Canvas : Content', 'uabb' ),
+						'editor_type' => 'VISUAL',
+					),
+					array(
+						'field'       => 'btn_text',
+						'type'        => __( 'Off Canvas : Button Text', 'uabb' ),
+						'editor_type' => 'LINE',
+					),
+				),
+			);
+
+			// Retina Image Module.
+			$form['uabb-retina-image'] = array(
+				'conditions' => array( 'type' => 'uabb-retina-image' ),
+				'fields'     => array(
+					array(
+						'field'       => 'custom_caption',
+						'type'        => __( 'Retina Image : Custom Caption', 'uabb' ),
+						'editor_type' => 'LINE',
+					),
+				),
+			);
+
+			// Pricing Box.
+			$form['pricing-box'] = array(
+				'conditions'        => array( 'type' => 'pricing-box' ),
+				'fields'            => array(),
+				'integration-class' => 'WPML_UABB_Pricing_Box',
+			);
 			return $form;
 		}
 	}

@@ -145,12 +145,12 @@ class Yoda
      */
     static function get_display_limits( $type, $mx = false )
     {
-        Janitor::log( 'get_display_limits()' );
+        //Janitor::log( 'get_display_limits()' );
         $types = Self::get_types();
         // Require Valid Type
         
         if ( isset( $types[$type] ) ) {
-            Janitor::log( 'get_display_limits(): Valid Type' );
+            //Janitor::log( 'get_display_limits(): Valid Type' );
             $limits = array(
                 '404s'       => 500,
                 'logins'     => 100,
@@ -162,7 +162,7 @@ class Yoda
             }
         }
         
-        Janitor::log( 'get_display_limits(): Default' );
+        //Janitor::log( 'get_display_limits(): Default' );
         // Default lowest value / false
         return 0;
     }

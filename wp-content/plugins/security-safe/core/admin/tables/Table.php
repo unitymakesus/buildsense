@@ -159,19 +159,38 @@ class Table extends WP_List_Table {
 
     /** 
      * This deletes entries in bulk
-     * @return int Number of rows affected
      */
     private function bulk_delete() {
 
-        global $wpdb;
+        global $wpdb, $SecuritySafe;
 
-        if ( empty( $_REQUEST[ 'bulk_action' ] ) ) { return; }
+        if ( ! isset( $_POST[ 'bulk_action' ] ) ) { return; }
+
+        $nonce = ( isset( $_POST['_nonce_bulk_delete'] ) ) ? $_POST['_nonce_bulk_delete'] : false;
+
+        // Security Check
+        if ( ! $nonce || ! wp_verify_nonce( $nonce, SECSAFE_SLUG . '-bulk-delete' ) ) {
+
+            $SecuritySafe->messages[] = [ __( 'Error: Could not delete row. Your session expired. Please try again.', SECSAFE_SLUG ), 3 ];
+            return; // Bail
+
+        }
 
         $table = Yoda::get_table_main();
-        $ids = array_map( 'intval', (array) $_REQUEST['bulk_action'] );
+        $ids = array_map( 'intval', (array) $_POST['bulk_action'] );
         $ids = implode( ',', $ids );
 
-        return $wpdb->query( "DELETE FROM $table WHERE ID IN ( $ids )" );
+        $deleted = $wpdb->query( "DELETE FROM $table WHERE ID IN ( $ids )" );
+
+        if ( $deleted ) {
+
+            $SecuritySafe->messages[] = [ sprintf( __( '%d rows deleted', SECSAFE_SLUG ), $deleted ), 0, 0 ];
+
+        } else {
+
+            $SecuritySafe->messages[] = [ __( 'Could not delete entry. Please try again.', SECSAFE_SLUG ), 3, 0 ];
+
+        }
     
     } // bulk_delete()
 
@@ -196,14 +215,14 @@ class Table extends WP_List_Table {
      */  
     private function get_search_query() {
 
-        global $wpdb;
+        global $wpdb, $SecuritySafe;
 
         $query = '';
         $search = ( isset( $_REQUEST['s'] ) && $_REQUEST['s'] ) ? $wpdb->esc_like( $_REQUEST['s'] ) : '' ; // Sanitized
         $searchable_columns = $this->get_searchable_columns();
 
         // Add and Sanitize Search Query
-        if ( ! empty( $search ) && isset( $searchable_columns[ 0 ] ) ) {
+        if ( $search !== '' && isset( $searchable_columns[ 0 ] ) ) {
 
             $num = 0;
 
@@ -218,6 +237,8 @@ class Table extends WP_List_Table {
             } // foreach()
 
             $query .= " ) ";
+
+            $SecuritySafe->messages[] = [ __( 'Search results are provided below.', SECSAFE_SLUG ), 0, 0 ];
             
         }
 
@@ -237,7 +258,7 @@ class Table extends WP_List_Table {
      */
     function prepare_items() {
 
-        global $wpdb;
+        global $wpdb, $SecuritySafe;;
 
         $types = Yoda::get_types();
 
@@ -247,10 +268,7 @@ class Table extends WP_List_Table {
         // Process Bulk Deletes
         if ( 'delete' === $this->current_action() ) {
 
-            $deleted = $this->bulk_delete();
-            echo '<div id="message" class="updated"><p>';
-            printf( __( '%d rows deleted', SECSAFE_SLUG ), $deleted );
-            echo '</p></div>';
+            $this->bulk_delete();
 
         }
         
@@ -301,6 +319,13 @@ class Table extends WP_List_Table {
             'per_page'    => $per_page,
             'total_pages' => ceil( $total_items/$per_page )
         ] );
+
+        if ( isset( $SecuritySafe->messages[0] ) ) {
+
+            // Display Messages
+            $SecuritySafe->display_notices( true );
+
+        }
 
     } // prepare_items()
 

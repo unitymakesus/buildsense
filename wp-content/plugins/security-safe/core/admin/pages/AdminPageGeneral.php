@@ -69,7 +69,7 @@ class AdminPageGeneral extends AdminPage
         $rows .= $this->form_button(
             __( 'Reset Settings', SECSAFE_SLUG ),
             'link-delete',
-            admin_url( 'admin.php?page=security-safe&reset=1' ),
+            admin_url( 'admin.php?page=security-safe&reset=1&_nonce_reset_settings=' . wp_create_nonce( SECSAFE_SLUG . '-reset-settings' ) ),
             __( 'Click this button to reset the settings back to default. WARNING: You will lose all configuration changes you have made.', SECSAFE_SLUG ),
             $classes
         );

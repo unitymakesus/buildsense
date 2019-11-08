@@ -48,7 +48,7 @@ class ImageIconModule extends FLBuilderModule {
 			)
 		);
 
-		$this->add_css( 'font-awesome' );
+		$this->add_css( 'font-awesome-5' );
 	}
 
 	/**
@@ -73,16 +73,7 @@ class ImageIconModule extends FLBuilderModule {
 			$helper->handle_opacity_inputs( $settings, 'img_bg_color_opc', 'img_bg_color' );
 			$helper->handle_opacity_inputs( $settings, 'img_bg_hover_color_opc', 'img_bg_hover_color' );
 
-			// For image alignment.
-			if ( isset( $settings->img_align ) ) {
-				$settings->img_align = $settings->img_align;
-			}
 		} elseif ( $version_bb_check && 'yes' != $page_migrated ) {
-
-			// For image alignment.
-			if ( isset( $settings->img_align ) ) {
-				$settings->img_align = $settings->img_align;
-			}
 
 			// Handle opacity fields.
 			$helper->handle_opacity_inputs( $settings, 'icon_bg_color_opc', 'icon_bg_color' );
@@ -293,7 +284,6 @@ class ImageIconModule extends FLBuilderModule {
 	 */
 	public function get_alt() {
 		$photo = $this->get_data();
-
 		if ( ! empty( $photo->alt ) ) {
 			return htmlspecialchars( $photo->alt );
 		} elseif ( ! empty( $photo->description ) ) {
@@ -304,7 +294,19 @@ class ImageIconModule extends FLBuilderModule {
 			return htmlspecialchars( $photo->title );
 		}
 	}
-
+	/**
+	 * Function that gets the title value of the Image
+	 *
+	 * @since 1.23.0
+	 *
+	 * @method get_title
+	 */
+	public function get_title() {
+		$photo = $this->get_data();
+		if ( isset( $photo->title ) && ! empty( $photo->title ) ) {
+			return htmlspecialchars( $photo->title );
+		}
+	}
 	/**
 	 * Function that checks for the source
 	 *

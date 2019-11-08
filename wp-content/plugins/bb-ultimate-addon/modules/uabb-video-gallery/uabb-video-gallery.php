@@ -37,7 +37,7 @@ class UABBVideoGallery extends FLBuilderModule {
 		$this->add_js( 'imagesloaded-uabb', BB_ULTIMATE_ADDON_URL . 'assets/js/global-scripts/imagesloaded.min.js', array( 'jquery' ), '', true );
 		$this->add_js( 'jquery-magnificpopup' );
 		$this->add_css( 'jquery-magnificpopup' );
-		$this->add_css( 'font-awesome' );
+		$this->add_css( 'font-awesome-5' );
 	}
 	/**
 	 * Ensure backwards compatibility with old settings.
@@ -64,6 +64,7 @@ class UABBVideoGallery extends FLBuilderModule {
 				if ( isset( $settings->filter_title_font['family'] ) ) {
 
 					$settings->filter_font_typo['font_family'] = $settings->filter_title_font['family'];
+					unset( $settings->filter_title_font['family'] );
 				}
 				if ( isset( $settings->filter_title_font['weight'] ) ) {
 
@@ -72,6 +73,7 @@ class UABBVideoGallery extends FLBuilderModule {
 					} else {
 						$settings->filter_font_typo['font_weight'] = $settings->filter_title_font['weight'];
 					}
+					unset( $settings->filter_title_font['weight'] );
 				}
 			}
 			if ( isset( $settings->filter_title_font_size_unit ) ) {
@@ -80,18 +82,21 @@ class UABBVideoGallery extends FLBuilderModule {
 					'length' => $settings->filter_title_font_size_unit,
 					'unit'   => 'px',
 				);
+				unset( $settings->filter_title_font_size_unit );
 			}
 			if ( isset( $settings->filter_title_font_size_unit_medium ) ) {
 				$settings->filter_font_typo_medium['font_size'] = array(
 					'length' => $settings->filter_title_font_size_unit_medium,
 					'unit'   => 'px',
 				);
+				unset( $settings->filter_title_font_size_unit_medium );
 			}
 			if ( isset( $settings->filter_title_font_size_unit_responsive ) ) {
 				$settings->filter_font_typo_responsive['font_size'] = array(
 					'length' => $settings->filter_title_font_size_unit_responsive,
 					'unit'   => 'px',
 				);
+				unset( $settings->filter_title_font_size_unit_responsive );
 			}
 			if ( isset( $settings->filter_title_line_height_unit ) ) {
 
@@ -99,22 +104,26 @@ class UABBVideoGallery extends FLBuilderModule {
 					'length' => $settings->filter_title_line_height_unit,
 					'unit'   => 'em',
 				);
+				unset( $settings->filter_title_line_height_unit );
 			}
 			if ( isset( $settings->filter_title_line_height_unit_medium ) ) {
 				$settings->filter_font_typo_medium['line_height'] = array(
 					'length' => $settings->filter_title_line_height_unit_medium,
 					'unit'   => 'em',
 				);
+				unset( $settings->filter_title_line_height_unit_medium );
 			}
 			if ( isset( $settings->filter_title_line_height_unit_responsive ) ) {
 				$settings->filter_font_typo_responsive['line_height'] = array(
 					'length' => $settings->filter_title_line_height_unit_responsive,
 					'unit'   => 'em',
 				);
+				unset( $settings->filter_title_line_height_unit_responsive );
 			}
 			if ( isset( $settings->filter_title_transform ) ) {
 
 				$settings->filter_font_typo['text_transform'] = $settings->filter_title_transform;
+				unset( $settings->filter_title_transform );
 			}
 			if ( isset( $settings->filter_title_letter_spacing ) ) {
 
@@ -122,6 +131,7 @@ class UABBVideoGallery extends FLBuilderModule {
 					'length' => $settings->filter_title_letter_spacing,
 					'unit'   => 'px',
 				);
+				unset( $settings->filter_title_letter_spacing );
 			}
 			if ( ! isset( $settings->cat_font_typo ) || ! is_array( $settings->cat_font_typo ) ) {
 
@@ -134,6 +144,7 @@ class UABBVideoGallery extends FLBuilderModule {
 				if ( isset( $settings->cat_font['family'] ) ) {
 
 					$settings->cat_font_typo['font_family'] = $settings->cat_font['family'];
+					unset( $settings->cat_font['family'] );
 				}
 				if ( isset( $settings->cat_font['weight'] ) ) {
 
@@ -142,6 +153,7 @@ class UABBVideoGallery extends FLBuilderModule {
 					} else {
 						$settings->cat_font_typo['font_weight'] = $settings->cat_font['weight'];
 					}
+					unset( $settings->cat_font['weight'] );
 				}
 			}
 			if ( isset( $settings->cat_font_size_unit ) ) {
@@ -150,18 +162,21 @@ class UABBVideoGallery extends FLBuilderModule {
 					'length' => $settings->cat_font_size_unit,
 					'unit'   => 'px',
 				);
+				unset( $settings->cat_font_size_unit );
 			}
 			if ( isset( $settings->cat_font_size_unit_medium ) ) {
 				$settings->cat_font_typo_medium['font_size'] = array(
 					'length' => $settings->cat_font_size_unit_medium,
 					'unit'   => 'px',
 				);
+				unset( $settings->cat_font_size_unit_medium );
 			}
 			if ( isset( $settings->cat_font_size_unit_responsive ) ) {
 				$settings->cat_font_typo_responsive['font_size'] = array(
 					'length' => $settings->cat_font_size_unit_responsive,
 					'unit'   => 'px',
 				);
+				unset( $settings->cat_font_size_unit_responsive );
 			}
 			if ( isset( $settings->cat_line_height_unit ) ) {
 
@@ -169,23 +184,26 @@ class UABBVideoGallery extends FLBuilderModule {
 					'length' => $settings->cat_line_height_unit,
 					'unit'   => 'em',
 				);
+				unset( $settings->cat_line_height_unit );
 			}
 			if ( isset( $settings->cat_line_height_unit_medium ) ) {
 				$settings->cat_font_typo_medium['line_height'] = array(
 					'length' => $settings->cat_line_height_unit_medium,
 					'unit'   => 'em',
 				);
+				unset( $settings->cat_line_height_unit_medium );
 			}
 			if ( isset( $settings->cat_line_height_unit_responsive ) ) {
 				$settings->cat_font_typo_responsive['line_height'] = array(
 					'length' => $settings->cat_line_height_unit_responsive,
 					'unit'   => 'em',
 				);
+				unset( $settings->cat_line_height_unit_responsive );
 			}
 			if ( isset( $settings->cat_title_transform ) ) {
 
 				$settings->cat_font_typo['text_transform'] = $settings->cat_title_transform;
-
+				unset( $settings->cat_title_transform );
 			}
 			if ( isset( $settings->cat_title_letter_spacing ) ) {
 
@@ -193,6 +211,7 @@ class UABBVideoGallery extends FLBuilderModule {
 					'length' => $settings->cat_title_letter_spacing,
 					'unit'   => 'px',
 				);
+				unset( $settings->cat_title_letter_spacing );
 			}
 			if ( ! isset( $settings->caption_font_typo ) || ! is_array( $settings->caption_font_typo ) ) {
 
@@ -205,6 +224,7 @@ class UABBVideoGallery extends FLBuilderModule {
 				if ( isset( $settings->caption_font['family'] ) ) {
 
 					$settings->caption_font_typo['font_family'] = $settings->caption_font['family'];
+					unset( $settings->caption_font['family'] );
 				}
 				if ( isset( $settings->caption_font['weight'] ) ) {
 
@@ -213,6 +233,7 @@ class UABBVideoGallery extends FLBuilderModule {
 					} else {
 						$settings->caption_font_typo['font_weight'] = $settings->caption_font['weight'];
 					}
+					unset( $settings->caption_font['weight'] );
 				}
 			}
 			if ( isset( $settings->caption_font_size_unit ) ) {
@@ -221,18 +242,21 @@ class UABBVideoGallery extends FLBuilderModule {
 					'length' => $settings->caption_font_size_unit,
 					'unit'   => 'px',
 				);
+				unset( $settings->caption_font_size_unit );
 			}
 			if ( isset( $settings->caption_font_size_unit_medium ) ) {
 				$settings->caption_font_typo_medium['font_size'] = array(
 					'length' => $settings->caption_font_size_unit_medium,
 					'unit'   => 'px',
 				);
+				unset( $settings->caption_font_size_unit_medium );
 			}
 			if ( isset( $settings->caption_font_size_unit_responsive ) ) {
 				$settings->caption_font_typo_responsive['font_size'] = array(
 					'length' => $settings->caption_font_size_unit_responsive,
 					'unit'   => 'px',
 				);
+				unset( $settings->caption_font_size_unit_responsive );
 			}
 			if ( isset( $settings->caption_line_height_unit ) ) {
 
@@ -240,23 +264,26 @@ class UABBVideoGallery extends FLBuilderModule {
 					'length' => $settings->caption_line_height_unit,
 					'unit'   => 'em',
 				);
+				unset( $settings->caption_line_height_unit );
 			}
 			if ( isset( $settings->caption_line_height_unit_medium ) ) {
 				$settings->caption_font_typo_medium['line_height'] = array(
 					'length' => $settings->caption_line_height_unit_medium,
 					'unit'   => 'em',
 				);
+				unset( $settings->caption_line_height_unit_medium );
 			}
 			if ( isset( $settings->caption_line_height_unit_responsive ) ) {
 				$settings->caption_font_typo_responsive['line_height'] = array(
 					'length' => $settings->caption_line_height_unit_responsive,
 					'unit'   => 'em',
 				);
+				unset( $settings->caption_line_height_unit_responsive );
 			}
 			if ( isset( $settings->caption_transform ) ) {
 
 				$settings->caption_font_typo['text_transform'] = $settings->caption_transform;
-
+				unset( $settings->caption_transform );
 			}
 			if ( isset( $settings->caption_letter_spacing ) ) {
 
@@ -264,6 +291,7 @@ class UABBVideoGallery extends FLBuilderModule {
 					'length' => $settings->caption_letter_spacing,
 					'unit'   => 'px',
 				);
+				unset( $settings->caption_letter_spacing );
 			}
 			if ( ! isset( $settings->tag_font_typo ) || ! is_array( $settings->tag_font_typo ) ) {
 
@@ -276,6 +304,7 @@ class UABBVideoGallery extends FLBuilderModule {
 				if ( isset( $settings->tag_font['family'] ) ) {
 
 					$settings->tag_font_typo['font_family'] = $settings->tag_font['family'];
+					unset( $settings->tag_font['family'] );
 				}
 				if ( isset( $settings->tag_font['weight'] ) ) {
 
@@ -284,6 +313,7 @@ class UABBVideoGallery extends FLBuilderModule {
 					} else {
 						$settings->tag_font_typo['font_weight'] = $settings->tag_font['weight'];
 					}
+					unset( $settings->tag_font['weight'] );
 				}
 			}
 			if ( isset( $settings->tag_font_size_unit ) ) {
@@ -292,18 +322,21 @@ class UABBVideoGallery extends FLBuilderModule {
 					'length' => $settings->tag_font_size_unit,
 					'unit'   => 'px',
 				);
+				unset( $settings->tag_font_size_unit );
 			}
 			if ( isset( $settings->tag_font_size_unit_medium ) ) {
 				$settings->tag_font_typo_medium['font_size'] = array(
 					'length' => $settings->tag_font_size_unit_medium,
 					'unit'   => 'px',
 				);
+				unset( $settings->tag_font_size_unit_medium );
 			}
 			if ( isset( $settings->tag_font_size_unit_responsive ) ) {
 				$settings->tag_font_typo_responsive['font_size'] = array(
 					'length' => $settings->tag_font_size_unit_responsive,
 					'unit'   => 'px',
 				);
+				unset( $settings->tag_font_size_unit_responsive );
 			}
 			if ( isset( $settings->tag_line_height_unit ) ) {
 
@@ -311,23 +344,26 @@ class UABBVideoGallery extends FLBuilderModule {
 					'length' => $settings->tag_line_height_unit,
 					'unit'   => 'em',
 				);
+				unset( $settings->tag_line_height_unit );
 			}
 			if ( isset( $settings->tag_line_height_unit_medium ) ) {
 				$settings->tag_font_typo_medium['line_height'] = array(
 					'length' => $settings->tag_line_height_unit_medium,
 					'unit'   => 'em',
 				);
+				unset( $settings->tag_line_height_unit_medium );
 			}
 			if ( isset( $settings->tag_line_height_unit_responsive ) ) {
 				$settings->tag_font_typo_responsive['line_height'] = array(
 					'length' => $settings->tag_line_height_unit_responsive,
 					'unit'   => 'em',
 				);
+				unset( $settings->tag_line_height_unit_responsive );
 			}
 			if ( isset( $settings->tag_transform ) ) {
 
 				$settings->tag_font_typo['text_transform'] = $settings->tag_transform;
-
+				unset( $settings->tag_transform );
 			}
 			if ( isset( $settings->tag_letter_spacing ) ) {
 
@@ -335,88 +371,45 @@ class UABBVideoGallery extends FLBuilderModule {
 					'length' => $settings->tag_letter_spacing,
 					'unit'   => 'px',
 				);
+				unset( $settings->tag_letter_spacing );
 			}
 			if ( isset( $settings->cat_filter_border_color ) ) {
 
 				$settings->cat_filter_border_param = array();
 				if ( isset( $settings->cat_filter_border_type ) ) {
 					$settings->cat_filter_border_param['style'] = $settings->cat_filter_border_type;
+					unset( $settings->cat_filter_border_type );
 				}
 				$settings->cat_filter_border_param['color'] = $settings->cat_filter_border_color;
 				if ( isset( $settings->cat_filter_border ) ) {
 					$settings->cat_filter_border_param['width'] = array(
-						'top'    => $settings->cat_filter_border,
-						'right'  => $settings->cat_filter_border,
 						'bottom' => $settings->cat_filter_border,
-						'left'   => $settings->cat_filter_border,
 					);
+					unset( $settings->cat_filter_border );
 				}
+				unset( $settings->cat_filter_border_color );
 			}
 			if ( isset( $settings->cat_filter_border_color_active ) ) {
 				$settings->cat_filter_border_active_param = array();
 
 				if ( isset( $settings->cat_filter_border_active_type ) ) {
 					$settings->cat_filter_border_active_param['style'] = $settings->cat_filter_border_active_type;
+					unset( $settings->cat_filter_border_active_type );
 				}
 
 				$settings->cat_filter_border_active_param['color'] = $settings->cat_filter_border_color_active;
 
 				if ( isset( $settings->cat_filter_border_active ) ) {
 					$settings->cat_filter_border_active_param['width'] = array(
-						'top'    => $settings->cat_filter_border_active,
-						'right'  => $settings->cat_filter_border_active,
 						'bottom' => $settings->cat_filter_border_active,
-						'left'   => $settings->cat_filter_border_active,
 					);
+					unset( $settings->cat_filter_border_active );
 				}
+				unset( $settings->cat_filter_border_color_active );
 			}
 			if ( isset( $settings->cat_filter_align ) ) {
 				$settings->cat_filter_align_param = $settings->cat_filter_align;
 				unset( $settings->cat_filter_align );
-			}
-			if ( isset( $settings->filter_title_font ) ) {
-				unset( $settings->filter_title_font );
-				unset( $settings->filter_title_font_size_unit );
-				unset( $settings->filter_title_font_size_unit_medium );
-				unset( $settings->filter_title_font_size_unit_responsive );
-				unset( $settings->filter_title_line_height_unit );
-				unset( $settings->filter_title_line_height_unit_medium );
-				unset( $settings->filter_title_line_height_unit_responsive );
-				unset( $settings->filter_title_letter_spacing );
-				unset( $settings->filter_title_transform );
-			}
-			if ( isset( $settings->cat_font ) ) {
-				unset( $settings->cat_font );
-				unset( $settings->cat_font_size_unit );
-				unset( $settings->cat_font_size_unit_medium );
-				unset( $settings->cat_font_size_unit_responsive );
-				unset( $settings->cat_line_height_unit );
-				unset( $settings->cat_line_height_unit_medium );
-				unset( $settings->cat_line_height_unit_responsive );
-				unset( $settings->cat_title_transform );
-				unset( $settings->cat_title_letter_spacing );
-			}
-			if ( isset( $settings->caption_font ) ) {
-				unset( $settings->caption_font );
-				unset( $settings->caption_font_size_unit );
-				unset( $settings->caption_font_size_unit_medium );
-				unset( $settings->caption_font_size_unit_responsive );
-				unset( $settings->caption_line_height_unit );
-				unset( $settings->caption_line_height_unit_medium );
-				unset( $settings->caption_line_height_unit_responsive );
-				unset( $settings->caption_letter_spacing );
-				unset( $settings->caption_transform );
-			}
-			if ( isset( $settings->tag_font ) ) {
-				unset( $settings->tag_font );
-				unset( $settings->tag_font_size_unit );
-				unset( $settings->tag_font_size_unit_medium );
-				unset( $settings->tag_font_size_unit_responsive );
-				unset( $settings->tag_line_height_unit );
-				unset( $settings->tag_line_height_unit_medium );
-				unset( $settings->tag_line_height_unit_responsive );
-				unset( $settings->tag_letter_spacing );
-				unset( $settings->tag_transform );
 			}
 		}
 		return $settings;
@@ -455,13 +448,16 @@ class UABBVideoGallery extends FLBuilderModule {
 	 * @access public
 	 */
 	public function get_placeholder_image( $item ) {
-		$url    = '';
-		$vid_id = '';
+		$url       = '';
+		$vid_id    = '';
+		$video_url = '';
 
 		if ( 'youtube' === $item->video_type ) {
 			$video_url = $item->youtube_link;
 		} elseif ( 'vimeo' === $item->video_type ) {
 			$video_url = $item->vimeo_link;
+		} elseif ( 'wistia' === $item->video_type ) {
+			$video_url = $item->wistia_link;
 		}
 
 		if ( 'youtube' === $item->video_type ) {
@@ -471,6 +467,9 @@ class UABBVideoGallery extends FLBuilderModule {
 		} elseif ( 'vimeo' === $item->video_type ) {
 
 			$vid_id = preg_replace( '/[^\/]+[^0-9]|(\/)/', '', rtrim( $video_url, '/' ) );
+		} elseif ( 'wistia' === $item->video_type ) {
+
+			$vid_id = $this->getStringBetween( $video_url, 'wvideo=', '"' );
 		}
 
 		if ( 'yes' === $item->custom_placeholder ) {
@@ -486,6 +485,9 @@ class UABBVideoGallery extends FLBuilderModule {
 					$vimeo = unserialize( file_get_contents( "https://vimeo.com/api/v2/video/$vid_id.php" ) );
 					$url   = $vimeo[0]['thumbnail_large'];
 				}
+			} elseif ( 'wistia' === $item->video_type ) {
+
+				$url = 'https://embedwistia-a.akamaihd.net/deliveries/' . $this->getStringBetween( $video_url, 'deliveries/', '?' );
 			}
 		}
 		return array(
@@ -493,6 +495,23 @@ class UABBVideoGallery extends FLBuilderModule {
 			'video_id' => $vid_id,
 		);
 	}
+
+	/**
+	 * Returns Video URL.
+	 *
+	 * @param string $url Video URL.
+	 * @param string $from From compare string.
+	 * @param string $to To compare string.
+	 * @since 1.21.0
+	 * @access protected
+	 */
+	protected function getStringBetween( $url, $from, $to ) {
+		$sub = substr( $url, strpos( $url, $from ) + strlen( $from ), strlen( $url ) );
+		$id  = substr( $sub, 0, strpos( $sub, $to ) );
+
+		return $id;
+	}
+
 	/**
 	 * Render Play Button.
 	 *
@@ -588,6 +607,12 @@ class UABBVideoGallery extends FLBuilderModule {
 			} elseif ( 'vimeo' === $item->video_type ) {
 
 				$href = $item->vimeo_link;
+
+			} elseif ( 'wistia' === $item->video_type ) {
+				$wistia_id = $this->getStringBetween( $item->wistia_link, 'wvideo=', '"' );
+				$video_url = 'https://fast.wistia.net/embed/iframe/' . $wistia_id . '?videoFoam=true';
+				$href      = $video_url . '&autoplay=1';
+
 			}
 
 			$url = $this->get_placeholder_image( $item );
@@ -602,17 +627,21 @@ class UABBVideoGallery extends FLBuilderModule {
 			}
 			if ( 'youtube' === $item->video_type ) {
 				$vurl = 'https://www.youtube.com/embed/' . $url['video_id'] . '?autoplay=1&version=3&enablejsapi=1';
-			} else {
+			} elseif ( 'vimeo' === $item->video_type ) {
 				$vurl = 'https://player.vimeo.com/video/' . $url['video_id'] . '?autoplay=1&version=3&enablejsapi=1';
+			} elseif ( 'wistia' === $item->video_type ) {
+				$vurl = $video_url . '&autoplay=1';
 			}
 			if ( 'inline' !== $this->settings->click_action ) {
-					$html = '<a href="' . $href . '" data-fancybox="uabb-video-gallery" data-url="' . $vurl . '"class="uabb-video-gallery-fancybox ">';
+					$html = '<a href="' . $href . '" data-fancybox="uabb-video-gallery" data-url="' . $vurl . '"class="uabb-video-gallery-fancybox uabb-vg__play_full ">';
 			} else {
 				if ( 'youtube' === $item->video_type ) {
-
 					$vurl = 'https://www.youtube.com/embed/' . $url['video_id'] . '?autoplay=1&version=3&enablejsapi=1';
-				} else {
+				} elseif ( 'vimeo' === $item->video_type ) {
 					$vurl = 'https://player.vimeo.com/video/' . $url['video_id'] . '?autoplay=1&version=3&enablejsapi=1';
+				} elseif ( 'wistia' === $item->video_type ) {
+
+					$vurl = $video_url . '&autoplay=1';
 				}
 				$html = '<a href="' . $href . '" class="uabb-clickable uabb-vg__play_full" data-url="' . $vurl . '">';
 			}
@@ -737,7 +766,9 @@ class UABBVideoGallery extends FLBuilderModule {
 					?>
 					">
 						<li class="uabb-video__gallery-filter uabb-filter__current" data-filter="*">
-							<?php echo $this->settings->filters_all_text; ?>
+						<?php
+						echo ( '' !== $this->settings->filters_all_text ) ? $this->settings->filters_all_text : __( 'All', 'uabb' );
+						?>
 						</li>
 						<?php foreach ( $filters as $key => $value ) { ?>
 							<li class="uabb-video__gallery-filter" data-filter="<?php echo '.' . $key; ?>">
@@ -801,7 +832,9 @@ class UABBVideoGallery extends FLBuilderModule {
 			        <div style="%1$s"><b> Valid URL : </b>  https://www.youtube.com/watch?v=HJRzUQMhJMQ</div>
 			        <div style="%1$s"> <b> Invalid URL : </b> https://youtu.be/HJRzUQMhJMQ</div>',
 					'uabb'
-				), $style1, $style2
+				),
+				$style1,
+				$style2
 			);
 
 			return $youtube_link_desc;
@@ -814,10 +847,22 @@ class UABBVideoGallery extends FLBuilderModule {
 			        <div style="%1$s"><b> Valid URL : </b>  https://vimeo.com/274860274</div>
 			        <div style="%1$s"> <b> Invalid URL : </b> https://vimeo.com/channels/staffpicks/274860274</div>',
 					'uabb'
-				), $style1
+				),
+				$style1
 			);
 
 			return $vimeo_link_desc;
+		} elseif ( 'wistia_link' === $field ) {
+
+			$wistia_link_desc = sprintf( /* translators: %s: search term */
+				__(
+					'<div style="%1$s">Go to your Wistia video, right click, "Copy Link & Thumbnail" and paste here.</div>',
+					'uabb'
+				),
+				$style1
+			);
+
+			return $wistia_link_desc;
 		}
 	}
 }

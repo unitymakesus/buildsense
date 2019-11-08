@@ -13,6 +13,8 @@ class PolicyLoginLocal extends Firewall {
 
     var $setting_on = false;
 
+    var $nonce = '_nonce_login_local';
+
     /**
      * PolicyLoginLocal constructor.
      */
@@ -23,7 +25,8 @@ class PolicyLoginLocal extends Firewall {
 
         if ( $setting && ! defined('XMLRPC_REQUEST') ) {
 
-            add_action( 'login_form', [ $this, 'add_nonce' ] );
+            add_action( 'login_form', [ $this, 'add_nonce' ] ); // Main login
+            add_filter( 'login_form_top', [ $this, 'add_nonce_login_form_top' ], 10, 2 ); // Login using wp_login_form()
             add_filter( 'authenticate', [ $this, 'verify_nonce' ], 30, 3 );
 
         }
@@ -38,9 +41,31 @@ class PolicyLoginLocal extends Firewall {
      */ 
     function add_nonce() {
 
-        wp_nonce_field( 'login-local-' . SECSAFE_SLUG );
+        // Prevent caching of this login page
+        Janitor::prevent_caching();
+
+        wp_nonce_field( SECSAFE_SLUG . '-login-local', $this->nonce );
 
     } // add_nonce()
+
+
+    /**
+     * This adds a nonce to the login form created by wp_login_form().
+     * @since  2.2.3
+     */ 
+    function add_nonce_login_form_top( $content = '', $args = '' ) {
+
+        ob_start();
+
+        $this->add_nonce();
+
+        $content .= ob_get_contents();
+
+        ob_end_clean();
+
+        return $content;
+
+    } // add_nonce_front_end()
 
 
     /**
@@ -51,7 +76,7 @@ class PolicyLoginLocal extends Firewall {
 
         if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
 
-            $nonce = ( isset( $_POST['_wpnonce'] ) ) ? $_POST['_wpnonce'] : false;
+            $nonce = ( isset( $_POST[ $this->nonce ] ) ) ? $_POST[ $this->nonce ] : false;
 
             if ( ! $nonce ) {
 
@@ -63,8 +88,8 @@ class PolicyLoginLocal extends Firewall {
 
             } else {
 
-                // Check nonce
-                if ( ! wp_verify_nonce( $nonce, 'login-local-' . SECSAFE_SLUG ) ) {
+                // Check nonce les than 12 hours old
+                if ( ! wp_verify_nonce( $nonce, SECSAFE_SLUG . '-login-local' ) ) {
 
                     $error = __( 'Error: Local login required and Nonce not valid.', SECSAFE_SLUG ) . '[' . __LINE__ . ']';
 

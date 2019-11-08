@@ -95,7 +95,24 @@ final class TableAllowDeny extends Table {
      */ 
     protected function add_ip_form() {
 
-        echo '<p class="add_ip_form">' . 
+        /**
+         * @todo  I need to make this affect all tables.
+         * @date( 2090916)
+         */ 
+        $bulk_actions = $this->get_bulk_actions();
+
+        if ( isset( $bulk_actions['delete'] ) ) {
+
+            // Add bulk delete nonce
+            wp_nonce_field( SECSAFE_SLUG . '-bulk-delete', '_nonce_bulk_delete' );
+
+        }
+
+        echo '<p class="add_ip_form">';
+
+        wp_nonce_field( SECSAFE_SLUG . '-add-ip', '_nonce_add_ip' );
+
+        echo 
         '<input name="ip" type="text" value="" placeholder="' . __( 'IP Address', SECSAFE_SLUG ) . '">' . 
         '<select name="ip_rule">' . 
             '<option value="">- ' .     __( 'Rule', SECSAFE_SLUG )          . ' -</option>' . 
@@ -126,14 +143,25 @@ final class TableAllowDeny extends Table {
 
         global $SecuritySafe;
 
-        if ( 
-            isset( $_REQUEST['ip'] ) && 
-            isset( $_REQUEST['ip_rule'] ) && 
-            isset( $_REQUEST['ip_expire'] ) 
-        ){
+        if (
+            !isset( $_POST['action'] ) &&
+            isset( $_POST['ip'] ) && $_POST['ip'] !== '' &&
+            isset( $_POST['ip_rule'] ) && $_POST['ip_rule'] !== '' &&
+            isset( $_POST['ip_expire'] ) && $_POST['ip_expire'] !== ''
+        ){  
 
-            $ip = filter_var( $_REQUEST['ip'], FILTER_VALIDATE_IP );
-            $expire = filter_var( $_REQUEST['ip_expire'], FILTER_VALIDATE_INT );
+            $nonce = ( isset( $_POST['_nonce_add_ip'] ) ) ? $_POST['_nonce_add_ip'] : false;
+
+            // Security Check
+            if ( ! $nonce || ! wp_verify_nonce( $nonce, SECSAFE_SLUG . '-add-ip' ) ) {
+
+                $this->messages[] = [ __( 'Error: IP address not added. Your session expired. Please try again.', SECSAFE_SLUG ), 3 ];
+                return; // Bail
+
+            }
+
+            $ip = filter_var( $_POST['ip'], FILTER_VALIDATE_IP );
+            $expire = filter_var( $_POST['ip_expire'], FILTER_VALIDATE_INT );
 
             if ( $ip && $expire !== false) {
 
@@ -142,8 +170,8 @@ final class TableAllowDeny extends Table {
                 $args = [];
                 $args['date_expire'] = ( $expire == '999' ) ? '0000-00-00 00:00:00' : date( 'Y-m-d H:i:s', strtotime( "+". abs( $expire ) . " day" ) );
                 $args['ip'] = $ip;
-                $args['status'] = ( $_REQUEST['ip_rule'] == 'deny' ) ? 'deny' : 'allow';
-                $args['details'] = ( isset( $_REQUEST['ip_details'] ) ) ? filter_var( $_REQUEST['ip_details'], FILTER_SANITIZE_STRING ) : '';
+                $args['status'] = ( $_POST['ip_rule'] == 'deny' ) ? 'deny' : 'allow';
+                $args['details'] = ( isset( $_POST['ip_details'] ) ) ? filter_var( $_POST['ip_details'], FILTER_SANITIZE_STRING ) : '';
                 $args['type'] = $type = 'allow_deny'; // Sanitized
 
                 $result = $this->is_ip_whitelisted( $ip );
@@ -182,26 +210,7 @@ final class TableAllowDeny extends Table {
                 
             }
 
-        } else {
-
-            if ( isset( $_REQUEST['ip'] ) ) {
-
-                if ( !isset( $_REQUEST['ip_rule'] ) ) {
-
-                    $SecuritySafe->messages[] = [ __( 'Error: IP Addition failed. Rule not provided.', SECSAFE_SLUG ), 3, 0 ];
-
-                } else if ( !isset( $_REQUEST['ip_expire'] ) ) {
-
-                    $SecuritySafe->messages[] = [ __( 'Error: IP Addition failed. Timespan not provided.', SECSAFE_SLUG ), 3, 0 ];
-
-                }
-
-            }
-
         }
-
-        // Display Messages
-        $SecuritySafe->display_notices();
         
     } // add_ip()
 
@@ -236,8 +245,6 @@ final class TableAllowDeny extends Table {
 
                 $SecuritySafe->messages[] = [ sprintf( __( '%s We recommend adding your IP to the whitelist using the form below.', SECSAFE_SLUG ), $ip ), 2, 0 ];
 
-                // Display Messages
-                $SecuritySafe->display_notices();
             }
 
         }

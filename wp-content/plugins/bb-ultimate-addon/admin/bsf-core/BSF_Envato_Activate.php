@@ -130,7 +130,7 @@ class BSF_Envato_Activate {
 		}
 
 		if ( $is_active != true ) {
-			$form_action = get_api_site() . 'envato-validation-callback/?wp-envato-validate';
+			$form_action = bsf_get_api_site() . 'envato-validation-callback/?wp-envato-validate';
 		} else {
 			$form_action = bsf_registration_page_url( '', $product_id );
 		}
@@ -220,7 +220,7 @@ class BSF_Envato_Activate {
 		$product_id = isset( $form_data['product_id'] ) ? esc_attr( $form_data['product_id'] ) : '';
 
 		$form_data['token'] = sha1( $this->create_token( $product_id ) );
-		$url                = get_api_site() . 'envato-validation-callback/?wp-envato-validate';
+		$url                = bsf_get_api_site() . 'envato-validation-callback/?wp-envato-validate';
 
 		$envato_activation_url = add_query_arg(
 			$form_data,
@@ -233,9 +233,9 @@ class BSF_Envato_Activate {
 	protected function get_redirect_url( $product_id = '' ) {
 
 		if ( is_ssl() ) {
-			$current_url = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+			$current_url = "https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 		} else {
-			$current_url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+			$current_url = "http://". $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 		}
 
 		$current_url = esc_url( remove_query_arg( array( 'license_action', 'token', 'product_id', 'purchase_key', 'success', 'status', 'message' ), $current_url ) );
@@ -327,8 +327,6 @@ class BSF_Envato_Activate {
 	}
 
 	public function inline_alternate_method_link( $html, $bsf_product_id ) {
-		$is_active = $this->license_manager->bsf_is_active_license( $bsf_product_id );
-		
 		$privacy_policy_link   = $this->license_manager->bsf_get_product_info( $bsf_product_id, 'privacy_policy' );
 		$terms_conditions_link = $this->license_manager->bsf_get_product_info( $bsf_product_id, 'terms_conditions' );
 

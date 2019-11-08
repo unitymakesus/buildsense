@@ -117,8 +117,8 @@ FLBuilder::register_module(
 							'units'      => array( 'px' ),
 							'preview'    => array(
 								'type'      => 'css',
-								'selector'  => '.uabb-creative-menu .menu > li',
-								'property'  => 'margin',
+								'selector'  => '.uabb-creative-menu.uabb-menu-default .menu > li > a,.uabb-creative-menu.uabb-menu-default .menu > li > .uabb-has-submenu-container > a,.uabb-creative-menu.off-canvas .menu > li > a,.uabb-creative-menu.off-canvas .menu > li > .uabb-has-submenu-container > a,.uabb-creative-menu.full-screen .menu > li > a,.uabb-creative-menu.full-screen .menu > li > .uabb-has-submenu-container > a',
+								'property'  => 'padding',
 								'unit'      => 'px',
 								'important' => true,
 							),
@@ -507,6 +507,7 @@ FLBuilder::register_module(
 							'type'    => 'align',
 							'label'   => __( 'Navigation Alignment', 'uabb' ),
 							'default' => 'center',
+							'responsive' => true,
 							'preview' => array(
 								'type'      => 'css',
 								'selector'  => '.uabb-creative-menu-mobile-toggle-container, .uabb-creative-menu-mobile-toggle-container > .uabb-creative-menu-mobile-toggle.text',
@@ -565,7 +566,7 @@ FLBuilder::register_module(
 							'label'   => __( 'Animation Speed', 'uabb' ),
 							'default' => 500,
 							'slider'  => true,
-							'units'   => array( 'MS' ),
+							'units'   => array( 'ms' ),
 						),
 						'creative_menu_mobile_breakpoint' => array(
 							'type'    => 'select',

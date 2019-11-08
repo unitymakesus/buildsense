@@ -57,23 +57,13 @@ class AdminPage {
      */ 
     private function prevent_caching() {
 
-        if ( ! defined( 'DONOTCACHEOBJECT' ) ) {
+        /** 
+         * This functionality has moved to Janitor
+         * @todo  Update all references to this private method to point ot Janitor instead 
+         * and then delete this method.
+         */
 
-            define( 'DONOTCACHEOBJECT', true );
-
-        }
-
-        if ( ! defined( 'DONOTCACHEDB' ) ) {
-
-            define( 'DONOTCACHEDB', true );
-            
-        }
-
-        if ( ! defined( 'DONOTCACHEPAGE' ) ) {
-
-            define( 'DONOTCACHEPAGE', true );
-            
-        }
+        Janitor::prevent_caching();
 
     } // prevent_caching()
 

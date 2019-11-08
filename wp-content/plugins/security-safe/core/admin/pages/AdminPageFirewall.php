@@ -143,6 +143,7 @@ class AdminPageFirewall extends AdminPage {
         ob_start();
 
         $table = new TableAllowDeny();
+            
         $table->add_ip();
         $table->prepare_items();
         $table->check_whitelist();

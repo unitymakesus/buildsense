@@ -36,7 +36,7 @@ class Security extends Plugin
     {
         // Run parent class constructor first
         parent::__construct( $session );
-        Janitor::log( 'running Security.php' );
+        //Janitor::log( 'running Security.php' );
         
         if ( isset( $this->settings['general']['on'] ) && $this->settings['general']['on'] == '1' ) {
             // Run All Policies
@@ -58,7 +58,7 @@ class Security extends Plugin
      */
     private function firewall()
     {
-        Janitor::log( 'running firewall().' );
+        //Janitor::log( 'running firewall().' );
         $firewall = new Firewall();
         
         if ( !$this->logged_in ) {
@@ -87,7 +87,7 @@ class Security extends Plugin
      */
     private function access()
     {
-        Janitor::log( 'running access().' );
+        //Janitor::log( 'running access().' );
         $settings = $this->settings['access'];
         
         if ( $settings['on'] == "1" ) {
@@ -119,7 +119,7 @@ class Security extends Plugin
      */
     private function privacy()
     {
-        Janitor::log( 'running privacy().' );
+        //Janitor::log( 'running privacy().' );
         $settings = $this->settings['privacy'];
         
         if ( $settings['on'] == "1" ) {
@@ -145,7 +145,7 @@ class Security extends Plugin
      */
     private function files()
     {
-        Janitor::log( 'running files().' );
+        //Janitor::log( 'running files().' );
         global  $wp_version ;
         $settings = $this->settings['files'];
         
@@ -191,7 +191,7 @@ class Security extends Plugin
      */
     private function content()
     {
-        Janitor::log( 'running content().' );
+        //Janitor::log( 'running content().' );
         $settings = $this->settings['content'];
         $skip = false;
         
@@ -222,7 +222,7 @@ class Security extends Plugin
      */
     private function backups()
     {
-        Janitor::log( 'running backups().' );
+        //Janitor::log( 'running backups().' );
         return;
         // Disable functionality
         $settings = $this->settings['backups'];
@@ -245,16 +245,16 @@ class Security extends Plugin
         $plan = ''
     )
     {
-        Janitor::log( 'add policy().' );
+        //Janitor::log( 'add policy().' );
         
         if ( $slug == '' || isset( $settings[$slug] ) && $settings[$slug] ) {
             // Include Specific Policy
             require_once SECSAFE_DIR_PRIVACY . '/' . $policy . $plan . '.php';
-            Janitor::log( 'add policy ' . $policy );
+            //Janitor::log( 'add policy ' . $policy );
             $policy = __NAMESPACE__ . '\\' . $policy;
             new $policy();
             $this->policies[] = $policy;
-            Janitor::log( $policy );
+            //Janitor::log( $policy );
         }
     
     }
@@ -272,10 +272,10 @@ class Security extends Plugin
         $plan = ''
     )
     {
-        Janitor::log( 'add policy().' );
+        //Janitor::log( 'add policy().' );
         // Include Specific Policy
         require_once SECSAFE_DIR_FIREWALL . '/' . $policy . $plan . '.php';
-        Janitor::log( 'add policy ' . $policy );
+        //Janitor::log( 'add policy ' . $policy );
         $policy = __NAMESPACE__ . '\\' . $policy;
         
         if ( isset( $settings[$slug] ) ) {
@@ -286,7 +286,7 @@ class Security extends Plugin
         }
         
         $this->policies[] = $policy;
-        Janitor::log( $policy );
+        //Janitor::log( $policy );
     }
     
     // add_firewall_policy()
@@ -343,17 +343,17 @@ class Security extends Plugin
                     define( $slug, true );
                     $this->policies[] = $policy;
                 } else {
-                    Janitor::log( $slug . ' already defined' );
+                    //Janitor::log( $slug . ' already defined' );
                 }
                 
                 // !defined()
             } else {
-                Janitor::log( $slug . ': Setting not set.' );
+                //Janitor::log( $slug . ': Setting not set.' );
             }
             
             // isset()
         } else {
-            Janitor::log( $slug . ': Problem adding Constant.' );
+            //Janitor::log( $slug . ': Problem adding Constant.' );
         }
         
         // is_array()

@@ -13,7 +13,7 @@ FLBuilder::register_module(
 		'general'          => array(
 			'title'    => __( 'General', 'uabb' ), // Tab title.
 			'sections' => array( // Tab Sections.
-				'general'      => array( // Section.
+				'general'       => array( // Section.
 					'title'  => __( 'Video', 'uabb' ), // Section Title.
 					'fields' => array( // Section Fields.
 						'video_type'   => array(
@@ -23,6 +23,8 @@ FLBuilder::register_module(
 							'options' => array(
 								'youtube' => __( 'YouTube', 'uabb' ),
 								'vimeo'   => __( 'Vimeo', 'uabb' ),
+								'wistia'  => __( 'Wistia', 'uabb' ),
+
 							),
 							'toggle'  => array(
 								'youtube' => array(
@@ -33,6 +35,10 @@ FLBuilder::register_module(
 								'vimeo'   => array(
 									'fields'   => array( 'vimeo_link', 'start' ),
 									'sections' => array( 'vimeo_option' ),
+								),
+								'wistia'  => array(
+									'fields'   => array( 'wistia_link' ),
+									'sections' => array( 'wistia_option' ),
 								),
 							),
 						),
@@ -48,6 +54,13 @@ FLBuilder::register_module(
 							'label'       => __( 'Link', 'uabb' ),
 							'default'     => 'https://vimeo.com/274860274',
 							'description' => UABBVideo::get_description( 'vimeo_link' ),
+							'connections' => array( 'url' ),
+						),
+						'wistia_link'  => array(
+							'type'        => 'text',
+							'label'       => __( 'Link', 'uabb' ),
+							'default'     => '<p><a href="https://pratikc.wistia.com/medias/gyvkfithw2?wvideo=gyvkfithw2"><img src="https://embedwistia-a.akamaihd.net/deliveries/53eec5fa72737e60aa36731b57b607a7c0636f52.webp?image_play_button_size=2x&amp;image_crop_resized=960x540&amp;image_play_button=1&amp;image_play_button_color=54bbffe0" width="400" height="225" style="width: 400px; height: 225px;"></a></p><p><a href="https://pratikc.wistia.com/medias/gyvkfithw2?wvideo=gyvkfithw2">Video Placeholder - Brainstorm Force - pratikc</a></p>',
+							'description' => UABBVideo::get_description( 'wistia_link' ),
 							'connections' => array( 'url' ),
 						),
 						'start'        => array(
@@ -76,11 +89,12 @@ FLBuilder::register_module(
 								'16_9' => __( '16:9', 'uabb' ),
 								'4_3'  => __( '4:3', 'uabb' ),
 								'3_2'  => __( '3:2', 'uabb' ),
+								'1:1'  => __( '1:1', 'uabb' ),
 							),
 						),
 					),
 				),
-				'video_option' => array(
+				'video_option'  => array(
 					'title'  => __( 'Video Options', 'uabb' ),
 					'fields' => array(
 						'yt_autoplay'       => array(
@@ -112,8 +126,8 @@ FLBuilder::register_module(
 							'label'   => __( 'Player Control', 'uabb' ),
 							'default' => 'show',
 							'options' => array(
-								'yes' => __( 'Show', 'uabb' ),
-								'no'  => __( 'Hide', 'uabb' ),
+								'no'  => __( 'Current Video Channel', 'uabb' ),
+								'yes' => __( 'Any Random Video', 'uabb' ),
 							),
 							'toggle'  => array(
 								'yes' => array(
@@ -152,7 +166,7 @@ FLBuilder::register_module(
 						),
 					),
 				),
-				'vimeo_option' => array(
+				'vimeo_option'  => array(
 					'title'  => __( 'Video option', 'uabb' ),
 					'fields' => array(
 						'vimeo_autoplay' => array(
@@ -219,6 +233,54 @@ FLBuilder::register_module(
 						),
 					),
 				),
+				'wistia_option' => array(
+					'title'  => __( 'Video Options', 'uabb' ),
+					'fields' => array(
+						'wistia_autoplay' => array(
+							'type'    => 'select',
+							'label'   => __( 'AutoPlay', 'uabb' ),
+							'default' => 'no',
+							'options' => array(
+								'yes' => __( 'Yes', 'uabb' ),
+								'no'  => __( 'No', 'uabb' ),
+							),
+							'toggle'  => array(
+								'no' => array(
+									'tabs' => array( 'thumbnail' ),
+								),
+							),
+							'help'    => __( 'Thumbnail will not display if AutoPlay mode is enabled. ', 'uabb' ),
+						),
+						'wistia_loop'     => array(
+							'type'    => 'select',
+							'label'   => __( 'Loop', 'uabb' ),
+							'default' => 'no',
+							'options' => array(
+								'yes' => __( 'Yes', 'uabb' ),
+								'no'  => __( 'No', 'uabb' ),
+							),
+							'help'    => __( 'Choose a video to play continuously in a loop. The video will automatically start again after reaching the end.', 'uabb' ),
+						),
+						'wistia_controls' => array(
+							'type'    => 'select',
+							'label'   => __( 'Show Playbar', 'uabb' ),
+							'default' => 'show',
+							'options' => array(
+								'yes' => __( 'Show', 'uabb' ),
+								'no'  => __( 'Hide', 'uabb' ),
+							),
+						),
+						'wistia_mute'     => array(
+							'type'    => 'select',
+							'label'   => __( 'Mute', 'uabb' ),
+							'default' => 'no',
+							'options' => array(
+								'yes' => __( 'Yes', 'uabb' ),
+								'no'  => __( 'No', 'uabb' ),
+							),
+						),
+					),
+				),
 			),
 		),
 		'thumbnail'        => array(
@@ -271,6 +333,16 @@ FLBuilder::register_module(
 								'selector' => '.uabb-video__outer-wrap:before',
 								'property' => 'background',
 							),
+						),
+						'video_double_click'  => array(
+							'type'    => 'select',
+							'label'   => __( 'Enable Double Click on Mobile', 'uabb' ),
+							'default' => 'no',
+							'options' => array(
+								'yes' => __( 'Yes', 'uabb' ),
+								'no'  => __( 'No', 'uabb' ),
+							),
+							'help'    => __( 'Enable this option if you are not able to see custom thumbnail or overlay color on Mobile.', 'uabb' ),
 						),
 					),
 				),
@@ -377,6 +449,330 @@ FLBuilder::register_module(
 								'float'           => __( 'Float', 'uabb' ),
 								'sink'            => __( 'Sink', 'uabb' ),
 								'wobble-vertical' => __( 'Wobble Vertical', 'uabb' ),
+							),
+						),
+					),
+				),
+			),
+		),
+
+		'sticky_video'     => array(
+			'title'    => __( 'Sticky Video', 'uabb' ),
+			'sections' => array(
+				'section_sticky_enable'       => array(
+					'title'  => __( 'Sticky Video Settings ', 'uabb' ),
+					'fields' => array(
+						'enable_sticky'      => array(
+							'type'    => 'select',
+							'label'   => __( 'Enable Sticky Video', 'uabb' ),
+							'default' => 'no',
+							'options' => array(
+								'yes' => __( 'Yes ', 'uabb' ),
+								'no'  => __( 'No', 'uabb' ),
+							),
+							'toggle'  => array(
+								'yes' => array(
+									'fields'   => array( 'sticky_alignment', 'sticky_video_width', 'sticky_hide_on' ),
+									'sections' => array( 'section_background_sticky', 'section_sticky_close_button', 'heading_sticky_info_bar' ),
+								),
+								'no'  => array(
+									'fields' => array( 'disable_sticky' ),
+								),
+							),
+						),
+						'sticky_alignment'   => array(
+							'type'    => 'select',
+							'label'   => __( 'Sticky Alignment', 'uabb' ),
+							'default' => '',
+							'options' => array(
+								'top_left'     => __( ' Top Left', 'uabb' ),
+								'top_right'    => __( ' Top Right ', 'uabb' ),
+								'center_left'  => __( 'Center Left', 'uabb' ),
+								'center_right' => __( 'Center Right', 'uabb' ),
+								'bottom_left'  => __( 'Bottom Left', 'uabb' ),
+								'bottom_right' => __( 'Bottom Right', 'uabb' ),
+							),
+						),
+						'sticky_video_width' => array(
+							'type'        => 'unit',
+							'label'       => __( 'Video Width', 'uabb' ),
+							'default'     => '360',
+							'placeholder' => 'auto',
+							'maxlength'   => '6',
+							'size'        => '8',
+							'discription' => 'px',
+							'responsive'  => array(
+								'placeholder' => array(
+									'default'    => '360',
+									'medium'     => '',
+									'responsive' => '250',
+								),
+							),
+						),
+						'sticky_hide_on'     => array(
+							'type'    => 'select',
+							'label'   => __( 'Hide Sticky Video on', 'uabb' ),
+							'default' => 'none',
+							'options' => array(
+								'none'    => __( 'None', 'uabb' ),
+								'desktop' => __( 'Desktop', 'uabb' ),
+								'tablet'  => __( 'Tablet', 'uabb' ),
+								'mobile'  => __( 'Mobile', 'uabb' ),
+								'both'    => __( 'Tablet + Mobile', 'uabb' ),
+							),
+						),
+					),
+				),
+				'section_background_sticky'   => array(
+					'title'  => __( 'Background', 'uabb' ),
+					'fields' => array(
+						'sticky_video_margin'  => array(
+							'type'       => 'dimension',
+							'label'      => __( 'Spacing from Edges', 'uabb' ),
+							'responsive' => true,
+							'help'       => __( 'Note: This is spacing around the sticky video with respect to the Alignment chosen.', 'uabb' ),
+						),
+
+
+						'sticky_video_padding' => array(
+							'type'        => 'dimension',
+							'label'       => __( 'Background Size', 'uabb' ),
+							'responsive'  => true,
+							'description' => 'px',
+							'preview'     => array(
+								'type'      => 'css',
+								'selector'  => '.uabb-subscribe-bar',
+								'property'  => 'padding',
+								'unit'      => 'px',
+								'important' => true,
+							),
+						),
+
+						'sticky_video_color'   => array(
+							'type'       => 'color',
+							'label'      => __( 'Background Color', 'uabb' ),
+							'default'    => 'ffffff',
+							'show_reset' => true,
+							'show_alpha' => true,
+							'preview'    => array(
+								'type'     => 'css',
+								'selector' => '.uabb-sticky-content',
+								'property' => 'background',
+							),
+						),
+					),
+				),
+				'section_sticky_close_button' => array( // Section.
+					'title'  => __( 'Close Button', 'uabb' ), // Section Title.
+					'fields' => array( // Section Fields.
+						'enable_sticky_close_button' => array(
+							'type'    => 'select',
+							'label'   => __( 'Icon', 'uabb' ),
+							'default' => 'icon',
+							'options' => array(
+								'icon' => __( 'Icon', 'uabb' ),
+								'none' => __( 'None', 'uabb' ),
+							),
+							'toggle'  => array(
+								'icon' => array(
+									'fields' => array( 'sticky_close_icon', 'sticky_close_icon_color', 'sticky_close_icon_bgcolor', 'sticky_hide_on' ),
+								),
+							),
+						),
+
+						'sticky_close_icon'          => array(
+							'type'        => 'icon',
+							'label'       => __( 'Select Icon', 'uabb' ),
+							'default'     => 'fas fa-times',
+							'show_remove' => true,
+						),
+
+						'sticky_close_icon_size'     => array(
+							'type'        => 'unit',
+							'label'       => __( 'Size', 'uabb' ),
+							'placeholder' => '25',
+							'maxlength'   => '5',
+							'size'        => '6',
+							'description' => 'px',
+
+						),
+						'sticky_close_icon_color'    => array(
+							'type'       => 'color',
+							'label'      => __( 'Icon Color', 'uabb' ),
+							'default'    => '',
+							'show_reset' => true,
+							'show_alpha' => true,
+							'preview'    => array(
+								'type'     => 'css',
+								'selector' => '.uabb-video-sticky-close',
+								'property' => 'color',
+							),
+						),
+						'sticky_close_icon_bgcolor'  => array(
+							'type'       => 'color',
+							'label'      => __( 'Background Color', 'uabb' ),
+							'default'    => '',
+							'show_reset' => true,
+							'show_alpha' => true,
+							'preview'    => array(
+								'type'     => 'css',
+								'selector' => '.uabb-video-sticky-close',
+								'property' => 'color',
+							),
+						),
+					),
+
+				),
+				'heading_sticky_info_bar'     => array(
+					'title'  => __( 'Info Bar', 'uabb' ),
+					'fields' => array(
+						'sticky_info_bar_enable'     => array(
+							'type'    => 'select',
+							'label'   => __( 'Enable', 'uabb' ),
+							'default' => 'no',
+							'options' => array(
+								'yes' => __( 'Yes ', 'uabb' ),
+								'no'  => __( 'No', 'uabb' ),
+							),
+							'help'    => __( 'Enable this option to display the informative text under Sticky video.', 'uabb' ),
+							'toggle'  => array(
+								'yes' => array(
+									'fields' => array( 'sticky_info_bar_text', 'sticky_info_bar_color', 'sticky_info_bar_bgcolor', 'sticky_info_bar_padding' ),
+								),
+								'no'  => array(
+									'fields' => array( 'disable_sticky' ),
+								),
+							),
+						),
+
+						'sticky_info_bar_text'       => array(
+							'type'        => 'text',
+							'label'       => __( 'Text', 'uabb' ),
+							'placeholder' => __( 'This is info bar', 'uabb' ),
+							'connections' => array( 'string', 'html' ),
+							'preview'     => array(
+								'type'     => 'text',
+								'selector' => '.uabb-video-sticky-infobar',
+							),
+						),
+
+						'sticky_text_font'           => array(
+							'type'    => 'font',
+							'label'   => __( 'Font', 'uabb' ),
+							'default' => array(
+								'family' => 'Default',
+								'weight' => 300,
+							),
+							'preview' => array(
+								'type'     => 'font',
+								'selector' => '.uabb-video-sticky-infobar',
+							),
+						),
+						'sticky_text_font_size'      => array(
+							'type'        => 'unit',
+							'label'       => __( 'Font size', 'uabb' ),
+							'description' => 'px',
+							'preview'     => array(
+								'type'     => 'css',
+								'selector' => '.uabb-video-sticky-infobar',
+								'property' => 'font-size',
+								'unit'     => 'px',
+							),
+							'responsive'  => array(
+								'placeholder' => array(
+									'default'    => '',
+									'medium'     => '',
+									'responsive' => '',
+								),
+							),
+						),
+						'sticky_text_line_height'    => array(
+							'type'        => 'unit',
+							'label'       => __( 'Line height', 'uabb' ),
+							'description' => 'em',
+							'preview'     => array(
+								'type'     => 'css',
+								'selector' => '.uabb-video-sticky-infobar',
+								'property' => 'line-height',
+								'unit'     => 'em',
+							),
+							'responsive'  => array(
+								'placeholder' => array(
+									'default'    => '',
+									'medium'     => '',
+									'responsive' => '',
+								),
+							),
+						),
+						'sticky_text_letter_spacing' => array(
+							'type'        => 'unit',
+							'label'       => __( 'Letter Spacing', 'uabb' ),
+							'description' => 'px',
+							'preview'     => array(
+								'type'     => 'css',
+								'selector' => '.uabb-video-sticky-infobar',
+								'property' => 'letter-spacing',
+								'unit'     => 'px',
+							),
+							'responsive'  => array(
+								'placeholder' => array(
+									'default'    => '',
+									'medium'     => '',
+									'responsive' => '',
+								),
+							),
+						),
+						'sticky_text_transform'      => array(
+							'type'    => 'select',
+							'label'   => __( 'Transform', 'uabb' ),
+							'default' => '',
+							'options' => array(
+								''           => __( 'Default', 'uabb' ),
+								'uppercase'  => __( 'UPPERCASE', 'uabb' ),
+								'lowercase'  => __( 'lowercase', 'uabb' ),
+								'capitalize' => __( 'Capitalize', 'uabb' ),
+							),
+							'preview' => array(
+								'type'     => 'css',
+								'selector' => '.uabb-video-sticky-infobar',
+								'property' => 'text-transform',
+							),
+						),
+
+						'sticky_info_bar_color'      => array(
+							'type'       => 'color',
+							'label'      => __( 'Color', 'uabb' ),
+							'default'    => '',
+							'show_reset' => true,
+							'show_alpha' => true,
+							'preview'    => array(
+								'type'     => 'css',
+								'selector' => '.uabb-video-sticky-infobar',
+								'property' => 'color',
+							),
+						),
+						'sticky_info_bar_bgcolor'    => array(
+							'type'       => 'color',
+							'label'      => __( 'Background Color', 'uabb' ),
+							'default'    => '',
+							'show_reset' => true,
+							'show_alpha' => true,
+							'preview'    => array(
+								'type'     => 'css',
+								'selector' => '.uabb-video-sticky-infobar',
+								'property' => 'color',
+							),
+						),
+						'sticky_info_bar_padding'    => array(
+							'type'       => 'dimension',
+							'label'      => __( 'Padding', 'uabb' ),
+							'responsive' => true,
+							'preview'    => array(
+								'type'      => 'css',
+								'selector'  => '.uabb-video-sticky-padding',
+								'property'  => 'padding',
+								'unit'      => 'px',
+								'important' => true,
 							),
 						),
 					),

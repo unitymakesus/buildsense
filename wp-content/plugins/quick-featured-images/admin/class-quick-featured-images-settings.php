@@ -8,6 +8,8 @@
  * @link      http://wordpress.org/plugins/quick-featured-images/
  * @copyright 2014 
  */
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
  * @package Quick_Featured_Images_Settings

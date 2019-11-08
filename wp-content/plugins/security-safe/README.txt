@@ -3,7 +3,7 @@ Contributors: sovstack, freemius
 Tags: wp security plugin, privacy, security audit, file permissions, brute force login, firewall, disable XML-RPC, security
 Requires at least: 3.5
 Requires PHP: 5.3
-Tested up to: 5.2.3
+Tested up to: 5.2.4
 Stable tag: trunk
 
 This WordPress security plugin helps you quickly audit, harden, and secure your website.
@@ -79,6 +79,25 @@ Website: [WP Security Safe](https://wpsecuritysafe.com)
 6. If you are having issues, reach out for help in the forum before leaving a review. 
 
 == Changelog ==
+
+= 2.2.3 (High Priority) =
+*Release Date - 21 October 2019*
+
+* Bug Fix: Local Login feature would not allow logins via front-end login forms created with wp_login_form(). Thank you @alfonsoborghi for the bug report.
+* Bug Fix: An admin notice was not properly counting directories with OK permissions on the Files admin page.
+* Bug Fix: Stats were attempting to record during system activities and thus throwing "WordPress database error Duplicate entry"
+* Bug Fix: Search and bulk delete on the Firewall Allow/Deny admin page would trigger false flag admin errors regarding IP validation.
+* Bug Fix: Sort filters on the Firewall admin page would trigger false flag admin notices.
+* Bug Fix: Body class was being added to every page in the admin.
+* Bug Fix: Duplicate policy disabled admin notices were appearing on admin pages using wp_list_table()
+* Security: Added nonce to reset and save settings
+* Security: Added nonce to add / remove Firewall rules
+* Improvement: Renamed nonces to prevent conflicts with other plugins
+* Improvement: Performance tuning to reduce function calls
+* Improvement: Changed default settings to inlcude disabling XML-RPC and force Local Logins.
+* Improvement: Fixed a PHP Warning.
+* Improvement: Updated PHP version checks
+* Tested up to: 5.2.4
 
 = 2.2.2 (Medium Priority) =
 *Release Date - 9 September 2019*

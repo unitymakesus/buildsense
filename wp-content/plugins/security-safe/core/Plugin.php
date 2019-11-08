@@ -16,7 +16,21 @@ class Plugin {
      * local settings values array.
      * @var array
      */
-    protected $settings = array();
+    protected $settings = [];
+
+
+    /**
+     * Is this page a settings page?
+     * @var boolean
+     */
+    public $is_settings_page = '';
+
+
+    /**
+     * Is this page a plugin page?
+     * @var boolean
+     */ 
+    public $is_plugin_page = '';
 
 
     /**
@@ -59,6 +73,7 @@ class Plugin {
         $this->upgrade_settings();
 
 	} // __construct()
+
 
     /**
      * Sets variables related to this session.
@@ -106,7 +121,7 @@ class Plugin {
      */
     protected function get_settings() {
 
-        Janitor::log( 'running get_settings().' );
+        //Janitor::log( 'running get_settings().' );
 
         $settings = get_option( SECSAFE_OPTIONS );
 
@@ -114,7 +129,7 @@ class Plugin {
         if ( ! isset( $settings['general'] ) ) {
 
             // Initially Set Settings to Default
-            Janitor::log( 'No version in the database. Initially set settings.' );
+            //Janitor::log( 'No version in the database. Initially set settings.' );
 
             $this->reset_settings( true );
 
@@ -135,7 +150,7 @@ class Plugin {
      */
     protected function delete_settings() {
 
-        Janitor::log( 'running delete_settings()' );
+        //Janitor::log( 'running delete_settings()' );
 
         // Delete settings
         return delete_option( SECSAFE_OPTIONS );
@@ -150,7 +165,7 @@ class Plugin {
      */
     protected function set_settings( $settings ) {
 
-        Janitor::log( 'running set_settings()' );
+        //Janitor::log( 'running set_settings()' );
 
         if ( is_array( $settings ) && isset( $settings['plugin']['version'] ) ) {
             
@@ -162,7 +177,7 @@ class Plugin {
 
             if ( $results ) {
 
-                Janitor::log( 'Settings have been updated.' );
+                //Janitor::log( 'Settings have been updated.' );
 
                 //Update Plugin Variable
                 $this->settings = $this->get_settings();
@@ -171,7 +186,7 @@ class Plugin {
 
             } else {
 
-                Janitor::log( 'ERROR: Settings were not updated.', __FILE__, __LINE__ );
+                //Janitor::log( 'ERROR: Settings were not updated.', __FILE__, __LINE__ );
 
                 return false;
 
@@ -181,11 +196,11 @@ class Plugin {
 
             if ( ! isset( $settings['plugin']['version'] ) ) {
 
-                Janitor::log( 'ERROR: Settings variable is not formatted properly. Settings not updated.', __FILE__, __LINE__ );
+                //Janitor::log( 'ERROR: Settings variable is not formatted properly. Settings not updated.', __FILE__, __LINE__ );
             
             } else {
 
-                Janitor::log( 'ERROR: Settings variable is not an array. Settings not updated.', __FILE__, __LINE__ );
+                //Janitor::log( 'ERROR: Settings variable is not an array. Settings not updated.', __FILE__, __LINE__ );
             
             }
 
@@ -202,7 +217,7 @@ class Plugin {
      */  
     protected function reset_settings( $initial = false ) {
 
-        Janitor::log( 'running reset_settings()' );
+        //Janitor::log( 'running reset_settings()' );
 
         // Keep Plugin Version History
         $plugin_history = ( isset( $this->settings['plugin']['version_history'] ) && $this->settings['plugin']['version_history'] ) ? $this->settings['plugin']['version_history'] : [ SECSAFE_VERSION ];
@@ -239,7 +254,7 @@ class Plugin {
         
         } // $result
 
-        Janitor::log( 'Settings changed to default.' );
+        //Janitor::log( 'Settings changed to default.' );
 
     } // reset_settings()
 
@@ -291,7 +306,7 @@ class Plugin {
      */
     protected function upgrade_settings(){
 
-        Janitor::log( 'Running upgrade_settings()' );
+        //Janitor::log( 'Running upgrade_settings()' );
 
         $settings = $this->settings;
         $upgrade = false;
@@ -299,7 +314,7 @@ class Plugin {
         // Upgrade Versions
         if ( SECSAFE_VERSION != $settings['plugin']['version'] ) {
 
-            Janitor::log( 'Upgrading version. ' . SECSAFE_VERSION . ' != ' . $settings['plugin']['version'] );
+            //Janitor::log( 'Upgrading version. ' . SECSAFE_VERSION . ' != ' . $settings['plugin']['version'] );
 
             $upgrade = true;
 
@@ -315,7 +330,7 @@ class Plugin {
         // Upgrade to version 1.1.0
         if ( isset( $settings['files']['auto_update_core'] ) ) {
 
-            Janitor::log( 'Upgrading updates for 1.1.0 upgrades.' );
+            //Janitor::log( 'Upgrading updates for 1.1.0 upgrades.' );
 
             $upgrade = true;
 
@@ -343,7 +358,7 @@ class Plugin {
             if ( $result ) {
 
                 $this->messages[] = [ sprintf( __( '%s: Your settings have been upgraded.', SECSAFE_SLUG ), SECSAFE_NAME ), 0, 1 ];
-                Janitor::log( 'Added upgrade success message.' );
+                //Janitor::log( 'Added upgrade success message.' );
 
                 // Get Settings Again
                 $this->settings = $this->get_settings();
@@ -351,7 +366,7 @@ class Plugin {
             } else {
 
                 $this->messages[] = [ sprintf( __( '%s: There was an error upgrading your settings. We would recommend resetting your settings to fix the issue.', SECSAFE_SLUG ), SECSAFE_NAME ), 3 ];
-                Janitor::log( 'Added upgrade error message.' );
+                //Janitor::log( 'Added upgrade error message.' );
 
             } // $success
 
@@ -368,13 +383,23 @@ class Plugin {
      */
     protected function post_settings( $settings_page ) {
 
-        Janitor::log( 'Running post_settings().' );
+        //Janitor::log( 'Running post_settings().' );
 
         $settings_page = strtolower( $settings_page );
 
         if ( isset( $_POST ) && ! empty( $_POST ) && $settings_page ) {
 
-            Janitor::log( 'Form was submitted.' );
+            $nonce = ( isset( $_POST['_nonce_save_settings'] ) ) ? $_POST['_nonce_save_settings'] : false;
+
+            // Security Check
+            if ( ! $nonce || ! wp_verify_nonce( $nonce, SECSAFE_SLUG . '-save-settings' ) ) {
+
+                $this->messages[] = [ __( 'Error: Settings not saved. Your session expired. Please try again.', SECSAFE_SLUG ), 3 ];
+                return; // Bail
+
+            }
+
+            //Janitor::log( 'Form was submitted.' );
 
             //This is sanitized in clean_settings()
             $new_settings = $_POST;
@@ -438,12 +463,12 @@ class Plugin {
                 if ( $success ) {
 
                     $this->messages[] = [ __( 'Your settings have been saved.', SECSAFE_SLUG ), 0, 1 ];
-                    Janitor::log( 'Added success message.' );
+                    //Janitor::log( 'Added success message.' );
 
                 } else {
 
                     $this->messages[] = [ __( 'Error: Settings not saved.', SECSAFE_SLUG ), 3 ];
-                    Janitor::log( 'Added error message.' );
+                    //Janitor::log( 'Added error message.' );
 
                 } // $success
 
@@ -451,11 +476,11 @@ class Plugin {
 
         } else {
 
-            Janitor::log( 'Form NOT submitted.' );
+            //Janitor::log( 'Form NOT submitted.' );
 
         } // $_POST
 
-        Janitor::log( 'Finished post_settings() for ' . $settings_page );
+        //Janitor::log( 'Finished post_settings() for ' . $settings_page );
 
     } // post_settings()
 
@@ -503,11 +528,11 @@ class Plugin {
         // Access ----------------------------------|
         $access = [
                         'on' => '1',                                // Toggle on/off all access policies.
-                        'xml_rpc' => '0',
+                        'xml_rpc' => '1',
                         'login_errors' => '1',
                         'login_password_reset' => '0',
                         'login_remember_me' => '0',
-                        'login_local' => '0',
+                        'login_local' => '1',
                     ];
 
         // Firewall --------------------------------|
@@ -614,7 +639,7 @@ class Plugin {
      */
     function increase_cache_busting( $return = false ) {
 
-        Janitor::log( 'Running increase_cache_busting().' );
+        //Janitor::log( 'Running increase_cache_busting().' );
 
         $settings = $this->settings;
 

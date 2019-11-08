@@ -23,10 +23,15 @@ class Admin extends Security
         $this->check_settings();
         // Display Admin Notices
         add_action( 'admin_notices', [ $this, 'display_notices' ] );
-        // Load CSS / JS
-        add_action( 'admin_init', [ $this, 'scripts' ] );
-        // Body Class
-        add_filter( 'admin_body_class', [ $this, 'admin_body_class' ] );
+        // Only load CSS and JS for our admin pages.
+        
+        if ( $this->is_plugin_page() ) {
+            // Load CSS / JS
+            add_action( 'admin_init', [ $this, 'scripts' ] );
+            // Body Class
+            add_filter( 'admin_body_class', [ $this, 'admin_body_class' ] );
+        }
+        
         // Create Admin Menus
         add_action( 'admin_menu', [ $this, 'admin_menus' ] );
         // Add Action Links
@@ -40,41 +45,27 @@ class Admin extends Security
      */
     public function scripts()
     {
-        global  $pagenow ;
-        $local_page = false;
-        
-        if ( isset( $_GET['page'] ) ) {
-            // See if the page is one of ours
-            $local_page = strpos( $_GET['page'], SECSAFE_SLUG );
-            $cache_buster = ( SECSAFE_DEBUG ? SECSAFE_VERSION . date( 'YmdHis' ) : SECSAFE_VERSION );
-            // Only load CSS and JS for our admin pages.
-            
-            if ( $local_page !== false ) {
-                // Load CSS
-                wp_register_style(
-                    SECSAFE_SLUG . '-admin',
-                    SECSAFE_URL_ADMIN_ASSETS . 'css/admin.css',
-                    [],
-                    $cache_buster,
-                    'all'
-                );
-                wp_enqueue_style( SECSAFE_SLUG . '-admin' );
-                // Load JS
-                wp_enqueue_script( 'common' );
-                wp_enqueue_script( 'wp-lists' );
-                wp_enqueue_script( 'postbox' );
-                wp_enqueue_script(
-                    SECSAFE_SLUG . '-admin',
-                    SECSAFE_URL_ADMIN_ASSETS . 'js/admin.js',
-                    [ 'jquery' ],
-                    $cache_buster,
-                    true
-                );
-            }
-            
-            // $local_page
-        }
-    
+        $cache_buster = ( SECSAFE_DEBUG ? SECSAFE_VERSION . date( 'YmdHis' ) : SECSAFE_VERSION );
+        // Load CSS
+        wp_register_style(
+            SECSAFE_SLUG . '-admin',
+            SECSAFE_URL_ADMIN_ASSETS . 'css/admin.css',
+            [],
+            $cache_buster,
+            'all'
+        );
+        wp_enqueue_style( SECSAFE_SLUG . '-admin' );
+        // Load JS
+        wp_enqueue_script( 'common' );
+        wp_enqueue_script( 'wp-lists' );
+        wp_enqueue_script( 'postbox' );
+        wp_enqueue_script(
+            SECSAFE_SLUG . '-admin',
+            SECSAFE_URL_ADMIN_ASSETS . 'js/admin.js',
+            [ 'jquery' ],
+            $cache_buster,
+            true
+        );
     }
     
     //scripts()
@@ -112,23 +103,26 @@ class Admin extends Security
             $page['icon_url'],
             $page['position']
         );
-        $this->add_submenu_pages( $page );
+        $subpages = $this->get_category_pages();
+        foreach ( $subpages as $slug => $title ) {
+            $slug_uscore = str_replace( '-', '_', $slug );
+            add_submenu_page(
+                $page['slug'],
+                // Parent Slug
+                $page['menu_title'] . ' ' . $title,
+                // Page Title
+                $title,
+                // Menu Title
+                $page['capability'],
+                // Capability
+                $page['slug'] . '-' . $slug,
+                // Menu Slug
+                [ $this, 'page_' . $slug_uscore ]
+            );
+        }
     }
     
     //admin_menus()
-    /**
-     * Get all admin pages as an array
-     * @return  array An array of all the admin pages
-     * @uses  get_category_pages()
-     * @since  0.1.0
-     */
-    private function get_admin_pages()
-    {
-        // All Admin Pages
-        return $this->get_category_pages();
-    }
-    
-    // get_admin_pages()
     /**
      * Get Category Pages
      * @return  $pages array
@@ -153,33 +147,6 @@ class Admin extends Security
     }
     
     // get_category_pages()
-    /**
-     * Creates all the subpages for the menu
-     * @param array $subpages
-     * @since  0.1.0
-     */
-    private function add_submenu_pages( $page = false )
-    {
-        $subpages = $this->get_admin_pages();
-        foreach ( $subpages as $slug => $title ) {
-            $slug_uscore = str_replace( '-', '_', $slug );
-            add_submenu_page(
-                $page['slug'],
-                // Parent Slug
-                $page['menu_title'] . ' ' . $title,
-                // Page Title
-                $title,
-                // Menu Title
-                $page['capability'],
-                // Capability
-                $page['slug'] . '-' . $slug,
-                // Menu Slug
-                [ $this, 'page_' . $slug_uscore ]
-            );
-        }
-    }
-    
-    // add_submenu_pages()
     /**
      * Gets the admin page
      * @param  string $title The title of the submenu
@@ -207,7 +174,7 @@ class Admin extends Security
             
             // is_array()
         } else {
-            Janitor::log( 'ERROR: Parameter title is empty.', __FILE__, __LINE__ );
+            //Janitor::log( 'ERROR: Parameter title is empty.', __FILE__, __LINE__ );
         }
     
     }
@@ -284,6 +251,41 @@ class Admin extends Security
     
     // page_backups()
     /**
+     * Determine if the current page is a settings page
+     * @since  2.2.3
+     */
+    public function is_settings_page()
+    {
+        
+        if ( $this->is_settings_page === '' ) {
+            // They key matters; not the value
+            $exclude_pages = [
+                'security-safe-pricing'  => 1,
+                'security-safe-account'  => 1,
+                'security-safe-firewall' => 1,
+            ];
+            $this->is_settings_page = ( $this->is_plugin_page() && !isset( $exclude_pages[$_GET['page']] ) && (!isset( $_GET['tab'] ) || $_GET['tab'] == 'settings') ? true : false );
+        }
+        
+        return $this->is_settings_page;
+    }
+    
+    // is_settings_page()
+    /**
+     * Determines if you are on a Security Safe page
+     * @since  2.2.3
+     * @return  boolean
+     */
+    function is_plugin_page()
+    {
+        if ( $this->is_plugin_page === '' ) {
+            $this->is_plugin_page = ( isset( $_GET['page'] ) && strpos( $_GET['page'], SECSAFE_SLUG ) !== false ? true : false );
+        }
+        return $this->is_plugin_page;
+    }
+    
+    // is_plugin_page()
+    /**
      * Page template
      * @return string
      * @since  0.2.0
@@ -338,10 +340,13 @@ class Admin extends Security
         ?>"<?php 
         echo  $enctype ;
         ?>>
-    
+
                 <div class="all-tab-content">
 
                     <?php 
+        if ( $this->is_settings_page() ) {
+            wp_nonce_field( SECSAFE_SLUG . '-save-settings', '_nonce_save_settings' );
+        }
         $page->display_tabs_content();
         $this->display_sidebar();
         ?>
@@ -476,14 +481,14 @@ class Admin extends Security
             $class = $k;
             
             if ( $k == 'plugin' ) {
-                $href = 'href="admin.php?page=' . SECSAFE_SLUG . '"';
+                $href = 'admin.php?page=' . SECSAFE_SLUG;
             } else {
                 
                 if ( $k == 'firewall' ) {
                     // No settings, so we must define tab
-                    $href = 'href="admin.php?page=' . SECSAFE_SLUG . '-' . $k . '&tab=blocked"';
+                    $href = 'admin.php?page=' . SECSAFE_SLUG . '-' . $k . '&tab=blocked';
                 } else {
-                    $href = 'href="admin.php?page=' . SECSAFE_SLUG . '-' . $k . '"';
+                    $href = 'admin.php?page=' . SECSAFE_SLUG . '-' . $k;
                 }
             
             }
@@ -499,7 +504,7 @@ class Admin extends Security
             $class .= $active;
             // Convert All Menus to A Single Line
             $l = ( $l == __( 'User Access', SECSAFE_SLUG ) ? __( 'Access', SECSAFE_SLUG ) : $l );
-            echo  '<li><a ' . $href . 'class="icon-' . $class . '"><span>' . $l . '</span></a></li>' ;
+            echo  '<li><a href="' . admin_url( $href ) . '" class="icon-' . $class . '"><span>' . $l . '</span></a></li>' ;
         }
         // foreach
         echo  '</ul>' ;
@@ -516,10 +521,6 @@ class Admin extends Security
             // Register / Display Admin Notices
             $this->all_notices();
         }
-        if ( SECSAFE_DEBUG ) {
-            $this->messages[] = [ sprintf( __( '%s: Plugin Debug Mode is on.', SECSAFE_SLUG ), SECSAFE_NAME ), 1, 0 ];
-        }
-        // SECSAFE_DEBUG
         
         if ( isset( $this->messages[0] ) ) {
             foreach ( $this->messages as $m ) {
@@ -572,43 +573,48 @@ class Admin extends Security
         
         if ( isset( $_POST ) && !empty($_POST) ) {
             
-            if ( isset( $_GET['page'] ) && strpos( $_GET['page'], SECSAFE_SLUG ) !== false && !in_array( $_GET['page'], [ 'security-safe-pricing', 'security-safe-account' ] ) ) {
-                
-                if ( !isset( $_GET['tab'] ) || $_GET['tab'] == 'settings' ) {
+            if ( $this->is_settings_page() ) {
+                if ( isset( $_GET['reset'] ) ) {
                     // Remove Reset Variable
-                    if ( isset( $_GET['reset'] ) ) {
-                        unset( $_GET['reset'] );
-                    }
-                    // Create Page Slug
-                    $page_slug = filter_var( $_GET['page'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH );
-                    $page_slug = str_replace( [ 'security-safe-', 'security-safe' ], '', $page_slug );
-                    // Compensation For Oddball Scenarios
-                    $page_slug = ( $page_slug == '' ? 'general' : $page_slug );
-                    $page_slug = ( $page_slug == 'user-access' ? 'access' : $page_slug );
-                    $this->post_settings( $page_slug );
-                } else {
-                    if ( isset( $_GET['tab'] ) && $_GET['tab'] == 'export-import' ) {
-                        
-                        if ( isset( $_POST['export-settings'] ) ) {
-                            $this->export_settings__premium_only();
-                        } else {
-                            if ( isset( $_POST['import-settings'] ) ) {
-                                $this->import_settings__premium_only();
-                            }
-                        }
-                    
-                    }
+                    unset( $_GET['reset'] );
                 }
+                // Create Page Slug
+                $page_slug = filter_var( $_GET['page'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH );
+                $page_slug = str_replace( [ 'security-safe-', 'security-safe' ], '', $page_slug );
+                // Compensation For Oddball Scenarios
+                $page_slug = ( $page_slug === '' ? 'general' : $page_slug );
+                $page_slug = ( $page_slug === 'user-access' ? 'access' : $page_slug );
+                $this->post_settings( $page_slug );
+            } else {
+                if ( isset( $_GET['page'] ) && $_GET['page'] === SECSAFE_SLUG && isset( $_GET['tab'] ) && $_GET['tab'] === 'export-import' ) {
+                    
+                    if ( isset( $_POST['export-settings'] ) ) {
+                        $this->export_settings__premium_only();
+                    } else {
+                        if ( isset( $_POST['import-settings'] ) ) {
+                            $this->import_settings__premium_only();
+                        }
+                    }
                 
-                // isset( $_GET['tab'] )
+                }
             }
             
-            // isset( $_GET['page'] )
+            // $this->is_settings_page()
         } else {
-            if ( isset( $_GET['page'] ) && $_GET['page'] == SECSAFE_SLUG && isset( $_GET['reset'] ) && $_GET['reset'] == 1 ) {
-                // Reset On Plugin Settings Only
-                $this->reset_settings();
+            
+            if ( $this->is_settings_page() && isset( $_GET['reset'] ) && isset( $_GET['page'] ) && $_GET['page'] === SECSAFE_SLUG ) {
+                $nonce = ( isset( $_GET['_nonce_reset_settings'] ) ? $_GET['_nonce_reset_settings'] : false );
+                // Security Check
+                
+                if ( !$nonce || !wp_verify_nonce( $nonce, SECSAFE_SLUG . '-reset-settings' ) ) {
+                    $this->messages[] = [ __( 'Error: Settings could not be reset. Your session expired. Please try again.', SECSAFE_SLUG ), 3 ];
+                } else {
+                    // Reset On Plugin Settings Only
+                    $this->reset_settings();
+                }
+            
             }
+        
         }
         
         // isset( $_POST )
@@ -633,6 +639,10 @@ class Admin extends Security
             }
         
         }
+        if ( SECSAFE_DEBUG ) {
+            $this->messages[] = [ sprintf( __( '%s: Plugin Debug Mode is on.', SECSAFE_SLUG ), SECSAFE_NAME ), 1, 0 ];
+        }
+        // SECSAFE_DEBUG
     }
     
     // all_notices()
@@ -653,7 +663,7 @@ class Admin extends Security
                     __( '%s: All security policies are disabled. You can enable them in <a href="%s">Plugin Settings</a>. If you are experiencing an issue, <a href="%s">reset your settings.</a>', SECSAFE_SLUG ),
                     SECSAFE_NAME,
                     admin_url( 'admin.php?page=security-safe&tab=settings#settings' ),
-                    admin_url( 'admin.php?page=security-safe&reset=1' )
+                    admin_url( 'admin.php?page=security-safe&reset=1&_nonce_reset_settings=' . wp_create_nonce( SECSAFE_SLUG . '-reset-settings' ) )
                 );
             }
             

@@ -6,7 +6,12 @@
  */
 
 ?>
-
+jQuery(document).ready(function() {
+	new UABBPhotoGallery({
+		id: '<?php echo $id; ?>',
+		layout:'<?php echo $settings->layout; ?>',
+	});
+});
 jQuery(document).ready(function( $ ) {
 	<?php if ( 'lightbox' == $settings->click_action ) : ?>
 		<?php
@@ -61,5 +66,15 @@ jQuery(document).ready(function( $ ) {
 	});
 
 	<?php endif; ?>
+
+	$(function() {
+		$( '.fl-node-<?php echo $id; ?> .uabb-gallery-img' )
+			.on( 'mouseenter', function( e ) {
+				$( this ).data( 'title', $( this ).attr( 'title' ) ).removeAttr( 'title' );
+			} )
+			.on( 'mouseleave', function( e ){
+				$( this ).attr( 'title', $( this ).data( 'title' ) ).data( 'title', null );
+			} );
+	});
 
 });

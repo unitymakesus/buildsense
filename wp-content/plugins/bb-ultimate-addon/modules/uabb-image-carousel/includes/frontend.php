@@ -26,7 +26,7 @@
 
 																					}
 																					?>
-			<a href="<?php echo $click_action_link; ?>" target="<?php echo $click_action_target; ?>" <?php BB_Ultimate_Addon_Helper::get_link_rel( $click_action_target, 0, 1 ); ?> data-caption="<?php echo $photo->caption; ?>">
+			<a href="<?php echo $click_action_link; ?>" target="<?php echo $click_action_target; ?>" <?php BB_Ultimate_Addon_Helper::get_link_rel( $click_action_target, $settings->click_action_nofollow, 1 ); ?> data-caption="<?php echo $photo->caption; ?>">
 			<?php endif; ?>
 
 																						<?php
@@ -37,7 +37,7 @@
 																						}
 																						?>
 
-			<img class="uabb-gallery-img" <?php echo $img_src; ?> alt="<?php echo $photo->alt; ?>" />
+			<img class="uabb-gallery-img" <?php echo $img_src; ?> alt="<?php echo $photo->alt; ?>" title="<?php echo $photo->title; ?>"/>
 
 																				<?php if ( 'none' != $settings->hover_effects ) : ?>
 				<!-- Overlay Wrapper -->
@@ -61,7 +61,7 @@
 			<?php endif; ?>
 																				<?php if ( 'none' != $settings->click_action ) : ?>
 			</a>
-			<?php endif; ?>    
+			<?php endif; ?>
 																				<?php if ( $photo && ! empty( $photo->caption ) && 'hover' == $settings->show_captions && 'none' == $settings->hover_effects ) : ?>
 			<<?php echo $settings->tag_selection; ?> class="uabb-image-carousel-caption uabb-image-carousel-caption-hover" itemprop="caption"><?php echo $photo->caption; ?></<?php echo $settings->tag_selection; ?>>
 			<?php endif; ?>
