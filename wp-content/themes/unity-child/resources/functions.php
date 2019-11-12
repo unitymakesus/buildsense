@@ -229,6 +229,8 @@ add_action( 'init', function () {
 // Show all projects on archive
 add_action( 'pre_get_posts', function( $query ) {
     if ( $query->is_post_type_archive('project')) {
+      $query->set( 'order', 'ASC' );
+      $query->set( 'orderby', 'menu_order' );
       $query->set( 'posts_per_page', '-1' );
     }
 } );
