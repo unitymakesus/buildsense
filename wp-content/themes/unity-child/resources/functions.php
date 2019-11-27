@@ -122,6 +122,18 @@ add_filter( 'get_the_archive_title', function ($title) {
   return $title;
 });
 
+/**
+ * Update SEO title element for archive pages.
+ *
+ * @link https://developer.wordpress.org/reference/functions/is_post_type_archive/
+ */
+add_filter( 'the_seo_framework_title_from_generation', function( $title, $args ) {
+  if ( is_post_type_archive( 'project' ) ) {
+    $title = 'Gallery';
+  }
+
+  return $title;
+}, 10, 2 );
 
 // Custom Post Types
 add_action( 'init', function () {
