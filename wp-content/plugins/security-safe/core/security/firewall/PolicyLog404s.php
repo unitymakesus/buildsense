@@ -22,7 +22,7 @@ class PolicyLog404s extends Firewall {
         // Run parent class constructor first
         parent::__construct();
 
-        add_action( 'wp', array( $this, 'error' ) );
+        add_action( 'wp', [ $this, 'error' ] );
 
 	} // __construct()
 

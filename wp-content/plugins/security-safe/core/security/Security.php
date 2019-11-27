@@ -196,7 +196,7 @@ class Security extends Plugin
         $skip = false;
         
         if ( $settings['on'] == "1" ) {
-            if ( isset( $this->user['roles']['author'] ) || isset( $this->user['roles']['editor'] ) || isset( $this->user['roles']['administror'] ) || isset( $this->user['roles']['super_admin'] ) ) {
+            if ( isset( $this->user['roles']['author'] ) || isset( $this->user['roles']['editor'] ) || isset( $this->user['roles']['administrator'] ) || isset( $this->user['roles']['super_admin'] ) ) {
                 // Skip Conditional Policies
                 $skip = true;
             }

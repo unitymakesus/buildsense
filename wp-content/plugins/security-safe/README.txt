@@ -1,9 +1,9 @@
 === WP Security Safe ===
-Contributors: sovstack, freemius
-Tags: wp security plugin, privacy, security audit, file permissions, brute force login, firewall, disable XML-RPC, security
+Contributors: sovstack, stevenayers63, freemius
+Tags: firewall, login security, brute force, security audit, privacy, disable XMLRPC
 Requires at least: 3.5
-Requires PHP: 5.3
-Tested up to: 5.2.4
+Requires PHP: 5.6
+Tested up to: 5.3
 Stable tag: trunk
 
 This WordPress security plugin helps you quickly audit, harden, and secure your website.
@@ -79,6 +79,15 @@ Website: [WP Security Safe](https://wpsecuritysafe.com)
 6. If you are having issues, reach out for help in the forum before leaving a review. 
 
 == Changelog ==
+
+= 2.3.0 (Low Priority) =
+*Release Date - 13 November 2019*
+* Bug Fix: Administrator role was prevented from right-clicking and highlighting when these content protection features were enabled. This role should be excluded from these policies.
+* Bug Fix: Fixed typo which had no affect on functionality due to fallback check.
+* Improvement: Changed default settings to include "Make Website Anonymous" during updates and "Prevent WordPress version files from public access".
+* Improvement: Minor performance enhancements
+* Increase PHP version requirement to match WordPress core.
+* Tested up to: 5.3
 
 = 2.2.3 (High Priority) =
 *Release Date - 21 October 2019*

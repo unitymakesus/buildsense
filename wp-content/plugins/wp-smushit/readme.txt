@@ -1,13 +1,13 @@
 === Smush Image Compression and Optimization ===
 Plugin Name: Smush Image Compression and Optimization
-Version: 3.3.1
+Version: 3.3.2
 Author: WPMU DEV
 Author URI: https://premium.wpmudev.org/
 Contributors: WPMUDEV, alexdunae
 Tags: image, resize, optimize, optimise, compress, performance, optimisation, lazy load, WebP, photography, optimizer, Smush WordPress Compression, Smush.it
 Requires at least: 4.6
 Tested up to: 5.3.0
-Stable tag: 3.3.1
+Stable tag: 3.3.2
 Requires PHP: 5.3
 License: GPL v2 - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
@@ -48,9 +48,9 @@ Smush meticulously scans every image you upload – or have already added to you
 
 In addition to smushing your media uploads, you may want to compress the images stored in other folders. Smush now lets you compress any image in any directory so that you can optimize all the images on your site – including [NextGEN](https://wordpress.org/plugins/nextgen-gallery/) images, images stored on Amazon S3 using [WP Offload Media](https://wordpress.org/plugins/amazon-s3-and-cloudfront/) and images in EVERY WordPress plugin and theme package!
 
-### Compatible with Your Favorite Themes, Builders and Media Library Plugins
+### Compatible with Your Favorite Media Library Plugins
 
-No matter what theme or plugins you use to better manage your WordPress media library, Smush has you covered. Check out just a few of the popular products Smush is working with to help make your site faster and more efficient:
+No matter what plugins you use to better manage your WordPress media library, Smush has you covered. Check out just a few of the plugins Smush is working with to help make your site faster and more efficient:
 
 - [WP All Import](https://wordpress.org/plugins/wp-all-import/)
 - [WP Offload Media](https://wordpress.org/plugins/amazon-s3-and-cloudfront/)
@@ -58,8 +58,7 @@ No matter what theme or plugins you use to better manage your WordPress media li
 - [WP Retina 2x](https://wordpress.org/plugins/wp-retina-2x/)
 - [NextGen Gallery](https://wordpress.org/plugins/nextgen-gallery/)
 - [WPML](https://wpml.org/)
-- [Envira Gallery](https://enviragallery.com/)
-- [Avada Fusion Builder](https://theme-fusion.com/products/fusion-builder/)
+- [WPML Media Translation Add-on](https://wpml.org/2011/05/new-plugin-wpml-media-translation/)
 - [Styles](https://wordpress.org/plugins/styles/)
 - And many, many, more!
 
@@ -155,12 +154,16 @@ It depends what side of the pond you live on...but whether you say optimize, opt
 
 == Screenshots ==
 
-1. Simple to get started with the Smush set up wizard.
-2. Watch as your image library is processed – up to 50 images at a time.
-3. Set automatic smush to resize and optimize every image as it is uploaded.
-4. Smush will find and optimize images for you.
+1. Watch as your image library is processed – up to 50 images at a time.
+2. Set automatic smush to resize and optimize every image as it is uploaded.
+3. Smush will find and optimize images for you.
 
 == Changelog ==
+
+= 3.3.2 =
+
+- New: Support for big images in WordPress 5.3
+- Fix: WP Offload Media integration with Pro version
 
 = 3.3.1 =
 

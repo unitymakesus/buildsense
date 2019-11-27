@@ -360,7 +360,7 @@ class Admin extends Security
             <div class="wrap-footer full clear">
 
                 <hr />
-
+                
                 <p><?php 
         printf( __( 'If you like %1$s, please <a href="%2$s" target="_blank">post a review</a>.', SECSAFE_SLUG ), SECSAFE_NAME, SECSAFE_URL_WP_REVIEWS_NEW );
         ?></p>
@@ -421,6 +421,29 @@ class Admin extends Security
 
             <div id="sidebar" class="sidebar">
 
+                <div class="rate-us widget">
+                    <?php 
+            
+            if ( security_safe()->is_not_paying() ) {
+                $heading = __( 'Support This Plugin', SECSAFE_SLUG );
+                $message = __( 'Your review encourages ongoing maintenance of this Free version.', SECSAFE_SLUG );
+            } else {
+                $heading = sprintf( __( 'Like %s?', SECSAFE_SLUG ), SECSAFE_NAME );
+                $message = __( 'Share your positive experience!', SECSAFE_SLUG );
+            }
+            
+            ?>
+                    <h5><?php 
+            echo  $heading ;
+            ?></h5>
+                    <p><?php 
+            echo  $message ;
+            ?></p>
+                    <p class="cta ratings"><a href="<?php 
+            echo  SECSAFE_URL_WP_REVIEWS ;
+            ?>" target="_blank" class="rate-stars"><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star"></span></a></p>
+                </div>
+
                 <div class="follow-us widget">
                     <p><a href="<?php 
             echo  SECSAFE_URL_TWITTER ;
@@ -428,6 +451,7 @@ class Admin extends Security
             printf( __( 'Follow %s', SECSAFE_SLUG ), SECSAFE_NAME );
             ?></a></p>
                 </div>
+                
                 <?php 
             
             if ( security_safe()->is_not_paying() ) {
@@ -450,17 +474,7 @@ class Admin extends Security
             }
             
             ?>
-                <div class="rate-us widget">
-                    <h5><?php 
-            printf( __( 'Like %s?', SECSAFE_SLUG ), SECSAFE_NAME );
-            ?></h5>
-                    <p><?php 
-            _e( 'Share your positive experience!', SECSAFE_SLUG );
-            ?></p>
-                    <p class="cta ratings"><a href="<?php 
-            echo  SECSAFE_URL_WP_REVIEWS ;
-            ?>" target="_blank" class="rate-stars"><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star"></span><span class="icon-star"></span></a></p>
-                </div>
+                
             </div>
 
         <?php 

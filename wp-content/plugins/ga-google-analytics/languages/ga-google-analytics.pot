@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GA Google Analytics\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-25 16:56+0000\n"
+"POT-Creation-Date: 2019-11-09 21:39+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -352,7 +352,7 @@ msgid "before"
 msgstr ""
 
 #: inc/settings-display.php:209
-msgid "the GA tracking code. Leave unchecked to display"
+msgid "the GA tracking code (leave unchecked to display"
 msgstr ""
 
 #: inc/settings-display.php:209
@@ -360,7 +360,7 @@ msgid "after"
 msgstr ""
 
 #: inc/settings-display.php:209
-msgid "the tracking code."
+msgid "the tracking code)"
 msgstr ""
 
 #: inc/settings-display.php:213
@@ -368,7 +368,9 @@ msgid "Admin Area"
 msgstr ""
 
 #: inc/settings-display.php:216
-msgid "Enable GA tracking in the WordPress Admin Area"
+msgid ""
+"Enable tracking in WP Admin Area (adds tracking code only; to view stats log "
+"into your Google account)"
 msgstr ""
 
 #: inc/settings-display.php:220

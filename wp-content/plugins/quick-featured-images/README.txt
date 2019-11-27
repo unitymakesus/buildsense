@@ -4,8 +4,8 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: featured image,featured images,bulk set,automatic,thumbnails
 Requires at least: 3.8
 Requires PHP: 5.2
-Tested up to: 5.2.4
-Stable tag: 13.3.5
+Tested up to: 5.3
+Stable tag: 13.3.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -289,6 +289,9 @@ If you want to contribute a translation of the plugin in your language it would 
 
 == Changelog ==
 
+= 13.3.6 =
+* Tested successfully with WordPress 5.3
+
 = 13.3.5 =
 * Improved performance for the image column on post overview pages
 * Updated translations
@@ -507,6 +510,9 @@ Added spanish translation for the main texts of the plugin
 
 
 == Upgrade Notice ==
+
+= 13.3.6 =
+Tested successfully with WordPress 5.3
 
 = 13.3.5 =
 Improved performance for the image column on post overview pages, tested with WordPress 5.2.4

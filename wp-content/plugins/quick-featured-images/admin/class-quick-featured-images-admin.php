@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 	 *
 	 * @var     string
 	 */
-	protected $plugin_version = '13.3.5';
+	protected $plugin_version = '13.3.6';
 
 	/**
 	 * Instance of this class.

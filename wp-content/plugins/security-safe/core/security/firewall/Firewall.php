@@ -30,10 +30,15 @@ class Firewall {
 
         global $wpdb;
 
+        $status_list = [
+            'allow' => 'allow', 
+            'deny'  => 'deny'
+        ];
+
         if ( 
             $args['type'] == 'allow_deny' && 
             isset( $args['status'] ) && 
-            in_array( $args['status'], [ 'allow', 'deny' ] ) 
+            isset( $status_list[ $args['status'] ] ) 
         ) {
 
             $type = $args['type'];

@@ -9,9 +9,9 @@ Author URI: https://plugin-planet.com/
 Donate link: https://monzillamedia.com/donate.html
 Contributors: specialk
 Requires at least: 4.1
-Tested up to: 5.2
-Stable tag: 20190902
-Version: 20190902
+Tested up to: 5.3
+Stable tag: 20191109
+Version: 20191109
 Requires PHP: 5.6.20
 Text Domain: ga-google-analytics
 Domain Path: /languages
@@ -264,6 +264,15 @@ If you like GA Google Analytics, please take a moment to [give a 5-star rating](
 
 > New Pro version available! Check out [GA Pro &raquo;](https://plugin-planet.com/ga-google-analytics-pro/)
 
+
+**20191109**
+
+* Tightens output/display of tracking code
+* Improves sanitization for plugin options
+* Updates styles for plugin settings page
+* Improves clarity of settings page infos
+* Generates new default translation template
+* Tests on WordPress 5.3
 
 **20190902**
 

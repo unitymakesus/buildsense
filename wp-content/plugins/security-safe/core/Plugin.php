@@ -51,7 +51,7 @@ class Plugin {
      * Contains all the admin message values.
      * @var array
      */
-    public $messages = array();
+    public $messages = [];
 
 
     /**
@@ -71,6 +71,10 @@ class Plugin {
 
         // Check For Upgrades
         $this->upgrade_settings();
+
+        add_action( 'login_enqueue_scripts', [ $this, 'login_scripts' ] );
+        add_filter( 'login_body_class', [ $this, 'login_body_class' ] );
+        add_action( 'login_footer', [ $this, 'login_footer' ] );
 
 	} // __construct()
 
@@ -351,6 +355,15 @@ class Plugin {
 
         } // $settings['auto_update_core']
 
+        // Upgrade to version 2.3.0
+        if ( ! isset( $settings['general']['byline'] ) ) {
+
+            $upgrade = true;
+
+            $settings['general']['byline'] = '1';
+
+        }
+
         if ( $upgrade ) {
 
             $result = $this->set_settings( $settings ); // Update DB
@@ -497,24 +510,21 @@ class Plugin {
                         'wp_generator' => '1',
                         'wp_version_admin_footer' => '0',
                         'hide_script_versions' => '0',
-                        'http_headers_useragent' => '0',
+                        'http_headers_useragent' => '1',
                     ];
 
         // Files -----------------------------------|
         $files = [
                         'on' => '1',                                // Toggle on/off all file policies.
-                        'DISALLOW_FILE_EDIT' => '1',
-                        'version_files_core' => '0',
-                        'version_files_plugins' => '0',
-                        'version_files_themes' => '0',
                         'allow_dev_auto_core_updates' => '0',
                         'allow_major_auto_core_updates' => '0',
                         'allow_minor_auto_core_updates' => '1',
                         'auto_update_plugin' => '0',
                         'auto_update_theme' => '0',
-                        'version_files_core' => '0',
-                        'version_files_plugins' => '0',
-                        'version_files_themes' => '0',
+                        'DISALLOW_FILE_EDIT' => '1',
+                        'version_files_core' => '1',
+                        'version_files_plugins' => '0',             // Pro
+                        'version_files_themes' => '0',              // Pro
                     ];
 
         // Content ---------------------------------|
@@ -553,6 +563,7 @@ class Plugin {
                         'security_level' => '1',                    // This is not used yet. Intended as preset security levels for faster configurations.
                         'cleanup' => '0',                           // Remove Settings When Disabled
                         'cache_busting' => '1',                     // Bust cache when removing versions from JS & CSS files
+                        'byline' => '1',                            // Display byline below login form
                     ];
 
         // Plugin Version Tracking -----------------|
@@ -599,7 +610,7 @@ class Plugin {
 
             } else {
 
-                $admin_user = ( isset( $session['user']['roles']['administror'] ) || current_user_can( 'manage_options' ) ) ? true : false;
+                $admin_user = ( isset( $session['user']['roles']['administrator'] ) || current_user_can( 'manage_options' ) ) ? true : false;
 
             }
             
@@ -661,6 +672,47 @@ class Plugin {
         }
 
     } // increase_cache_busting()
+
+
+    /**
+     * Adds scripts to login
+     */ 
+    public function login_scripts() {
+
+        $cache_buster = ( SECSAFE_DEBUG ) ? SECSAFE_VERSION . date('YmdHis') : SECSAFE_VERSION;
+
+        // Load CSS
+        wp_register_style( SECSAFE_SLUG . '-login', SECSAFE_URL_ADMIN_ASSETS . 'css/admin.css', [], $cache_buster, 'all' );
+        wp_enqueue_style( SECSAFE_SLUG . '-login' );
+
+    } // login_scripts()
+
+
+    /**
+     * Adds a class to the body tag
+     */
+    public function login_body_class( $classes ) {
+
+        $classes[] = SECSAFE_SLUG;
+
+        return $classes;
+
+    } // login_body_class()
+
+
+    /** 
+     * Display byline
+     * @return html
+     */
+    public function login_footer() {
+        
+        if ( $this->settings['general']['byline'] ) {
+
+            echo '<p style="text-align:center;margin-bottom:21px"><a href="https://wordpress.org/plugins/security-safe/" target="_balnk" class="icon-lock">' . sprintf( __( 'Security by %s', SECSAFE_SLUG ), SECSAFE_NAME ) . '</a></p>';
+
+        }
+
+    } // login_footer()
 
     
     /**

@@ -206,14 +206,14 @@ if (!function_exists('add_action')) die(); ?>
 									<td>
 										<input id="gap_options[gap_custom_loc]" name="gap_options[gap_custom_loc]" type="checkbox" value="1" <?php if (isset($gap_options['gap_custom_loc'])) checked('1', $gap_options['gap_custom_loc']); ?>> 
 										<?php esc_html_e('Display Custom Code', 'ga-google-analytics'); ?> <em><?php esc_html_e('before', 'ga-google-analytics'); ?></em> 
-										<?php esc_html_e('the GA tracking code. Leave unchecked to display', 'ga-google-analytics'); ?> <em><?php esc_html_e('after', 'ga-google-analytics'); ?></em> <?php esc_html_e('the tracking code.', 'ga-google-analytics'); ?>
+										<?php esc_html_e('the GA tracking code (leave unchecked to display', 'ga-google-analytics'); ?> <em><?php esc_html_e('after', 'ga-google-analytics'); ?></em> <?php esc_html_e('the tracking code)', 'ga-google-analytics'); ?>
 									</td>
 								</tr>
 								<tr>
 									<th><label for="gap_options[admin_area]"><?php esc_html_e('Admin Area', 'ga-google-analytics') ?></label></th>
 									<td>
 										<input id="gap_options[admin_area]" name="gap_options[admin_area]" type="checkbox" value="1" <?php if (isset($gap_options['admin_area'])) checked('1', $gap_options['admin_area']); ?>> 
-										<?php esc_html_e('Enable GA tracking in the WordPress Admin Area', 'ga-google-analytics'); ?>
+										<?php esc_html_e('Enable tracking in WP Admin Area (adds tracking code only; to view stats log into your Google account)', 'ga-google-analytics'); ?>
 									</td>
 								</tr>
 								<tr>

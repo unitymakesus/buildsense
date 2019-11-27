@@ -84,6 +84,16 @@ class AdminPageGeneral extends AdminPage
             $classes,
             false
         );
+        $classes = '';
+        $rows .= $this->form_checkbox(
+            $this->settings,
+            __( 'Support Us', SECSAFE_SLUG ),
+            'byline',
+            __( 'Display link to us below the login form.', SECSAFE_SLUG ),
+            __( '(This is optional)', SECSAFE_SLUG ),
+            $classes,
+            false
+        );
         $html .= $this->form_table( $rows );
         // Save Button
         $html .= $this->button( __( 'Save Settings', SECSAFE_SLUG ) );
