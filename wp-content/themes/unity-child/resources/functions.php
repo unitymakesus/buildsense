@@ -308,15 +308,23 @@ add_shortcode('filterable-team', function($atts) {
             }
           ?>
 					<?php if (!empty($image = get_field('primary_image'))) { ?>
-            <noscript class="lazy" data-class="biopic" data-src="<?php echo $image['url']; ?>" data-alt="<?php echo $image['alt']; ?>" aria-hidden="true">
-              <img class="biopic" src="<?php echo $image['url']; ?>" data-src="" alt="<?php echo $image['alt']; ?>">
-            </noscript>
+            <img
+              class="lazyload biopic"
+              data-sizes="auto"
+              data-srcset="<?= $image['sizes']['medium']; ?> 1x, <?= $image['sizes']['medium_large']; ?>"
+              data-expand="-10"
+              alt="<?= $image['alt']; ?>"
+            />
 					<?php } ?>
 
 					<?php if (!empty($imagehov = get_field('hover_image'))) { ?>
-            <noscript class="lazy" data-class="biopic-hover" data-src="<?php echo $imagehov['url']; ?>" data-alt="<?php echo $imagehov['alt']; ?>" aria-hidden="true">
-              <img class="biopic-hover" src="<?php echo $imagehov['url']; ?>" data-src="" alt="<?php echo $imagehov['alt']; ?>">
-            </noscript>
+            <img
+              class="lazyload biopic-hover"
+              data-sizes="auto"
+              data-srcset="<?= $imagehov['sizes']['medium']; ?> 1x, <?= $imagehov['sizes']['medium_large']; ?>"
+              data-expand="-10"
+              alt="<?= $imagehov['alt']; ?>"
+            />
 					<?php } ?>
           <?php
             if (!empty($longer_bio = get_field('longer_bio'))) {
@@ -375,15 +383,23 @@ add_shortcode('filterable-team', function($atts) {
           <div class="col m6">
             <div class="person-img">
               <?php if (!empty($image = get_field('primary_image'))) { ?>
-                <noscript class="lazy" data-class="biopic" data-src="<?php echo $image['url']; ?>" data-alt="<?php echo $image['alt']; ?>" aria-hidden="true">
-                  <img class="biopic" src="<?php echo $image['url']; ?>" data-src="" alt="<?php echo $image['alt']; ?>">
-                </noscript>
+                <img
+                  class="lazyload biopic"
+                  data-sizes="auto"
+                  data-srcset="<?= $image['sizes']['medium_large']; ?> 1x, <?= $image['sizes']['large']; ?>"
+                  data-expand="-10"
+                  alt="<?= $image['alt']; ?>"
+                />
               <?php } ?>
 
               <?php if (!empty($imagehov = get_field('hover_image'))) { ?>
-                <noscript class="lazy" data-class="biopic-hover" data-src="<?php echo $imagehov['url']; ?>" data-alt="<?php echo $imagehov['alt']; ?>" aria-hidden="true">
-                  <img class="biopic-hover" src="<?php echo $imagehov['url']; ?>" data-src="" alt="<?php echo $imagehov['alt']; ?>">
-                </noscript>
+                <img
+                  class="lazyload biopic-hover"
+                  data-sizes="auto"
+                  data-srcset="<?= $imagehov['sizes']['medium_large']; ?> 1x, <?= $imagehov['sizes']['large']; ?>"
+                  data-expand="-10"
+                  alt="<?= $imagehov['alt']; ?>"
+                />
               <?php } ?>
             </div>
           </div>

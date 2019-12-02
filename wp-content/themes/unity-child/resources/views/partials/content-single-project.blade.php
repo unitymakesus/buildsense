@@ -32,12 +32,18 @@
         @if (has_post_thumbnail())
           @php
             $thumbnail_id = get_post_thumbnail_id( get_the_ID() );
-            $alt = get_post_meta($thumbnail_id, '_wp_attachment_image_alt', true);
-            $image_src = wp_get_attachment_image_src( $thumbnail_id, 'full' );
+            $alt = get_post_meta( $thumbnail_id, '_wp_attachment_image_alt', true );
+            $src = wp_get_attachment_image_src( $thumbnail_id, 'medium' );
+            $src_2x = wp_get_attachment_image_src( $thumbnail_id, 'medium_large' );
+            $src_lightbox = wp_get_attachment_image_src( $thumbnail_id, 'large' );
           @endphp
           <figure class="post-thumbnail">
-            <a href="{{ $image_src[0] }}" data-group="project-gallery" data-modaal-desc="{!! get_the_excerpt($image['ID']) !!}">
-              {!! get_the_post_thumbnail( get_the_ID(), 'medium', ['alt' => $alt] ) !!}
+            <a href="{{ $src_lightbox[0] }}" data-group="project-gallery" data-modaal-desc="{!! get_the_excerpt($image['ID']) !!}">
+              @include('partials.lazy-image', [
+                'src'    => $src[0],
+                'src_2x' => $src_2x[0],
+                'alt'    => $alt,
+              ])
             </a>
           </figure>
         @endif
@@ -50,8 +56,17 @@
       @if( !empty($images) )
         @foreach( $images as $image )
           <div class="project-img flex-item flex-item-single">
-            <a href="{{ $image['url'] }}" data-group="project-gallery" data-modaal-desc="{!! get_the_excerpt($image['ID']) !!}">
-              {!! wp_get_attachment_image( $image['ID'], 'medium' ) !!}
+            <a href="{{ $image['sizes']['large'] }}" data-group="project-gallery" data-modaal-desc="{!! get_the_excerpt($image['ID']) !!}">
+              @php
+                $alt = get_post_meta( $image['ID'], '_wp_attachment_image_alt', true );
+                $src = wp_get_attachment_image_src( $image['ID'], 'medium' );
+                $src_2x = wp_get_attachment_image_src( $image['ID'], 'medium_large' );
+              @endphp
+              @include('partials.lazy-image', [
+                'src'    => $src[0],
+                'src_2x' => $src_2x[0],
+                'alt'    => $alt,
+              ])
             </a>
           </div>
         @endforeach

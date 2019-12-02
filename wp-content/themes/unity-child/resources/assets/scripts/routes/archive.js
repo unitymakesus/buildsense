@@ -18,23 +18,11 @@ export default {
       layoutMode: 'fitRows',
     });
 
-    /*
-     Lazy load images a la David Walsh
-     https://davidwalsh.name/lazyload-image-fade
+    /**
+     * Refresh layout on lazyloaded image event.
      */
-    $('noscript.lazy').each(function() {
-      if (!$(this).hasClass('gtm')) {
-        var img = new Image();
-        img.setAttribute('data-src', '');
-        img.setAttribute('alt', $(this).attr('data-alt'));
-        img.setAttribute('srcset', $(this).attr('data-srcset'));
-        $(this).before(img);
-        img.onload = function() {
-          img.removeAttribute('data-src');
-          $grid.isotope('layout');
-        };
-        img.src = $(this).attr('data-src');
-      }
+    $(document).on('lazyloaded', function () {
+      $grid.isotope('layout');
     });
 
     /*

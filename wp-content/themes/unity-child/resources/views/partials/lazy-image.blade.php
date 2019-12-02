@@ -1,3 +1,8 @@
-<noscript class="lazy" data-src="{{ $src }}" data-srcset="{{ $srcset}}" data-alt="{{ $alt }}" aria-hidden="true">
-  <img src="{{ $src }}" srcset="{{ $srcset }}" data-src="" alt="{{ $alt }}">
-</noscript>
+<img
+  class="lazyload"
+  data-sizes="auto"
+  data-src="{{ $src }}"
+  data-srcset="{{ $src }} 1x, {{ $src_2x }} 2x"
+  data-expand="-10"
+  alt="{{ $alt }}"
+/>

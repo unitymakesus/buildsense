@@ -9,15 +9,15 @@
   			<a href="{{ get_permalink() }}">
           @php
   					$thumbnail_id = get_post_thumbnail_id( get_the_ID() );
-  					$alt = get_post_meta($thumbnail_id, '_wp_attachment_image_alt', true);
-            $image_src = wp_get_attachment_image_src( $thumbnail_id, 'medium' );
-            $image_srcset = wp_get_attachment_image_srcset($thumbnail_id, 'medium-large');
+  					$alt = get_post_meta( $thumbnail_id, '_wp_attachment_image_alt', true );
+            $src = wp_get_attachment_image_src( $thumbnail_id, 'medium' );
+            $src_2x = wp_get_attachment_image_src( $thumbnail_id, 'medium_large' );
   				@endphp
 					<figure class="post-thumbnail">
             @include('partials.lazy-image', [
-              'src'   => $image_src[0],
-              'srcset' => $image_srcset,
-              'alt' => $alt,
+              'src'    => $src[0],
+              'src_2x' => $src_2x[0],
+              'alt'    => $alt,
             ])
 					</figure>
   			</a>
