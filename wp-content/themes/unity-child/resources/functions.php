@@ -414,3 +414,17 @@ add_shortcode('filterable-team', function($atts) {
 
 	<?php return ob_get_clean();
 });
+
+/**
+ * Exclude additional post types from Featured Image Admin Thumbnail plugin.
+ */
+add_filter( 'fiat/restrict_post_types', function( $post_types ) {
+  $exclude = [
+    'post',
+    'page',
+    'simple-team',
+    'simple-news',
+  ];
+
+  return array_merge( $post_types, $exclude );
+}, 10, 2 );
