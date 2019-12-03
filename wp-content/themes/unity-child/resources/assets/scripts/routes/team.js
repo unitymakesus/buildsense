@@ -5,11 +5,6 @@ export default {
   finalize() {
     // JavaScript to be fired on the archive pages, after the init JS
     /*
-     Materialize form select
-     */
-    $('.team-filters select').formSelect();
-
-    /*
     Isotope layout
      */
     var $grid = $('.team-container');
