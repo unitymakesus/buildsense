@@ -15,8 +15,8 @@ namespace Smush\Core\Integrations;
 
 use Amazon_S3_And_CloudFront;
 use DeliciousBrains\WP_Offload_Media\Items\Media_Library_Item;
-use Smush\WP_Smush;
 use Smush\Core\Settings;
+use WP_Smush;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -40,8 +40,13 @@ class S3 extends Abstract_Integration {
 		// Hook at the end of setting row to output a error div.
 		add_action( 'smush_setting_column_right_inside', array( $this, 's3_setup_message' ), 15 );
 
-		// Do not continue if not PRO member or S3 Offload plugin is not installed.
+		// Add Pro tag.
 		if ( ! WP_Smush::is_pro() || ! $this->enabled ) {
+			add_action( 'smush_setting_column_tag', array( $this, 'add_pro_tag' ) );
+		}
+
+		// Do not continue if not enabled or S3 Offload plugin is not installed.
+		if ( ! $this->enabled || ! $this->settings->get( $this->module ) ) {
 			return;
 		}
 
@@ -60,6 +65,8 @@ class S3 extends Abstract_Integration {
 		add_action( 'smush_file_exists', array( $this, 'maybe_download_file' ), 10, 3 );
 		// Show S3 integration message, if user hasn't enabled it.
 		add_action( 'wp_smush_header_notices', array( $this, 's3_support_required_notice' ) );
+		// Fetch file and make sure it is returned back to S3 bucket.
+		add_action( 'smush_s3_integration_fetch_file', array( $this, 'fetch_file' ) );
 	}
 
 	/**************************************
@@ -168,13 +175,11 @@ class S3 extends Abstract_Integration {
 	 *
 	 * Show a error message to admins, if they need to enable S3 support. If "remove files from
 	 * server" option is enabled in WP Offload Media plugin, we need WP Smush Pro to enable S3 support.
-	 *
-	 * @return bool
 	 */
 	public function s3_support_required_notice() {
 		// Do not display it for other users. Do not display on network screens, if network-wide option is disabled.
 		if ( ! current_user_can( 'manage_options' ) || ! Settings::can_access( 'integrations' ) ) {
-			return true;
+			return;
 		}
 
 		// Do not display the notice on Bulk Smush Screen.
@@ -187,17 +192,17 @@ class S3 extends Abstract_Integration {
 		);
 
 		if ( ! empty( $current_screen->base ) && ! in_array( $current_screen->base, $allowed_pages, true ) ) {
-			return true;
+			return;
 		}
 
 		// If already dismissed, do not show.
 		if ( '1' === get_site_option( 'wp-smush-hide_s3support_alert' ) ) {
-			return true;
+			return;
 		}
 
 		// Return early, if support is not required.
 		if ( ! $this->s3_support_required() ) {
-			return true;
+			return;
 		}
 
 		// Settings link.
@@ -214,9 +219,7 @@ class S3 extends Abstract_Integration {
 				 * %3$s: opening a and strong tags, %4$s: closing a and strong tags
 				 */
 				__(
-					"We can see you have WP Offload Media installed with the %1\$sRemove Files From Server%2\$s option
-				activated. If you want to optimize your S3 images you'll need to enable the %3\$sAmazon S3 Support%4\$s
-				feature in Smush's settings.",
+					"We can see you have WP Offload Media installed with the %1\$sRemove Files From Server%2\$s option activated. If you want to optimize your S3 images you'll need to enable the %3\$sAmazon S3 Support%4\$s feature in Smush's settings.",
 					'wp-smushit'
 				),
 				'<strong>',
@@ -233,8 +236,7 @@ class S3 extends Abstract_Integration {
 				 * %3$s: opening a and strong tags, %4$s: closing a and strong tags
 				 */
 				__(
-					"We can see you have WP Offload Media installed with the %1\$sRemove Files From Server%2\$s option
-				activated. If you want to optimize your S3 images you'll need to %3\$supgrade to Smush Pro%4\$s",
+					"We can see you have WP Offload Media installed with the %1\$sRemove Files From Server%2\$s option activated. If you want to optimize your S3 images you'll need to %3\$supgrade to Smush Pro%4\$s",
 					'wp-smushit'
 				),
 				'<strong>',
@@ -246,7 +248,7 @@ class S3 extends Abstract_Integration {
 
 		?>
 		<div class="sui-notice sui-notice-warning wp-smush-s3support-alert">
-			<p><?php echo $message; ?></p>
+			<p><?php echo wp_kses_post( $message ); ?></p>
 			<span class="sui-notice-dismiss">
 				<a href="#">
 					<?php esc_html_e( 'Dismiss', 'wp-smushit' ); ?>
@@ -274,10 +276,8 @@ class S3 extends Abstract_Integration {
 		 */
 		global $as3cf;
 
-		$is_pro = WP_Smush::is_pro();
-
 		// If S3 integration is not enabled, return.
-		$setting_val = $is_pro ? $this->settings->get( $this->module ) : 0;
+		$setting_val = WP_Smush::is_pro() ? $this->settings->get( $this->module ) : 0;
 
 		// If integration is disabled when S3 offload is active, do not continue.
 		if ( ! $setting_val && is_object( $as3cf ) ) {
@@ -323,14 +323,47 @@ class S3 extends Abstract_Integration {
 		}
 
 		// Return early if we don't need to do anything.
-		if ( empty( $message ) || ! $is_pro ) {
+		if ( empty( $message ) ) {
 			return;
 		}
 		?>
-		<div class="sui-notice<?php echo esc_attr( $class ); ?> smush-notice-sm">
-			<p><?php echo $message; ?></p>
+		<div class="sui-toggle-content">
+			<div class="sui-notice<?php echo esc_attr( $class ); ?> smush-notice-sm">
+				<p><?php echo wp_kses_post( $message ); ?></p>
+			</div>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Add a pro tag next to the setting title.
+	 *
+	 * @param string $setting_key  Setting key name.
+	 *
+	 * @since 3.4.0
+	 */
+	public function add_pro_tag( $setting_key ) {
+		// Return if not NextGen integration.
+		if ( $this->module !== $setting_key || WP_Smush::is_pro() ) {
+			return;
+		}
+		?>
+		<span class="sui-tag sui-tag-pro">
+			<?php esc_html_e( 'Pro', 'wp-smushit' ); ?>
+		</span>
+		<?php
+	}
+
+	/**
+	 * Force WP Offload Media to copy the file back to the server if missing when get_attached_file() is called,
+	 * instead of returning the stream wrapper URL.
+	 *
+	 * @since 3.4.0
+	 */
+	public function fetch_file() {
+		if ( $this->enabled && $this->settings->get( $this->module ) ) {
+			add_filter( 'as3cf_get_attached_file_copy_back_to_local', '__return_true' );
+		}
 	}
 
 	/**************************************

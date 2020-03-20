@@ -76,8 +76,7 @@
 				waitText       = submitButton.closest( '.fl-form-button' ).data( 'wait-text' ),
 				name           = currentForm.find( 'input[name=fl-subscribe-form-name]' ),
 				email          = currentForm.find( 'input[name=fl-subscribe-form-email]' ),
-				successMessage = currentForm.find( 'input[name=fl-success-message]' ),
-				successUrl     = currentForm.find( 'input[name=fl-success-url]' ),
+				successUrl     = this.settings.successUrl,
 				termsCheckbox  = currentForm.find( 'input[name=fl-terms-checkbox]'),
 				recaptcha      = currentForm.find( '.fl-grecaptcha' ),
 				reCaptchaValue = recaptcha.data( 'fl-grecaptcha-response' ),
@@ -149,9 +148,8 @@
 				ajaxData = {
 					action           : 'fl_builder_subscribe_form_submit',
 					name             : name.val(),
-					email            : email.val(),
-					success_message  : successMessage.val(),
-					success_url      : successUrl.val(),
+					email            : email.val(), 
+					success_url      : successUrl,
 					terms_checked    : termsCheckbox.is(':checked') ? '1' : '0',
 					post_id          : postId,
 					template_id      : templateId,
@@ -187,7 +185,7 @@
 			}
 			else if ( 'message' == data.action ) {
 				form.find( '> *' ).hide();
-				form.append( '<div class="fl-form-success-message">' + data.message + '</div>' );
+				$( this.nodeClass + ' .fl-form-success-message' ).show();
 			}
 			else if ( 'redirect' == data.action ) {
 				window.location.href = data.url;

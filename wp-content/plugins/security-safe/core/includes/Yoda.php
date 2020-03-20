@@ -166,6 +166,23 @@ class Yoda
         // Default lowest value / false
         return 0;
     }
+    
+    // get_display_limits()
+    /**
+     * Get Latest PHP Version
+     * @since 2.4.0
+     */
+    static function get_php_versions()
+    {
+        // https://endoflife.software/programming-languages/server-side-scripting/php
+        // https://secure.php.net/ChangeLog-7.php
+        return [
+            '7.4.0' => '7.4.0',
+            '7.3.0' => '7.3.12',
+            '7.2.0' => '7.2.25',
+            'min'   => '7.2.0',
+        ];
+    }
 
 }
 // Yoda()

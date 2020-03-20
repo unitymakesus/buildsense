@@ -334,9 +334,9 @@ class Advanced_Excerpt {
 		foreach ( $tokens[0] as $t ) { // Parse each token
 			if ( $w >= $length && 'sentence' != $finish ) { // Limit reached
 				break;
-			}
+            }
 			if ( $t[0] != '<' ) { // Token is not a tag
-				if ( $w >= $length && 'sentence' == $finish && preg_match( '/[\?\.\!]\s*$/uS', $t ) == 1 ) { // Limit reached, continue until ? . or ! occur at the end
+				if ( $w >= $length && 'sentence' == $finish && preg_match( '/[\?\.\!].*$/uS', $t ) == 1 ) { // Limit reached, continue until ? . or ! occur at the end
 					$out .= trim( $t );
 					break;
 				}
@@ -351,7 +351,7 @@ class Advanced_Excerpt {
 					$c = mb_strlen( $chars );
 					if ( $c + $w > $length && 'sentence' != $finish ) { // Token is too long
 						$c = ( 'word' == $finish ) ? $c : $length - $w; // Keep token to finish word
-						$t = substr( $t, 0, $c );
+						$t = mb_substr( $t, 0, $c );
 					}
 					$w += $c;
 				}

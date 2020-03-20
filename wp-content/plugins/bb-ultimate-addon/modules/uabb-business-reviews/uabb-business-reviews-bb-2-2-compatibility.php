@@ -11,13 +11,13 @@
 $branding_name       = BB_Ultimate_Addon_Helper::get_builder_uabb_branding( 'uabb-plugin-name' );
 $branding_short_name = BB_Ultimate_Addon_Helper::get_builder_uabb_branding( 'uabb-plugin-short-name' );
 $branding            = '';
-$link                = '';
+$link                = ''; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 if ( empty( $branding_name ) && empty( $branding_short_name ) ) {
 	$branding = 'no';
-	$link     = '<a href="https://www.ultimatebeaver.com/docs/unable-to-display-more-google-and-yelp-reviews/?utm_source=uabb-pro-backend&utm_medium=module-editor-screen&utm_campaign=business-reviews-module" target="_blank" rel="noopener"> <b> here </b> </a>';
+	$link     = '<a href="https://www.ultimatebeaver.com/docs/unable-to-display-more-google-and-yelp-reviews/?utm_source=uabb-pro-backend&utm_medium=module-editor-screen&utm_campaign=business-reviews-module" target="_blank" rel="noopener"> <b> here </b> </a>'; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 } else {
 	$branding = 'yes';
-	$link     = '';
+	$link     = ''; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 }
 $review_notice_google      = sprintf( /* translators: %1$s: search term */
 		'<div class="uabb-business-review-desc" style="%1$s">' . __( 'Google allows maximum 5 reviews. Click', 'uabb' ) . $link . __( 'to know more.', 'uabb' ) . '</div>',
@@ -1078,7 +1078,7 @@ FLBuilder::register_module(
 					'fields' => array(
 						'uabb_helpful_information' => array(
 							'type'    => 'raw',
-							'content' => '<ul class="uabb-docs-list" data-branding=' . $branding . '>
+							'content' => '<ul class="uabb-docs-list" data-branding=' . BB_Ultimate_Addon_Helper::$is_branding_enabled . '>
 
 								<li class="uabb-docs-list-item"> <i class="ua-icon ua-icon-chevron-right2"> </i> <a href="https://www.ultimatebeaver.com/docs/business-reviews-module/?utm_source=uabb-pro-backend&utm_medium=module-editor-screen&utm_campaign=business-reviews-module" target="_blank" rel="noopener"> Getting started article </a> </li>
 

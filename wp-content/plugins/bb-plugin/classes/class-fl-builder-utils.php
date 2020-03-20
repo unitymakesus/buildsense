@@ -279,4 +279,17 @@ final class FLBuilderUtils {
 		}
 	}
 
+	/**
+	 * @since 2.4
+	 */
+	public static function get_guid_url( $url ) {
+		$parsed = wp_parse_url( str_replace( '&#038;', '&', get_the_guid() ), PHP_URL_QUERY );
+
+		if ( ! $parsed ) {
+			return $url;
+		}
+		wp_parse_str( $parsed, $vars );
+		return add_query_arg( $vars, trailingslashit( home_url() ) );
+	}
+
 }

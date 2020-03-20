@@ -60,13 +60,6 @@ class PolicyLogLogins extends Firewall {
      */ 
     private function record( $username, $status ) {
 
-        // Compatible with WP Super Cache and W3 Total Cache
-        if( ! defined('DONOTCACHEPAGE') ) {
-
-            define( 'DONOTCACHEPAGE', true );
-        
-        }
-
         $args = [];
         $args['type'] = 'logins';
         $args['username'] = ( $username ) ? filter_var( $username, FILTER_SANITIZE_STRING ) : '';

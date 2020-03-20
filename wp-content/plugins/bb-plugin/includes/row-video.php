@@ -1,13 +1,13 @@
 <?php // @codingStandardsIgnoreFile ?>
 <?php if ( 'wordpress' == $row->settings->bg_video_source ) :
 
-		$bg_video_data_video_mobile	= isset( $row->settings->bg_video_mobile ) ? $row->settings->bg_video_mobile : 'no'; 
+		$bg_video_data_video_mobile	= isset( $row->settings->bg_video_mobile ) ? $row->settings->bg_video_mobile : 'no';
 		$bg_video_data_mp4			= isset( $vid_data['mp4']->url ) ?  $vid_data['mp4']->url : '';
 		$bg_video_data_mp4_type		= isset( $vid_data['mp4']->extension) ? 'video/mp4' : '';
-		$bg_video_data_webm			= isset( $vid_data['webm']->url ) ?  $vid_data['webm']->url : ''; 
+		$bg_video_data_webm			= isset( $vid_data['webm']->url ) ?  $vid_data['webm']->url : '';
 		$bg_video_data_webm_type	= isset( $vid_data['webm']->extension ) ? 'video/webm' : '';
 
-		$bg_video_data_width		= ''; 
+		$bg_video_data_width		= '';
 		if ( !empty( $vid_data['mp4']->width ) ){
 			$bg_video_data_width	= $vid_data['mp4']->width;
 		}
@@ -16,19 +16,19 @@
 		}
 
 
-		$bg_video_data_height		= ""; 
+		$bg_video_data_height		= "";
 		if ( !empty( $vid_data['mp4']->height ) ){
 			$bg_video_data_height	= $vid_data['mp4']->height;
 		}
 		if ( !empty( $vid_data['webm']->height ) ){
 			$bg_video_data_height	= $vid_data['webm']->height;
-		} 
+		}
 
-		
-		$bg_video_data_fallback		= ""; 
+
+		$bg_video_data_fallback		= "";
 		if ( !empty( $vid_data['mp4']->fallback ) ){
-			$bg_video_data_fallback	= $vid_data['wmp4']->fallback;
-		} 
+			$bg_video_data_fallback	= $vid_data['mp4']->fallback;
+		}
 		if ( !empty( $vid_data['webm']->fallback ) ){
 			$bg_video_data_fallback	= $vid_data['webm']->fallback;
 		}
@@ -53,7 +53,7 @@
 			<?php
 		endif;
 
-	endif 
+	endif
 ?>
 
 <?php if ( 'video_url' == $row->settings->bg_video_source ) { ?>

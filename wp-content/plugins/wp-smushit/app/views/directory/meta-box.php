@@ -8,6 +8,8 @@
  * @var array  $images       Array of images with errors.
  * @var string $root_path    Root path.
  * @var string $upgrade_url  Upgrade URL.
+ *
+ * @var Smush\App\Pages\Dashboard $this  Dashboard page.
  */
 
 if ( ! defined( 'WPINC' ) ) {
@@ -24,7 +26,7 @@ if ( ! defined( 'WPINC' ) ) {
 <input type="hidden" name="wp-smush-base-path" value="<?php echo esc_attr( $root_path ); ?>" />
 
 <div class="wp-smush-scan-result">
-	<?php if ( ! $this->hide_wpmudev_branding() ) : ?>
+	<?php if ( ! apply_filters( 'wpmudev_branding_hide_branding', false ) ) : ?>
 		<span class="wp-smush-no-image">
 				<img src="<?php echo esc_url( WP_SMUSH_URL . 'app/assets/images/smush-no-media.png' ); ?>" alt="<?php esc_html_e( 'Directory Smush - Choose Folder', 'wp-smushit' ); ?>">
 			</span>
@@ -34,7 +36,7 @@ if ( ! defined( 'WPINC' ) ) {
 			<?php esc_html_e( 'In addition to smushing your media uploads, you may want to smush non WordPress images that are outside of your uploads directory. Get started by adding files and folders you wish to optimize.', 'wp-smushit' ); ?>
 		</p>
 
-		<button type="button" class="sui-button sui-button-blue wp-smush-browse tc" data-a11y-dialog-show="wp-smush-list-dialog">
+		<button class="sui-button sui-button-blue wp-smush-browse" data-modal-open="wp-smush-list-dialog" data-modal-open-focus="wp-smush-select-dir" data-modal-mask="true">
 			<?php esc_html_e( 'CHOOSE DIRECTORY', 'wp-smushit' ); ?>
 		</button>
 	</div>

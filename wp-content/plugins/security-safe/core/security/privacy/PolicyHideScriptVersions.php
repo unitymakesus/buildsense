@@ -46,7 +46,7 @@ class PolicyHideScriptVersions {
 
         if ( strpos( $src, 'ver=' ) ) {
 
-            $src = preg_replace("/ver=(.*)/", $version , $src );
+            $src = preg_replace("/ver=.[^&,\ ]+/", $version , $src );
 
         }
 

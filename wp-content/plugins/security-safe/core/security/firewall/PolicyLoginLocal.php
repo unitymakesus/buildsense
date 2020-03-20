@@ -55,6 +55,9 @@ class PolicyLoginLocal extends Firewall {
      */ 
     function add_nonce_login_form_top( $content = '', $args = '' ) {
 
+        // Prevent Caching
+        Janitor::prevent_caching();
+
         ob_start();
 
         $this->add_nonce();

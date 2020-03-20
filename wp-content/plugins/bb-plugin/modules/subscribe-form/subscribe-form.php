@@ -126,8 +126,7 @@ class FLSubscribeFormModule extends FLBuilderModule {
 	public function submit() {
 		$name             = isset( $_POST['name'] ) ? sanitize_text_field( $_POST['name'] ) : false;
 		$email            = isset( $_POST['email'] ) ? sanitize_email( $_POST['email'] ) : false;
-		$success_message  = isset( $_POST['success_message'] ) ? sanitize_text_field( $_POST['success_message'] ) : false;
-		$success_url      = isset( $_POST['success_url'] ) ? sanitize_text_field( $_POST['success_url'] ) : false;
+		$success_url      = isset( $_POST['success_url'] ) ? $_POST['success_url'] : '';
 		$terms_checked    = isset( $_POST['terms_checked'] ) && 1 == $_POST['terms_checked'] ? true : false;
 		$recaptcha        = isset( $_POST['recaptcha'] ) ? $_POST['recaptcha'] : false;
 		$post_id          = isset( $_POST['post_id'] ) ? $_POST['post_id'] : false;
@@ -189,8 +188,6 @@ class FLSubscribeFormModule extends FLBuilderModule {
 
 					// Success message.
 					if ( 'message' == $settings->success_action ) {
-						$result['message'] = $success_message;
-
 						// Existing email message.
 						if ( method_exists( $instance, 'subscriber_status' ) ) {
 							if ( in_array( $instance->subscriber_status(), array( 'subscribed', 'unsubscribed' ) ) ) {
@@ -398,6 +395,32 @@ FLBuilder::register_module( 'FLSubscribeFormModule', array(
 						'show_remove' => true,
 						'show'        => array(
 							'fields' => array( 'btn_icon_position', 'btn_icon_animation' ),
+						),
+					),
+					'btn_duo_color1'     => array(
+						'label'      => __( 'DuoTone Primary Color', 'fl-builder' ),
+						'type'       => 'color',
+						'default'    => '',
+						'show_reset' => true,
+						'show_alpha' => true,
+						'preview'    => array(
+							'type'      => 'css',
+							'selector'  => '.fl-button-icon.fad:before',
+							'property'  => 'color',
+							'important' => true,
+						),
+					),
+					'btn_duo_color2'     => array(
+						'label'      => __( 'DuoTone Secondary Color', 'fl-builder' ),
+						'type'       => 'color',
+						'default'    => '',
+						'show_reset' => true,
+						'show_alpha' => true,
+						'preview'    => array(
+							'type'      => 'css',
+							'selector'  => '.fl-button-icon.fad:after',
+							'property'  => 'color',
+							'important' => true,
 						),
 					),
 					'btn_icon_position'  => array(

@@ -77,13 +77,22 @@ class Quick_Featured_Images_Columns {
 	protected $stored_settings = array();
 
 	/**
-	 * Name of the additional column.
+	 * Name of the additional thumbnail column.
 	 *
 	 * @since    7.0
 	 *
 	 * @var      string
 	 */
-	protected $column_name = 'qfi-thumbnail';
+	protected $thumbnail_column_name = 'qfi-thumbnail';
+
+	/**
+	 * Name of the additional post list column.
+	 *
+	 * @since    13.4.0
+	 *
+	 * @var      string
+	 */
+	protected $post_list_column_name = 'qfi-post-list';
 
 	/**
 	 * Required user capability to use this plugin
@@ -157,7 +166,14 @@ class Quick_Featured_Images_Columns {
 		// add Featured Image column in desired posts lists
 		foreach ( $this->stored_settings as $key => $value ) {
 			if ( '1' == $value ) {
-				if ( preg_match('/^column_thumb_([a-z0-9_\-]+)$/', $key, $matches ) ) {
+				if ( 'column_post_list' == $key ) {
+					// print post list column in media library
+					add_action( 'manage_media_columns', array( $this, 'add_post_list_column' ) );
+					// show content of post list column
+					add_action( 'manage_media_custom_column', array( $this, 'display_post_list_column' ), 10, 2 );
+					// print style for post list column
+					add_action( 'admin_head', array( $this, 'display_post_list_column_style' ) );
+				} elseif ( preg_match('/^column_thumb_([a-z0-9_\-]+)$/', $key, $matches ) ) {
 					// make the following lines more readable
 					$post_type = $matches[ 1 ];
 					
@@ -184,8 +200,7 @@ class Quick_Featured_Images_Columns {
 					if ( ! has_action( $hook, $display_column_function ) ) {
 						add_action( $hook, $display_column_function, 10, 2 );
 					}
-					
-				} // if ( preg_match() )
+				} // if ()
 			} // if ( value == 1 )
 		} // foreach( stored_settings )
 
@@ -320,6 +335,13 @@ class Quick_Featured_Images_Columns {
 		}
  	}
 
+	/* 
+	 * ======================================================
+	 * Methods for the thumbnail column
+	 * on post overview pages
+	 * ======================================================
+	 */
+	 
 	/**
 	 * Add a column with the title 'Featured Image' in the post lists
 	 *
@@ -329,7 +351,7 @@ class Quick_Featured_Images_Columns {
 	 */
     public function add_thumbnail_column( $cols ) {
 		$text = 'Featured Image';
-		$cols[ $this->column_name ] = _x( $text, 'post' );
+		$cols[ $this->thumbnail_column_name ] = _x( $text, 'post' );
         return $cols;
     }
 	
@@ -341,7 +363,7 @@ class Quick_Featured_Images_Columns {
 	 * @return    array	extended list of sortable columns    
      */
     public function add_sortable_column( $cols ) {
-        $cols[ $this->column_name ] = $this->column_name;
+        $cols[ $this->thumbnail_column_name ] = $this->thumbnail_column_name;
 
         return $cols;
     }
@@ -355,7 +377,7 @@ class Quick_Featured_Images_Columns {
 	 */
     public function display_thumbnail_in_column( $column_name, $post_id ) {
 		$width = $height = $this->used_thumbnail_width;
-		if ( $this->column_name == $column_name ) {
+		if ( $this->thumbnail_column_name == $column_name ) {
 			$thumbnail_id = get_post_thumbnail_id( $post_id );
 			// check if image file exists, omit filters in get_attached_file() ('true')
 			if ( $thumbnail_id ) {
@@ -447,7 +469,7 @@ class Quick_Featured_Images_Columns {
 		echo "\n";
 		echo "/* Quick Featured Images plugin styles */\n";
 		echo "/* Fit thumbnails in posts list column */\n";
-		printf( '.column-%s img {', $this->column_name );
+		printf( '.column-%s img {', $this->thumbnail_column_name );
 		echo 'width:100%;height:auto;';
 		printf( 'max-width:%dpx;', $this->used_thumbnail_width );
 		printf( 'max-height:%dpx;', $this->used_thumbnail_width );
@@ -456,7 +478,7 @@ class Quick_Featured_Images_Columns {
 		if ( version_compare( get_bloginfo( 'version' ), '4.3', '<' ) ) {
 			echo "/* Auto-hiding of the thumbnail column in posts lists */\n";
 			echo '@media screen and (max-width:782px) {';
-			printf( '.column-%s {', $this->column_name );
+			printf( '.column-%s {', $this->thumbnail_column_name );
 			echo "display:none;}}\n";
 		} // if WP < 4.3
 		echo '</style>';
@@ -472,7 +494,7 @@ class Quick_Featured_Images_Columns {
     public function sort_column_by_image_id( $query ) {
 	
 		// if user wants to get rows sorted by featured image
-        if ( $query->get( 'orderby' ) === $this->column_name ) {
+        if ( $query->get( 'orderby' ) === $this->thumbnail_column_name ) {
 			// set thumbnail id as sort value
             $query->set( 'meta_key', '_thumbnail_id' );
 			// change sorting from alphabetical to numeric
@@ -605,5 +627,83 @@ class Quick_Featured_Images_Columns {
 			$this->translation_cache[ '(external image)' ]
 		);
 	}
+
+	/* 
+	 * ======================================================
+	 * Methods for the post list column
+	 * on the media library pages
+	 * ======================================================
+	 */
+	 
+	/**
+	 * Add a column with the title 'Featured Image' in the post lists
+	 *
+	 * @since     13.4.0
+	 *
+	 * @return    array	list of columns    
+	 */
+    public function add_post_list_column( $cols ) {
+		$cols[ $this->post_list_column_name ] = __( 'Featured image for', 'quick-featured-images' );
+        return $cols;
+    }
+	
+	/**
+	 * Print the post titles which has the current image as featured image
+	 *
+	 * @since     13.4.0
+	 *
+	 * @return    array	extended list of columns    
+	 */
+    public function display_post_list_column( $column_name, $attachment_id ) {
+		// quit if not the desired column
+		if ( $this->post_list_column_name !== $column_name ) {
+			return;
+		}
+		
+		// look up the posts for which the attachment was set as featured image 
+		// returns an array of post IDs if any, else an empty array
+		global $wpdb;
+		$post_ids = $wpdb->get_col( $wpdb->prepare( "
+			SELECT	`post_id` 
+			FROM	$wpdb->postmeta 
+			WHERE	`meta_key` LIKE '_thumbnail_id' 
+				AND	`meta_value` = %d", $attachment_id
+		) ); 
+		
+		// if posts were found
+		if ( $post_ids ) {
+			// if there is more than one post
+			if ( 1 < sizeof( $post_ids ) ) {
+				// print a list
+				echo '<ul>';
+				foreach ( $post_ids as $id ) {
+					echo '<li>';
+					// print the link to the edit page of the post
+					edit_post_link( get_the_title( $id ), '', '', $id );
+					echo '</li>';
+				}
+				echo '</ul>';
+			} else {
+				// print in a single line the link to the edit page of the found post
+				edit_post_link( get_the_title( $post_ids[ 0 ] ), '', '', $post_ids[ 0 ] );
+			}
+		}
+    }
+
+	/**
+	 * Print CSS for post list column
+	 *
+	 * @since     13.4.0
+	 *
+	 * @return    null    
+	 */
+	public function display_post_list_column_style(){
+		echo '<style type="text/css">';
+		echo "\n";
+		echo "/* Quick Featured Images plugin styles */\n";
+		echo ".widefat td.column-qfi-post-list ul { margin: 0; }\n";
+		echo "</style>\n";
+	}
+
 
 }

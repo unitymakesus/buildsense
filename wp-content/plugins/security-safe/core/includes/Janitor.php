@@ -52,7 +52,7 @@ class Janitor {
 
             if ( isset( $options['plugins'] ) ) {
 
-                if ( is_array() ) {
+                if ( is_array( $options['plugins'] ) ) {
 
                     foreach( $options['plugins'] as $plugin ) {
 
@@ -105,7 +105,7 @@ class Janitor {
         $this->create_table_logs();
 
         // Create Stats Table
-        $this->create_table_stats();
+        Self::create_table_stats();
 
         $args['type'] = '404s';
         $args['threats'] = 0;
@@ -314,7 +314,7 @@ class Janitor {
      * Creates Stats Table
      * @since  2.0.0
      */
-    private function create_table_stats() {
+    private static function create_table_stats() {
 
         global $wpdb;
 
@@ -372,6 +372,9 @@ class Janitor {
     static public function add_entry( $args ) {
 
         global $wpdb;
+
+        // Prevent Caching
+        Self::prevent_caching();
 
         $args = ( isset( $args['type'] ) ) ? $args : [];
         $type = ( isset( $args['type'] ) ) ? $args['type'] : false;

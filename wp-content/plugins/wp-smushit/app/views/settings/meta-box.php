@@ -158,7 +158,7 @@ if ( ! defined( 'WPINC' ) ) {
 				printf(
 					/* translators: %1$s - <a> link, %2$s - </a> */
 					esc_html__( 'Navigate to %1$sTools%2$s to begin the process.', 'wp-smushit' ),
-					'<a href="' . esc_url( menu_page_url( 'smush', false ) ) . '&view=tools">',
+					'<a href="' . esc_url( $this->get_page_url() ) . '&view=tools">',
 					'</a>'
 				);
 				?>
@@ -188,7 +188,7 @@ if ( ! defined( 'WPINC' ) ) {
 				<?php esc_html_e( 'Need to revert back to the default settings? This button will instantly reset your settings to the defaults.', 'wp-smushit' ); ?>
 			</span>
 
-			<button type="button" class="sui-button sui-button-ghost" data-a11y-dialog-show="wp-smush-reset-settings-dialog">
+			<button class="sui-button sui-button-ghost" data-modal-open="wp-smush-reset-settings-dialog" data-modal-open-focus="reset-setting-confirm" data-modal-mask="true">
 				<i class="sui-icon-undo" aria-hidden="true"></i>
 				<?php esc_html_e( 'Reset Settings', 'wp-smushit' ); ?>
 			</button>

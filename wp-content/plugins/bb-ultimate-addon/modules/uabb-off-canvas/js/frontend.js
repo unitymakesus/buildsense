@@ -9,8 +9,12 @@
 		this.offcanvas_on = settings.offcanvas_on;
 		this.offcanvas_custom = settings.offcanvas_custom;
 		this.close_on = settings.close_on;
+		this.is_builder_active = settings.is_builder_active;
 
-		this._initCanvas();
+		if ( 'yes' !== this.is_builder_active ) {
+
+			this._initCanvas();
+		}
 	};
 	UABBOffCanvasModule.prototype = {
 
@@ -66,6 +70,8 @@
 			});
 		},
 		_showOffCanvas: function() {
+
+			event.preventDefault();
 
 			nodeClass = $( '.fl-node-' + this.node );
 

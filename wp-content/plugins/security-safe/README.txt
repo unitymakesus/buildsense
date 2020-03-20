@@ -1,6 +1,6 @@
 === WP Security Safe ===
-Contributors: sovstack, stevenayers63, freemius
-Tags: firewall, login security, brute force, security audit, privacy, disable XMLRPC
+Contributors: sovstack, stevenayers63
+Tags: wp security, security audit, disable XMLRPC, limit-login, logs
 Requires at least: 3.5
 Requires PHP: 5.6
 Tested up to: 5.3
@@ -42,11 +42,12 @@ This WordPress security plugin helps you quickly audit, harden, and secure your 
 * Various Logs and Charts
 * Turn On/Off All Security Policies Easily
 
+Every WordPress security plugin becomes more complicated and bloated as more features are added. As a plugin's code grows, it consumes more time to load, thus slowing down your website. WP Security Safe's purpose is to protect your website from the majority of threats with minimal impact on website load time. We constantly test our load performance to ensure our features to ensure it continues to run fast and lean.
+
 > Note: [Upgrade to WP Security Safe Pro](https://checkout.freemius.com/mode/dialog/plugin/2439/plan/3762/) to unlock advanced Pro features.
 
-### WP Security Plugins Are Complicated
-
-Every WordPress security plugin becomes more complicated and bloated as more features are added. As a plugin's code grows, it consumes more time to load, thus slowing down your website. WP Security Safe's purpose is to protect your website from the majority of threats with minimal impact on website load time. We constantly test our load performance to ensure our features to ensure it continues to run fast and lean.
+Twitter: [Follow WP Security Safe](https://twitter.com/wpSecuritySafe/)
+Website: [WP Security Safe](https://wpsecuritysafe.com)
 
 ### LANGUAGE SUPPORT
 
@@ -64,11 +65,6 @@ https://player.vimeo.com/video/360060065
 2. Login Attempts
 3. Firewall Blocks
 
-### Follow Us: 
-
-Twitter: [Follow WP Security Safe](https://twitter.com/wpSecuritySafe/)
-Website: [WP Security Safe](https://wpsecuritysafe.com)
-
 == Installation ==
 
 1. Install WP Security Safe automatically or by uploading the ZIP file to your plugins folder. 
@@ -80,8 +76,24 @@ Website: [WP Security Safe](https://wpsecuritysafe.com)
 
 == Changelog ==
 
+= 2.3.1 (High Priority) =
+*Release Date - 05 January 2020*
+
+* Bug Fix: version privacy for JS files conflicted with Google Recaptcha. Thank you [Lynn Appleget](https://applegetassoc.com/) for reporting this bug.
+* Bug Fix: Plugin updates were not getting logged properly after an update.
+* Bug Fix: Plugin would not initialize in a multi-site network.
+* Bug Fix: Prevent caching of nonce for front-end login form
+* Bug Fix: Some 404s were getting detected before a WP redirect was happening.
+* Improvement: Fixed PHP Notices
+* Improvement: Updated PHP version checks
+* Improvement: PHP version comparison logic improved
+* Improvement: Increase performance by reducing unnecessary method calls
+* Improvement: Updated SDK
+* Tested up to: 5.4
+
 = 2.3.0 (Low Priority) =
 *Release Date - 13 November 2019*
+
 * Bug Fix: Administrator role was prevented from right-clicking and highlighting when these content protection features were enabled. This role should be excluded from these policies.
 * Bug Fix: Fixed typo which had no affect on functionality due to fallback check.
 * Improvement: Changed default settings to include "Make Website Anonymous" during updates and "Prevent WordPress version files from public access".
@@ -103,19 +115,19 @@ Website: [WP Security Safe](https://wpsecuritysafe.com)
 * Security: Added nonce to add / remove Firewall rules
 * Improvement: Renamed nonces to prevent conflicts with other plugins
 * Improvement: Performance tuning to reduce function calls
-* Improvement: Changed default settings to inlcude disabling XML-RPC and force Local Logins.
+* Improvement: Changed default settings to include disabling XML-RPC and force Local Logins.
 * Improvement: Fixed a PHP Warning.
 * Improvement: Updated PHP version checks
 * Tested up to: 5.2.4
 
 = 2.2.2 (Medium Priority) =
-*Release Date - 9 September 2019*
+*Release Date - 09 September 2019*
 
 * Bug Fix: Cron cleanup scripts were failing.
 * Improvement: Fixed two PHP errors.
 
 = 2.2.1 (Medium Priority) = 
-*Release Date - 5 September 2019*
+*Release Date - 05 September 2019*
 
 * Updated Feature: The local login feature was improved to be more reliable.
 * Bug Fix: The local login feature was causing server errors on Pantheon servers. Thanks FullSteam Labs for the bug report.
@@ -187,151 +199,10 @@ Website: [WP Security Safe](https://wpsecuritysafe.com)
 * Tested up to: 5.2.1
 
 = 1.2.3 (High Priority) = 
-*Release Date - 1 March 2019*
+*Release Date - 01 March 2019*
 
 * Security: Updated SDK
 * Improvement: Updated PHP version checks
 * Tested up to: 5.1
-
-= 1.2.2 (High Priority) = 
-*Release Date - 9 December 2018*
-
-* NOTE: PHP 5.6 and 7.0 are now identified as no longer supported due to end of life.
-* Improvement: Converted plugin variables to constants for efficiency and updated all references
-* Improvement: Updated PHP version checks
-* Tested up to: 5.0
-
-= 1.2.1 (Medium Priority) =
-*Release Date - 22 September 2018*
-
-* Bug Fix: WP-CLI does not properly set variables and causes fatal error when attempting to load the plugin. Thank you Brian Medlin.
-
-= 1.2.0 (High Priority) =
-*Release Date - 22 September 2018*
-
-* Improvement: Automatically display file permission issues at the top of the list of files.
-* Improvement: Removed Composer autoloading to increase efficiency
-* Improvement: Reduced PHP memory usage to increase performance
-* Improvement: Added Freemius integration
-* Improvement: Updated PHP version checks
-* Improvement: Minor UI styling
-* Bug Fix: UI Styling issues in WP 3.5
-* Bug Fix: Some WP-CLI commands return blank responses due to plugin killing PHP process. Thank you Brian Medlin for the discovery.
-* Added Feature: Remove WP Version in wp-admin
-* Pro: Added Feature: Import / Export Settings
-* Pro: Added Feature: Automatic fix plugin permissions on plugin updates.
-* Pro: Added Feature: Automatic fix theme permissions on theme updates.
-* Pro: Added Feature: Automatically hide files with permissions that cannot be changed.
-* Compatibility testing with WordPress version 3.5
-* Tested up to: 4.9.8
-
-= 1.1.13 (Low Priority) =
-*Release Date - 17 August 2018*
-
-* Bug Fix: Individual policy disabled notice was visible when all notices were disabled.
-* Added Feature: Clear PHP Cache Before Updates
-* Improvement: Updated descriptions of features in settings.
-* Improvement: Updated PHP version checks.
-
-= 1.1.12 (Low Priority) =
-*Release Date - 4 July 2018*
-
-* NOTICE: Update to this version if you are having issues with your settings.
-* Improvement: Automatically detects if settings are corrupted and reset them to default values.
-* Improvement: Updated the initial/default settings.
-* Improvement: Updated PHP version checks.
-
-= 1.1.11 (High Priority) =
-*Release Date - 3 July 2018*
-
-* Bug Fix: Cannot change file permissions. Bug introduced in version 1.1.10.
-* Bug Fix: File Policy settings get cleared out when attempting to change file permissions. Bug introduced in version 1.1.10.
-* Bug Fix: Initial settings were not properly being set. Bug introduced in version 1.1.10.
-* Bug Fix: debug.log file does not remove itself when debugging is turned off.
-* Improvement: Cleaned up some PHP Notices in error log.
-* Improvement: Added additional logging for troubleshooting bugs.
-
-= 1.1.10 (Low Priority) =
-*Release Date - 26 June 2018*
-
-* Bug Fix: After a group of policies is enabled, the disabled warning notice still appears immediately after saving, but goes away after navigating to another page.
-* Bug Fix: When all security policies are disabled, the notice was incorrectly referring to "General Settings" which no longer exists.
-* Bug Fix: When a group of policies is disabled, the warning notice would instruct the user to go to the relative settings page even if the user was already on that specific page.
-* Bug Fix: Page would not go back to the top when a page anchor was used in the URL and settings were saved.
-* Improvement: Improved usability by Adding color indicators within the settings tab to match the notices related to the specific setting.
-* Improvement: Added Priorities to the changelog to indicate the urgency of an update.
-* Thank you @df03472 for notifying us about the bugs above.
-
-= 1.1.9 (Medium Priority) =
-*Release Date - 14 June 2018*
-
-* Bug Fix: Security Safe Admin page styling breaks when other plugins add classes to the body.
-
-= 1.1.8 (High Priority) =
-*Release Date - 12 June 2018*
-
-* Bug Fix: Reference to wp-content was incorrect as a fallback default value when using custom plugin directory outside of wp-content directory.
-* Security: Prevent Administrators of a multisite environment from modifying settings unless they are Super Admin.
-* Added Support: Add support for backup logging.
-* Tested Multi-site Compatibility
-* Improvement: Increased plugin load efficiency
-
-= 1.1.7 (High Priority) =
-*Release Date - 06 June 2018*
-
-* Added Feature: Hide password protected posts from public queries.
-* Bug Fix: Changing permissions of the home directory has been reported to cause issues when loading the website. Use default permissions set by the host. 
-* Bug Fix: Duplicate notices were being displayed in the Files section.
-* Bug Fix: Fixed broken link in notice message.
-* Improvement: Moved certain notices regarding features to the specific areas of each settings tab.
-* Improvement: Updated PHP version checks
-* Improvement: Minor grammatical corrections
-* Tested up to version 4.9.6
-
-= 1.1.6 (Low Priority) =
-*Release Date - 08 May 2018*
-
-* Bug Fix: If a child theme is used, only the parent theme files were appearing in the theme files permissions audit list.
-* Improvement: Updated PHP version checks
-
-= 1.1.5 (High Priority) =
-*Release Date - 23 April 2018*
-
-* Added Feature: Prevent Access to readme.html and license.txt core files.
-* Added Feature: Notifications for file permissions displaying totals of vulnerable files.
-* Improvement: Updated file permission status color scheme to match WP notifications.
-* Improvement: Updated PHP version checks and added notifications.
-* Security: Added additional security measures when handling $_POST variables.
-* Bug Fix: Changed status of files from "good" to "secure" for all files that should only be 644 permissions.
-* Bug Fix: When using the Hide Script Versions feature, CSS and JS files cache would not update for the browser until the next day after a plugin or theme was updated.
-* Bug Fix: After the user pressed the Reset Settings button, the content on the page would not display.
-* Added support for Security Safe Pro Add-on.
-* Tested up to version 4.9.5
-
-= 1.1.3 (Medium Priority) =
-*Release Date - 25 February 2018*
-
-* Added Feature: Hide WordPress Version from the RSS feed.
-* Added Feature: Hide Script Versions from enqueued CSS and JS files
-* Bug Fix: "Hide WordPress" feature stays enabled despite the setting's value
-* Bug Fix: An error is displayed when saving settings if the settings are the same in the database.
-
-= 1.1.2 (Medium Priority) =
-*Release Date - 20 February 2018*
-
-* Bug Fix: Icon CSS conflict with other icon plugins
-
-= 1.1.1 (Low Priority) =
-*Release Date - 20 February 2018*
-
-* Added Feature: Disable text highlighting to deter copying content
-* Added Feature: Disable right-clicking to deter copying content
-* Added Feature: Fix file permissions
-* Added Feature: Make website anonymous when checking for updates
-* Added Feature: Plugin information tab for debugging purposes
-* Bug Fix: Database was including nonce and referrer when saving settings
-* Improvement: Update UI styling
-* Thank you @epohs and @isabisa for file permissions UI testing and feedback
-* Tested up to: 4.9.4
 
 > NOTE: [View full WP Security Safe changelog](https://sovstack.com/wp-security-safe/changelog/).

@@ -160,6 +160,14 @@ final class FL_Debug {
 		);
 		self::register( 'wp_max_mem', $args );
 
+		if ( get_option( 'upload_path' ) != 'wp-content/uploads' && get_option( 'upload_path' ) ) {
+			$args = array(
+				'name' => 'Possible Issue: upload_path is set, can lead to cache dir issues and css not loading. Check Settings -> Media for custom path.',
+				'data' => get_option( 'upload_path' ),
+			);
+			self::register( 'wp_media_upload_path', $args );
+		}
+
 		$args = array(
 			'name' => 'Post Counts',
 			'data' => self::divider(),
@@ -200,6 +208,27 @@ final class FL_Debug {
 			),
 		);
 		self::register( 'active_theme', $args );
+
+		if ( 'bb-theme' === $theme->get( 'Template' ) ) {
+			if ( is_dir( trailingslashit( get_stylesheet_directory() ) . 'includes' ) ) {
+				$args = array(
+					'name' => 'Child Theme includes folder detected.',
+					'data' => trailingslashit( get_stylesheet_directory() ) . 'includes/',
+				);
+				self::register( 'child_includes', $args );
+			}
+
+			if ( is_dir( trailingslashit( get_stylesheet_directory() ) . 'fl-builder/modules' ) ) {
+				$modules = glob( trailingslashit( get_stylesheet_directory() ) . 'fl-builder/modules/*' );
+				if ( ! empty( $modules ) ) {
+					$args = array(
+						'name' => 'Child Theme builder modules folder detected.',
+						'data' => implode( '<br>', $modules ),
+					);
+					self::register( 'child_bb_modules', $args );
+				}
+			}
+		}
 
 		$args = array(
 			'name' => 'Plugins',
@@ -413,7 +442,7 @@ final class FL_Debug {
 			$subscription = FLUpdater::get_subscription_info();
 			$args         = array(
 				'name' => 'Beaver Builder License',
-				'data' => ( isset( $subscription->active ) ) ? 'Active' : 'Not Active',
+				'data' => ( isset( $subscription->active ) && ! isset( $subscription->error ) ) ? 'Active' : 'Not Active',
 			);
 			self::register( 'bb_sub', $args );
 
@@ -431,6 +460,13 @@ final class FL_Debug {
 					'data' => ( '1' == $subscription->domain->active ) ? 'Yes' : 'No',
 				);
 				self::register( 'bb_sub_domain', $args );
+			}
+			if ( isset( $subscription->downloads ) && is_array( $subscription->downloads ) && ! empty( $subscription->downloads ) ) {
+				$args = array(
+					'name' => 'Available Downloads',
+					'data' => implode( "\n", $subscription->downloads ),
+				);
+				self::register( 'av_downloads', $args );
 			}
 		}
 

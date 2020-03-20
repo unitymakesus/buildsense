@@ -68,14 +68,18 @@ $tags = get_tags( $args );
 // get stored categories
 $categories = get_categories( $args );
 
-// get authors: Return List all blog editors, return limited fields in resulting row objects:
-$user_query = new WP_User_Query( array( 
-	'who' => 'authors', 
+// get users: return list of all blog writers with specified fields in row objects
+$user_args = array( 
+	//'who' => 'authors'; old, use role__in instead
+	'role__in' => array( 'administrator', 'editor', 'author' ),
 	'fields' => array( 'ID', 'user_nicename', 'display_name' ),
 	'order' => 'ASC',
     'orderby' => 'display_name'
-) );
+);
+$user_query = new WP_User_Query( $user_args );
 $user_data = $user_query->get_results();
+// free memory
+unset( $user_query, $user_args );
 // make selection box entries
 $users = array();
 if ( 0 < count( $user_data ) ) {

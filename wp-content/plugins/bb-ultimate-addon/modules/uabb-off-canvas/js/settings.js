@@ -13,17 +13,23 @@
             preview_off_canvas = form.find('select[name=preview_off_canvas]');
             btn_style   = form.find('select[name=btn_style]');
             save_button = form.find('.fl-builder-settings-save');
+            cancel_button = form.find('.fl-builder-settings-cancel');
 
             UABBButton.init();
 			this._contentTypeChange();
             this._showCanavsPreview();
+            this._hideDocs();
 
 			content_type.on('change', $.proxy( this._contentTypeChange, this ) );
             btn_style.on('change', this._btn_style_changed );
             save_button.off( 'click' ).on( 'click', this._btn_style_changed);
+            save_button.off( 'click' ).on( 'click', this._closeCanavsPreview );
+            cancel_button.off( 'click' ).on( 'click', this._closeCanavsPreview );
 
             this._btn_style_changed();
             $( '.fl-builder-content' ).on( 'fl-builder.layout-rendered', $.proxy( this._showCanavsPreview, this ) );
+
+            form.find("#fl-field-ct_raw_nonce").hide();
 		},
         _btn_style_changed: function() {
 
@@ -69,6 +75,59 @@
                 modal_node.addClass( 'uabb-drag-fix' );
             }
         },
+        _closeCanavsPreview: function() {
+            var form    = $('.fl-builder-settings');
+            node_id         = form.attr('data-node');
+            modal_node       = $( '#offcanvas-' + node_id );
+
+            var wrap_width = modal_node.width() + 'px';
+
+            if (  modal_node.hasClass( 'uabb-offcanvas-position-at-left' ) ) {
+
+                 modal_node.css( 'left', '-' + wrap_width );
+
+                /* If Push Transition  is enabled*/
+                if(  modal_node.hasClass( 'uabb-offcanvas-type-push' ) ) {
+
+                    $( 'body' ).css({ 
+                        position: '',
+                        'margin-left' : '',
+                        'margin-right' : '',
+                    });
+
+                    setTimeout( function() {
+                        $( 'body' ).removeClass( 'uabb-offcanvas-animating' ).css({ 
+                            width: '',
+                        });
+                    }, 300 );
+                }
+
+                 modal_node.removeClass( 'uabb-off-canvas-show' );
+
+            } else if (  modal_node.hasClass( 'uabb-offcanvas-position-at-right' ) ) {
+
+                 modal_node.css( 'right', '-' + wrap_width );
+
+                /* If Push Transition is enabled */
+                if(  modal_node.hasClass( 'uabb-offcanvas-type-push' ) ) {
+
+                    $( 'body' ).css({
+                        position: '',
+                        'margin-right' : '',
+                        'margin-left' : '',
+                    });
+
+                    setTimeout( function() {
+                        $( 'body' ).removeClass( 'uabb-offcanvas-animating' ).css({ 
+                            width: '',
+                        });
+                    }, 300 );
+                }
+
+                 modal_node.removeClass( 'uabb-off-canvas-show' );
+            }
+
+        },
 		_contentTypeChange: function()
         {
 
@@ -103,12 +162,19 @@
                 type = 'layout';
             }
             var self = this;
+            var form = $('.fl-builder-settings');
+            nonce = form.find( '.uabb-module-raw' ).data( 'uabb-module-nonce' );
+
+            if ( 'undefined' === typeof nonce ) {
+                nonce     = form.find('input[name=ct_raw_nonce]').val();
+            }
 
             $.post(
                 ajaxurl,
                 {
                     action: 'uabb_get_saved_templates',
-                    type: type
+                    type: type,
+                    nonce: nonce,
                 },
                 function( response ) {
                     callback(response);
@@ -134,7 +200,7 @@
             }
 
             this._getTemplates(type, function( data ) {
-                var response = JSON.parse( data );
+                var response = data;
 
                 if ( response.success ) {
                     self._templates[type] = response.data;
@@ -145,6 +211,23 @@
                 }
             });
         },
+        _hideDocs: function() {
+            var form            = $('.fl-builder-settings'),
+            branding_selector   = form.find('#fl-field-uabb_helpful_information .uabb-docs-list');
+            settings_tab        = form.find('.fl-builder-settings-tabs');
+            get_anchor          =  settings_tab.find('a');
+            $( get_anchor ).each(function() {
+
+                if ( '#fl-builder-settings-tab-uabb_docs' === $(this) .attr('href') ) {
+
+                    if ( 'yes' === branding_selector.data('branding') ) {
+                        $( this ).hide();
+                    } else {
+                        $( this ).show();
+                    }
+                }
+            });
+        }
 	});
 
 })(jQuery);

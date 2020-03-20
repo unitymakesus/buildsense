@@ -4,8 +4,8 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: featured image,featured images,bulk set,automatic,thumbnails
 Requires at least: 3.8
 Requires PHP: 5.2
-Tested up to: 5.3
-Stable tag: 13.3.6
+Tested up to: 5.4
+Stable tag: 13.4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -29,11 +29,10 @@ The plugin 'Quick Featured Images' helps you bulk managing featured images, sett
 You get the free version here. If you want to include **audios, videos and custom post types** and get more options then take a look the **Pro version** [Quick Featured Images Pro](https://www.quickfeaturedimages.com/).
 
 = What users said =
+* **&#8220;I&#39;m confused about it. It&#39;s very very very useful!&#8221;** in [Reviews at wordpress.org](https://wordpress.org/support/topic/cool-928/) by yueli on December 19, 2019
 * **&#8220;Doing the job perfect&#8221;** in [Reviews at wordpress.org](https://wordpress.org/support/topic/doing-the-job-perfect/) by stigbarrett on February 14, 2019
 * **&#8220;Must be part of wordpress core&#8221;** in [Reviews at wordpress.org](https://wordpress.org/support/topic/mag-ni-fi-cient-must-be-part-of-wordpress-core/) by Marc73 on November 2, 2018
-* **&#8220;Working great, just as expected, has lost of options. must-have!&#8221;** in [Reviews at wordpress.org](https://wordpress.org/support/topic/working-great-has-lost-of-options/) by Yury on September 17, 2018
 * **&#8220;Simply the best for bulk featured image&#8221;** in [Reviews at wordpress.org](https://wordpress.org/support/topic/simply-the-best-324/) by Syamsul Alam on January 21, 2018
-* **&#8220;Easy, fast and superb!&#8221;** in [Reviews at wordpress.org](https://wordpress.org/support/topic/easy-fast-and-superb/) by alexeyvorobyov1994 on August 29, 2017
 * **&#8220;Made adding 10,000 featured images a breeze.&#8221;** in [Reviews at wordpress.org](https://wordpress.org/support/topic/super-helpful-30/) by synchronista on July 28, 2017
 * **Number 7** in [8 Plugins to Help Supercharge Your WordPress Media Library](https://www.elegantthemes.com/blog/tips-tricks/8-plugins-to-help-supercharge-your-wordpress-media-library) by John Hughes on April 6, 2017
 * Mentioned in a comment of [What are must-have WordPress plugins for developer?](https://www.quora.com/What-are-must-have-WordPress-plugins-for-developer/answer/Joel-Rivera-2) by Joel Rivera on February 7, 2017
@@ -157,11 +156,13 @@ The latter setting is the default. The option is used every time a post is saved
 
 = Easy managing in a sortable image column in posts lists =
 
-Quick Featured Images Pro adds a new column called 'Featured Image' in posts lists. The additional column is sortable by the image ID. It shows the currently assigned **featured image of each post** and **action links to set, replace, edit and remove the featured image at each post**.
+Quick Featured Images adds a new column 'Featured Image' in posts lists. The additional column is sortable by the image ID. It shows the currently assigned **featured image of each post** and **action links to set, replace, edit and remove the featured image at each post**.
 
 With that column you can get a **quick overview about all used images** and a **change featured images at every single post quickly**. You can also see posts with no featured image at a glance.
 
-Under **'Featured Images' &gt; 'Settings'** you can switch on and off the additional image column for every single post type, even custom post types if they support thumbnails.
+Quick Featured Images also adds a new column in the media library. It lists the titles of all posts for which the corresponding image is set as featured images. The post titles are links to the respective post edit page.
+
+Under **'Featured Images' &gt; 'Settings'** you can switch on and off the additional columns for every single post type, even custom post types if they support thumbnails.
 
 = Languages =
 
@@ -288,6 +289,14 @@ If you want to contribute a translation of the plugin in your language it would 
 7. The seventh and last screen: take an overview of your rules for future default featured images.
 
 == Changelog ==
+
+= 13.4.1 =
+* Fixed error in image columns on post overview pages
+
+= 13.4.0 =
+* Added new column in the media library to list at each image for which posts it is set as featured image
+* Refactored user query for 'Default Images'
+* Tested successfully with WordPress 5.3.2
 
 = 13.3.6 =
 * Tested successfully with WordPress 5.3
@@ -511,7 +520,13 @@ Added spanish translation for the main texts of the plugin
 
 == Upgrade Notice ==
 
-= 13.3.6 =
+= 13.4.1 =
+Fixed error in image columns on post overview pages
+
+= 13.4.0 =
+Added new column in the media library to list at each image for which posts it is set as featured image, tested with WordPress 5.3.2
+
+^= 13.3.6 =
 Tested successfully with WordPress 5.3
 
 = 13.3.5 =

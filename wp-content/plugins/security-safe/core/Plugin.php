@@ -98,18 +98,28 @@ class Plugin {
     private static function get_session() {
 
         $session = [];
-        $session['logged_in'] = is_user_logged_in();
+
+        // Get user once
+        $user = wp_get_current_user();
+
+        $session['logged_in'] = $user->exists();
         $session['user'] = false;
 
         if ( $session['logged_in'] ) {
 
-            // Get user once
-            $user = wp_get_current_user();
+            $session['user'] = [];
 
             $new_roles = array_combine( $user->roles, $user->roles );
 
             // Cache roles
             $session['user']['roles'] = $new_roles;
+
+            // Make multi-site compatible
+            if ( is_super_admin( $user->ID ) ) {
+
+                $session['user']['roles']['super_admin'] = 'super_admin';
+
+            }
             
         }
 
