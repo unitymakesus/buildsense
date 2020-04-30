@@ -77,7 +77,7 @@
   },
   "dependencies": {
     "isotope-layout": "^3.0.6",
-    "jquery": "^3.3.1",
+    "jquery": "^3.5.0",
     "lazysizes": "5.1.2",
     "macy": "^2.3.1",
     "materialize-css": "^1.0.0",
