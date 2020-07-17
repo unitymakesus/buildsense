@@ -32,6 +32,10 @@
 				selector 	= nodeClass.find( '.uabb-module-content' );
 				all_filters = selector.data( 'all-filters' );
 
+			var id = window.location.hash.substring( 1 );
+			var pattern = new RegExp( "^[\\w\\-]+$" );
+			var sanitize_input = pattern.test( id );
+
 				if ( selector.length < 1 ) {
 					return;
 				}
@@ -42,6 +46,16 @@
 			
 				var def_cat = '*';
 
+				if( '' !== id && sanitize_input ) {
+					var select_filter = filters.find("[data-filter='" + '.' + id.toLowerCase() + "']");
+
+					if ( select_filter.length > 0 ) {
+						def_cat 	= '.' + id.toLowerCase();
+						select_filter.siblings().removeClass('uabb-filter__current');
+						select_filter.addClass('uabb-filter__current');
+					}
+				}
+
 				if ( filters.length > 0 ) {
 					var def_filter = filters.data( 'default' );
 					def_filter = def_filter.trim();
@@ -51,6 +65,10 @@
 						def_cat 	= def_filter;
 
 						def_cat_sel = filters.find( '[data-filter="' + def_filter + '"]' );
+
+						if ( 0 === def_cat_sel.length ) {
+								return;
+						}
 
 						if ( def_cat_sel.length > 0 ) {
 
@@ -86,6 +104,11 @@
 			var nodeClass  	= jQuery(this.nodeClass);
 				selector 	= nodeClass.find( '.uabb-masonary-content' );
 				all_filters = selector.data( 'all-filters' );
+
+			var id = window.location.hash.substring( 1 );
+			var pattern = new RegExp( "^[\\w\\-]+$" );
+			var sanitize_input = pattern.test( id );
+
 			if ( selector.length < 1 ) {
 				return;
 			}
@@ -96,6 +119,16 @@
 			
 				var def_cat = '*';
 
+				if( '' !== id && sanitize_input ) {
+					var select_filter = filters.find("[data-filter='" + '.' + id.toLowerCase() + "']");
+
+					if ( select_filter.length > 0 ) {
+						def_cat 	= '.' + id.toLowerCase();
+						select_filter.siblings().removeClass('uabb-filter__current');
+						select_filter.addClass('uabb-filter__current');
+					}
+				}
+
 				if ( filters.length > 0 ) {
 					var def_filter = filters.data( 'default' );
 					def_filter = def_filter.trim();
@@ -105,6 +138,10 @@
 						def_cat 	= def_filter;
 
 						def_cat_sel = filters.find( '[data-filter="' + def_filter + '"]' );
+
+						if ( 0 === def_cat_sel.length ) {
+								return;
+						}
 
 						if ( def_cat_sel.length > 0 ) {
 

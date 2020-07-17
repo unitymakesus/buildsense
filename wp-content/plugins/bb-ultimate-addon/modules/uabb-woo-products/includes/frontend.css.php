@@ -25,7 +25,9 @@ $add_cart_bg_color = ( false === strpos( $settings->add_cart_bg_color, 'rgb' ) )
 
 $add_cart_bg_hover_color = ( false === strpos( $settings->add_cart_bg_hover_color, 'rgb' ) ) ? '#' . $settings->add_cart_bg_hover_color : $settings->add_cart_bg_hover_color;
 
-$new_arrow_color = ( false === strpos( $settings->arrow_color, 'rgb' ) ) ? '#' . $settings->arrow_color : $settings->arrow_color;
+$new_arrow_color             = ( false === strpos( $settings->arrow_color, 'rgb' ) ) ? '#' . $settings->arrow_color : $settings->arrow_color;
+$settings->title_hover_color = UABB_Helper::uabb_colorpicker( $settings, 'title_hover_color', true );
+
 
 ?>
 
@@ -210,6 +212,14 @@ $new_arrow_color = ( false === strpos( $settings->arrow_color, 'rgb' ) ) ? '#' .
 	color: <?php echo esc_attr( ( false === strpos( $settings->title_color, 'rgb' ) ) ? '#' . $settings->title_color : $settings->title_color ); ?>;
 
 	<?php echo ( '' !== $settings->title_margin_bottom ) ? 'margin-bottom: ' . esc_attr( $settings->title_margin_bottom ) . 'px;' : ''; ?>
+}
+
+.fl-node-<?php echo esc_attr( $id ); ?> .uabb-woocommerce .uabb-woo-products-summary-wrap .uabb-loop-product__link .woocommerce-loop-product__title:hover {
+	<?php
+	if ( isset( $settings->title_hover_color ) ) {
+		echo ( '' !== $settings->title_hover_color ) ? 'color:' . esc_attr( $settings->title_hover_color ) . ';' : '';
+	}
+	?>
 }
 
 <?php if ( ! $version_bb_check ) { ?>
@@ -432,7 +442,7 @@ $new_arrow_color = ( false === strpos( $settings->arrow_color, 'rgb' ) ) ? '#' .
 				}
 
 				.fl-node-<?php echo esc_attr( $id ); ?> .uabb-woocommerce .woocommerce-loop-product__title {
-					font-size: <?php echoesc_attr( $settings->title_font_size_medium ); ?>px;
+					font-size: <?php echo esc_attr( $settings->title_font_size_medium ); ?>px;
 					line-height: <?php echo esc_attr( $settings->title_line_height_medium ); ?>em;
 				}
 

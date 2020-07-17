@@ -366,10 +366,36 @@ var key_array = new Array();
 
 				e.preventDefault();
 
+				var $form = $(this).closest('form');
+
 				var $thisbutton = $( this ),
 					product_id = $(this).val(),
-					variation_id = $('input[name="variation_id"]').val() || '',
-					quantity = $('input[name="quantity"]').val();
+					variation_id = $('input[name="variation_id"]').val() || '';
+
+				// Set Quantity.
+				// 
+				// For grouped product quantity should be array instead of single value
+				// For that set the quantity as array for grouped product.
+				var quantity = $('input[name="quantity"]').val();
+				if( $scope.find('.woocommerce-grouped-product-list-item' ).length )
+				{
+					var quantities = $('input.qty'),
+						quantity   = [];
+					$.each(quantities, function(index, val) {
+
+						var name = $( this ).attr( 'name' );
+
+						name = name.replace('quantity[','');
+						name = name.replace(']','');
+						name = parseInt( name );
+
+						if( $( this ).val() ) {
+							quantity[ name ] = $( this ).val();
+						}
+					});
+				}
+
+				var cartFormData = $form.serialize();
 
 				if ( $thisbutton.is( '.single_add_to_cart_button' ) ) {
 
@@ -386,14 +412,14 @@ var key_array = new Array();
 							success:function(results) {
 								// Trigger event so themes can refresh other areas.
 								$( document.body ).trigger( 'wc_fragment_refresh' );
-								$( document.body ).trigger( 'uabb_added_to_cart', [ $thisbutton ] );
+								modal_wrap.trigger( 'uabb_added_to_cart', [ $thisbutton ] );
 							}
 						});
 					} else {
 						jQuery.ajax ({
 							url: uabb.ajax_url,
 							type:'POST',
-							data:'action=uabb_add_cart_single_product&product_id=' + product_id + '&quantity=' + quantity + '&security=' + _nonce,
+							data:'action=uabb_add_cart_single_product&product_id=' + product_id + '&quantity=' + quantity + '&security=' + _nonce + '&' + cartFormData,
 
 							success:function(results) {
 								// Trigger event so themes can refresh other areas.

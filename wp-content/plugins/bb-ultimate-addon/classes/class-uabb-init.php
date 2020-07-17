@@ -198,6 +198,7 @@ class UABB_Init {
 
 		require_once BB_ULTIMATE_ADDON_DIR . 'classes/batch-process/class-uabb-batch-process.php';
 		require_once BB_ULTIMATE_ADDON_DIR . 'lib/notices/class-astra-notices.php';
+		require_once BB_ULTIMATE_ADDON_DIR . 'admin/bsf-analytics/class-bsf-analytics.php';
 
 		// Load the appropriate text-domain.
 		$this->load_plugin_textdomain();

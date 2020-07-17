@@ -302,7 +302,14 @@ if ( ! $version_bb_check ) {
 		?>
 	}
 <?php } ?>
-<?php if ( 'yes' === $settings->show_caption ) { ?>
+
+<?php if ( 'always' === $settings->show_caption ) { ?>
+	.fl-node-<?php echo esc_attr( $id ); ?> .uabb-video__gallery-item .uabb-video__caption {
+		opacity: 1;
+	}
+<?php } ?>
+
+<?php if ( 'yes' === $settings->show_caption || 'always' === $settings->show_caption ) { ?>
 	.fl-node-<?php echo esc_attr( $id ); ?> .uabb-video__caption {
 		<?php
 		if ( isset( $settings->caption_color ) ) {
@@ -618,7 +625,7 @@ if ( 'carousel' === $settings->layout && 'yes' === $settings->enable_dots ) {
 			}
 			?>
 		}
-		<?php if ( 'yes' === $settings->show_caption ) { ?>
+		<?php if ( 'yes' === $settings->show_caption || 'always' === $settings->show_caption ) { ?>
 			<?php if ( ! $version_bb_check ) { ?>
 				.fl-node-<?php echo esc_attr( $id ); ?> .uabb-video__caption {
 
@@ -820,7 +827,7 @@ if ( 'carousel' === $settings->layout && 'yes' === $settings->enable_dots ) {
 
 			?>
 		}
-		<?php if ( 'yes' === $settings->show_caption ) { ?>
+		<?php if ( 'yes' === $settings->show_caption || 'always' === $settings->show_caption ) { ?>
 			<?php if ( ! $version_bb_check ) { ?>
 				.fl-node-<?php echo esc_attr( $id ); ?> .uabb-video__caption {
 

@@ -89,13 +89,19 @@ if ( ! function_exists( 'get_bundled_plugins' ) ) {
 		}
 
 		if ( ! is_wp_error( $request ) || wp_remote_retrieve_response_code( $request ) === 200 ) {
-			$brainstrom_bundled_products = get_option( 'brainstrom_bundled_products', array() );
-			$result                      = json_decode( $request['body'] );
-			$bundled                     = $result->bundled;
+			$result  = json_decode( $request['body'] );
+			$bundled = array();
+			$simple  = array();
 
-			if ( empty( $bundled ) ) {
-				$bundled = array();
+			if ( ! empty( $result ) ) {
+				if ( ! empty( $result->bundled ) ) {
+					$bundled = $result->bundled;
+				}
+				if ( ! empty( $result->simple ) ) {
+					$simple = $result->simple;
+				}
 			}
+
 			foreach ( $bundled as $key => $value ) {
 				if ( empty( $value ) ) {
 					unset( $bundled->$key );
@@ -106,13 +112,12 @@ if ( ! function_exists( 'get_bundled_plugins' ) ) {
 			update_option( 'brainstrom_bundled_products', $brainstrom_bundled_products );
 
 			// update 'brainstorm_products'.
-			$simple = json_decode( wp_json_encode( $result->simple ), 1 );
+			$simple = json_decode( wp_json_encode( $simple ), 1 );
 
 			foreach ( $brainstrom_products as $type => $products ) {
 
 				foreach ( $products as $key => $product ) {
-					$old_id       = isset( $product['id'] ) ? $product['id'] : '';
-					$old_template = $product['template'];
+					$old_id = isset( $product['id'] ) ? $product['id'] : '';
 
 					$simple[ $type ][ $old_id ]['template']     = isset( $brainstrom_products[ $type ][ $old_id ]['template'] ) ? $brainstrom_products[ $type ][ $old_id ]['template'] : '';
 					$simple[ $type ][ $old_id ]['remote']       = isset( $simple[ $type ][ $old_id ]['version'] ) ? $simple[ $type ][ $old_id ]['version'] : '';
@@ -125,17 +130,6 @@ if ( ! function_exists( 'get_bundled_plugins' ) ) {
 
 			update_option( 'brainstrom_products', $simple );
 		}
-	}
-}
-
-if ( false === get_site_transient( 'bsf_get_bundled_products' ) ) {
-	if ( true === bsf_time_since_last_versioncheck( 168, 'bsf_local_transient_bundled' ) ) {
-		global $ultimate_referer, $bsf_theme_template;
-		$ultimate_referer = 'on-bundled-products-transient-delete';
-		$template         = ( is_multisite() ) ? $bsf_theme_template : get_template();
-		get_bundled_plugins( $template );
-		update_option( 'bsf_local_transient_bundled', current_time( 'timestamp' ) );
-		set_site_transient( 'bsf_get_bundled_products', true, WEEK_IN_SECONDS );
 	}
 }
 

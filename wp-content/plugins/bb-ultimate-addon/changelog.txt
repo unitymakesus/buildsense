@@ -1,3 +1,46 @@
+Version 1.27.0 Wednesday, 24th June 2020
+- New: Introduced Devices module
+- Improvement: Advanced Tab - Added focus color settings
+- Improvement: Contact Form - Added reCAPTCHA v3 support
+- Improvement: Gravity Form Styler - Added style support for the labels and multi-step navigation text
+- Improvement: Off-Canvas - Added Sub Menu toggle option for Menu Content Type
+- Fixed: Advanced Menu - JS error when Custom Breakpoints field is empty
+- Fixed: Interactive Banner 2 - CSS conflict with the custom height settings
+- Fixed: Social Share - Pinterest Share not working due to use missing image
+- Fixed: Gravity Forms Styler - Hide form title & description on submit
+- Fixed: Woo-Products - Add To Cart success message not displayed in Quick View for Variable Products
+
+Version 1.26.7 Monday, 15th June 2020
+- New: Users can now share non-personal usage data to help us test and develop better products. ( <a href="https://store.brainstormforce.com/usage-tracking/?utm_source=changelog&utm_medium=changelog&utm_campaign=usage_tracking" target="_blank" rel="noopener">Know More</a> )
+- Improvement: Added font-display property for Ultimate Icons to improve PageSpeed score
+
+Version 1.26.6 Tuesday, 9th June 2020
+- Improvement: Login Form - Added loader icon for Google and Facebook login buttons.
+- Improvement: Photo Gallery - Added functionality to open a specific Filterable Tab from URL.
+- Improvement: User Registration Form - Added optional Terms and Conditions to comply with GDPR.
+- Fixed: Default Button padding issue with few themes.
+- Fixed: Dual Button - Padding setting not working when Button Style set to Default.
+- Fixed: Login Form - View password option alignment issue.
+- Fixed: User Registration Form - Allowed usage of multiple Registration Forms on the same page.
+- Fixed: Video Gallery - Videos in Filterable Tabs are not loaded when Row ID is used in the URL.
+- Fixed: Woo-Products - Grouped products not getting added to cart from quick view.
+
+Version 1.26.5 Tuesday, 12th May 2020
+- Improvement: FAQ - Added accessibility support for Accordion Layout
+- Improvement: Image Carousel - Added option to enable/disable on-hover-pause for slider
+- Improvement: Image Carousel - Added option to disable arrows on small devices
+- Improvement: Registration Form - Added Password match functionality for Confirm Password
+- Improvement: Video gallery - Added an option to display Caption Always 
+- Improvement: Woo-Products - Added Main Query option for Source
+- Fixed: Button - HTML rendering issue in the settings field
+- Fixed: Off-canvas - Off-canvas won't trigger on Firefox version less than 65
+- Fixed: Login Form - Wrong label for password input field
+- Fixed: Woo-Products - Title Hover Color not working
+- Fixed: Woo-Products - Issue with older Beaver Builder version (less than v2.2)
+
+Version 1.26.4 Tuesday, 5th May 2020
+- Security Fix: Registration Form - Allow user registration if anyone can register option is enabled from the WordPress backend
+
 Version 1.26.3 Thursday, 23rd April 2020
 - Improvement: Advanced Tabs - Added option Active Tab index for default active tab
 - Improvement: Advanced Tab - Added vertical tabs layout

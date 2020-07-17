@@ -73,7 +73,7 @@ class UABBFAQModule extends FLBuilderModule {
 
 		if ( esc_attr( $this->settings->icon_position ) === $pos && ( '' !== esc_attr( $this->settings->open_icon ) || '' !== esc_attr( $this->settings->close_icon ) ) ) {
 
-				$output  = '<div class="uabb-faq-icon-wrap">';
+				$output  = '<div class="uabb-faq-icon-wrap" tabindex="0" >';
 				$output .= '<i class="uabb-faq-button-icon ' . esc_attr( $this->settings->close_icon ) . '"></i>';
 				$output .= '</div>';
 			return $output;

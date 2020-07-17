@@ -102,6 +102,27 @@ if ( ! class_exists( 'BB_Ultimate_Addon_Helper' ) ) {
 				add_filter( 'bsf_product_icons_uabb', array( $this, 'uabb_plugin_icon_url' ) );
 			}
 			add_action( 'init', __CLASS__ . '::uabb_get_branding_for_docs' );
+
+			if ( isset( self::$is_branding_enabled ) && 'yes' === self::$is_branding_enabled ) {
+				add_filter( 'bsf_white_label_options', array( $this, 'uabb_bsf_analytics_white_label' ) );
+			}
+
+		}
+
+		/**
+		 * Return White Label status to BSF Analytics.
+		 * Return true if the White Label is enabled from UABB to the BSF Analytics library.
+		 *
+		 * @since 1.26.7
+		 * @param array $bsf_analytics_wl_arr array of white labeled products.
+		 * @return array product name with white label status.
+		 */
+		public function uabb_bsf_analytics_white_label( $bsf_analytics_wl_arr ) {
+			if ( ! isset( $bsf_analytics_wl_arr['uabb'] ) ) {
+				$bsf_analytics_wl_arr['uabb'] = true;
+			}
+
+			return $bsf_analytics_wl_arr;
 		}
 
 		/**
@@ -319,6 +340,7 @@ if ( ! class_exists( 'BB_Ultimate_Addon_Helper' ) ) {
 				'uabb-login-form'          => 'Login Form',
 				'uabb-how-to'              => 'How To',
 				'uabb-faq'                 => 'FAQ',
+				'uabb-devices'             => 'Devices',
 			);
 
 			/* Include Contact form styler */

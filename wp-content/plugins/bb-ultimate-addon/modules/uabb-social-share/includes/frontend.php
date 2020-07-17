@@ -36,10 +36,11 @@ if ( count( $settings->social_icons ) > 0 ) {
 			case 'google':
 							$url = 'https://plus.google.com/share?url=' . $current_page;
 				break;
-
 			case 'pinterest':
-							$url = 'https://pinterest.com/pin/create/link/?url=' . $current_page;
+							$pin_image_url = get_the_post_thumbnail_url();
+							$url           = 'https://www.pinterest.com/pin/create/link/?url=' . $current_page . '&media=' . $pin_image_url;
 				break;
+
 			case 'linkedin':
 							$url = 'https://www.linkedin.com/shareArticle?url=' . $current_page;
 				break;

@@ -33,6 +33,12 @@
     display: block;
     position: relative
 }
+/* Image fit for the custom height settings */
+
+.uabb-new-ib .uabb-new-ib-img {
+    max-height: 100% !important;
+    object-fit: cover;
+}
 .uabb-new-ib {
     z-index: 1;
     overflow: hidden;

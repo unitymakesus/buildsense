@@ -12,6 +12,7 @@ jQuery(document).ready(function( $ ) {
 			id: '<?php echo esc_attr( $id ); ?>',
 			infinite: <?php echo esc_attr( ( 'yes' === $settings->infinite_loop ) ? 'true' : 'false' ); ?>,
 			arrows: <?php echo esc_attr( ( 'yes' === $settings->enable_arrow ) ? 'true' : 'false' ); ?>,
+			responsive_arrows: <?php echo esc_attr( ( 'yes' === $settings->enable_arrow_resp ) ? 'false' : 'true' ); ?>,
 
 			desktop: <?php echo esc_attr( $settings->grid_column ); ?>,
 			medium: <?php echo esc_attr( $settings->medium_grid_column ); ?>,
@@ -19,6 +20,7 @@ jQuery(document).ready(function( $ ) {
 
 			slidesToScroll: <?php echo esc_attr( ( '' !== $settings->slides_to_scroll ) ? $settings->slides_to_scroll : 1 ); ?>,
 			autoplay: <?php echo esc_attr( ( 'yes' === $settings->autoplay ) ? 'true' : 'false' ); ?>,
+			onhover: <?php echo esc_attr( ( 'yes' === $settings->pause_on_hover ) ? 'true' : 'false' ); ?>,
 			autoplaySpeed: <?php echo esc_attr( ( '' !== $settings->animation_speed ) ? $settings->animation_speed : '1000' ); ?>,
 			small_breakpoint: <?php echo esc_attr( $global_settings->responsive_breakpoint ); ?>,
 			medium_breakpoint: <?php echo esc_attr( $global_settings->medium_breakpoint ); ?>,

@@ -314,7 +314,13 @@ if ( ! $version_bb_check ) {
 		color: <?php echo esc_attr( $settings->label_color ); ?>;
 	<?php } ?>
 }
+.fl-node-<?php echo esc_attr( $id ); ?> .uabb-gf-style form .gform_body .gfield_label,
+.fl-node-<?php echo esc_attr( $id ); ?> .uabb-gf-style form .gf_progressbar_title,
+.fl-node-<?php echo esc_attr( $id ); ?> .uabb-gf-style form .gf_page_steps {
 
+	margin-bottom: <?php echo esc_attr( $settings->form_label_margin_bottom ); ?>px;
+
+}
 <?php if ( ! $version_bb_check ) { ?>
 	.fl-node-<?php echo esc_attr( $id ); ?> .gform_wrapper .gfield .ginput_container span label {
 

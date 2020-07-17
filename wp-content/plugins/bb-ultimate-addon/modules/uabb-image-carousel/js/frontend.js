@@ -7,8 +7,10 @@
 
         this.infinite          = settings.infinite;
         this.arrows            = settings.arrows;
+        this.arrows_responsive = settings.responsive_arrows;
         this.slidesToScroll    = settings.slidesToScroll;
         this.autoplay          = settings.autoplay;
+        this.on_pause_hover    = settings.onhover;
         this.autoplaySpeed     = settings.autoplaySpeed;
 
         this.desktop           = settings.desktop;
@@ -19,7 +21,7 @@
         this.small_breakpoint  = settings.small_breakpoint;
         this.next_arrow = settings.next_arrow;
         this.prev_arrow = settings.prev_arrow;
-
+        
         /* Execute when slick initialize */
         $( this.nodeClass ).find( '.uabb-image-carousel' ).on('init', $.proxy( this._adaptiveImageHeight, this ) );
 
@@ -56,6 +58,7 @@
                 slidesToShow: this.desktop,
                 slidesToScroll: this.slidesToScroll,
                 autoplay: this.autoplay,
+                pauseOnHover:this.on_pause_hover,
                 autoplaySpeed: this.autoplaySpeed,
                 adaptiveHeight: true,
                 prevArrow: '<button type="button" data-role="none" class="slick-prev" aria-label="Previous" tabindex="0" role="button"><i class=" '+ this.prev_arrow +' "></i></button>',
@@ -70,7 +73,8 @@
                     {
                         breakpoint: this.small_breakpoint,
                         settings: {
-                            slidesToShow: this.small
+                            slidesToShow: this.small,
+                            arrows: this.arrows_responsive
                         }
                     }
                 ]

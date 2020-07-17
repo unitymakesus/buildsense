@@ -686,11 +686,12 @@ FLBuilder::register_module(
 						),
 						'show_caption'                   => array(
 							'type'    => 'select',
-							'label'   => __( 'Show Caption on Hover', 'uabb' ),
+							'label'   => __( 'Show Caption', 'uabb' ),
 							'default' => 'no',
 							'options' => array(
-								'yes' => __( 'Yes', 'uabb' ),
-								'no'  => __( 'No', 'uabb' ),
+								'no'     => __( 'No', 'uabb' ),
+								'yes'    => __( 'On Hover', 'uabb' ),
+								'always' => __( 'Always', 'uabb' ),
 							),
 							'toggle'  => array(
 								'yes' => array(
@@ -1023,7 +1024,7 @@ FLBuilder::register_settings_form(
 								'type'        => 'text',
 								'label'       => __( 'Caption', 'uabb' ),
 								'default'     => 'First Video',
-								'help'        => __( 'This title will be visible on hover.', 'uabb' ),
+								'help'        => __( 'This title will be for the Videos.', 'uabb' ),
 								'connections' => array( 'string', 'html' ),
 							),
 							'tags'               => array(
