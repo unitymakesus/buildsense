@@ -1,3 +1,33 @@
+Version 1.26.3 Thursday, 23rd April 2020
+- Improvement: Advanced Tabs - Added option Active Tab index for default active tab
+- Improvement: Advanced Tab - Added vertical tabs layout
+- Improvement: Button - UI & UX improvement in module
+- Improvement: Login Form - Added loader icon when user clicks login button
+- Improvement: Login Form - Added View Password option
+- Improvement: Modal Popup - Added Border setting option
+- Fixed: HTML rendering issue in settings field in some modules
+- Fixed: Retina Image - Issue with the image width
+- Fixed: Slide Box - Issue with WPML plugin with CTA Button
+
+Version 1.26.2 - Thursday, 9th April 2020
+- Improvement: Added accessibility support for modules.
+- Improvement: Hardened the security of the plugin.
+- Improvement: Particle Backgrounds - Optimised Row / Column JavaScript.
+- Fixed: Button - Button text hover color not working with Transparent style.
+- Fixed: Interactive Banner 2 - Connection field issue fixed.
+- Fixed: Price List - WPML Translation not working issue fixed.
+- Fixed: Woo-Products - Custom flash content not working for variable products.
+- Fixed: Woo-Products - UI issue with BB theme.
+
+Version 1.26.1 - Thursday, 26th March 2020
+- Improvement: Button - Added focus style effect to the background color, text color, and border-color
+- Improvement: FAQ - Added equal height setting for the grid style
+- Fixed: Advanced Posts - Post content border settings not working
+- Fixed: Contact Form - Message required field setting not working
+- Fixed: Retina Image - Issue with Beaver Themer when header set to sticky
+- Fixed: Slide box - Drop down icon doesn't change in style 2 settings
+- Fixed: Woo Products - Quick View add to cart button not working
+
 Version 1.26.0 - Wednesday, 11th March 2020
 - New: Introduced Caldera Form Styler
 - Improvement: Business Reviews - Added a filter to change the review date format

@@ -72,11 +72,17 @@ function ga_google_analytics_tracking_code() {
 	
 }
 
+
+
+
+
 function ga_google_analytics_universal() {
 	
 	extract(ga_google_analytics_options());
 	
 	$custom_code = ga_google_analytics_custom_code($custom_code);
+	
+	$auto = apply_filters('ga_google_analytics_enable_auto', true) ? ", 'auto'" : "";
 	
 	$ga_display = "ga('require', 'displayfeatures');";
 	$ga_link    = "ga('require', 'linkid');";
@@ -90,7 +96,7 @@ function ga_google_analytics_universal() {
 			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 			})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-			ga('create', '<?php echo $tracking_id; ?>', 'auto'<?php if ($tracker_object) echo ', '. $tracker_object; ?>);
+			ga('create', '<?php echo $tracking_id; ?>'<?php echo $auto; if ($tracker_object) echo ', '. $tracker_object; ?>);
 			<?php 
 				if ($custom_code) echo $custom_code . "\n\t\t\t";
 				if ($display_ads) echo $ga_display  . "\n\t\t\t";
@@ -103,6 +109,11 @@ function ga_google_analytics_universal() {
 	<?php
 	
 }
+
+
+
+
+
 
 function ga_google_analytics_global() {
 	
@@ -218,7 +229,7 @@ function ga_google_analytics_options() {
 	// $options, $tracking_id, $location, $tracking_method, $universal, $display_ads, $link_attr, $anonymize, 
 	// $force_ssl, $admin_area, $disable_admin, $custom_location, $tracker_object, $custom_code, $custom
 	
-	return array(
+	$options_array = array(
 		
 		'options'         => $options,
 		'tracking_id'     => $tracking_id,
@@ -236,5 +247,7 @@ function ga_google_analytics_options() {
 		'custom_code'     => $custom_code,
 		'custom'          => $custom
 	);
+	
+	return apply_filters('ga_google_analytics_options_array', $options_array);
 	
 }

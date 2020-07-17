@@ -9,9 +9,9 @@ Author URI: https://plugin-planet.com/
 Donate link: https://monzillamedia.com/donate.html
 Contributors: specialk
 Requires at least: 4.1
-Tested up to: 5.3
-Stable tag: 20191109
-Version: 20191109
+Tested up to: 5.4
+Stable tag: 20200325
+Version: 20200325
 Requires PHP: 5.6.20
 Text Domain: ga-google-analytics
 Domain Path: /languages
@@ -264,6 +264,17 @@ If you like GA Google Analytics, please take a moment to [give a 5-star rating](
 
 > New Pro version available! Check out [GA Pro &raquo;](https://plugin-planet.com/ga-google-analytics-pro/)
 
+
+**20200325**
+
+* Fixes bug with `auto` parameter
+* Tests on WordPress 5.4
+
+**20200319**
+
+* Adds filter hook `ga_google_analytics_options_array`
+* Adds filter hook `ga_google_analytics_enable_auto`
+* Tests on WordPress 5.4
 
 **20191109**
 
