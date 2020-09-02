@@ -255,8 +255,13 @@ final class FLBuilder {
 	}
 
 	static public function rich_edit() {
+		global $wp_version;
 		if ( FLBuilderModel::is_builder_active() ) {
-			add_filter( 'get_user_option_rich_editing', '__return_true' );
+			if ( version_compare( $wp_version, '5.4.99', '<' ) ) {
+				add_filter( 'get_user_option_rich_editing', '__return_true' );
+			} else {
+				add_filter( 'user_can_richedit', '__return_true' ); // WP 5.5
+			}
 		}
 	}
 
@@ -1730,7 +1735,9 @@ final class FLBuilder {
 		}
 
 		// Add srcset attrs to images with the class wp-image-<ID>.
-		if ( function_exists( 'wp_make_content_images_responsive' ) ) {
+		if ( function_exists( 'wp_filter_content_tags' ) ) {
+			$content = wp_filter_content_tags( $content );
+		} else if ( function_exists( 'wp_make_content_images_responsive' ) ) {
 			$content = wp_make_content_images_responsive( $content );
 		}
 

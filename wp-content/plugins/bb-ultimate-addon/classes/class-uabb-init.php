@@ -335,15 +335,6 @@ class UABB_Init {
 	 */
 	public function load_scripts() {
 
-		$uabb_localize = apply_filters(
-			'uabb_js_localize',
-			array(
-				'ajax_url' => admin_url( 'admin-ajax.php' ),
-			)
-		);
-
-		wp_localize_script( 'jquery', 'uabb', $uabb_localize );
-
 		if ( FLBuilderModel::is_builder_active() ) {
 
 			wp_enqueue_style( 'uabb-builder-css', BB_ULTIMATE_ADDON_URL . 'assets/css/uabb-builder.css', array(), BB_ULTIMATE_ADDON_VER );

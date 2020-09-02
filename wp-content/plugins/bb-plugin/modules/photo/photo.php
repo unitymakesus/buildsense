@@ -365,7 +365,8 @@ class FLPhotoModule extends FLBuilderModule {
 		if ( $this->_has_source() && null === $this->_editor ) {
 
 			$url_path  = $this->_get_uncropped_url();
-			$file_path = str_ireplace( home_url(), ABSPATH, $url_path );
+
+			$file_path = trailingslashit( WP_CONTENT_DIR ) . ltrim( str_replace( basename( WP_CONTENT_DIR ), '', wp_make_link_relative( $url_path ) ), '/' );
 
 			if ( fl_builder_filesystem()->file_exists( $file_path ) ) {
 				$this->_editor = wp_get_image_editor( $file_path );

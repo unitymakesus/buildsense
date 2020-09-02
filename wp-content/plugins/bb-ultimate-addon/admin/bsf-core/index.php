@@ -55,6 +55,7 @@ require_once 'auto-update/admin-functions.php';
 require_once 'auto-update/updater.php';
 require_once 'class-bsf-update-manager.php';
 require_once 'class-bsf-license-manager.php';
+require_once 'classes/class-bsf-extension-installer.php';
 
 require_once 'classes/class-bsf-core-update.php';
 
@@ -365,19 +366,6 @@ if ( ! function_exists( 'init_bsf_core' ) ) {
 
 add_action( 'admin_init', 'init_bsf_core' );
 
-if ( is_multisite() ) {
-	$brainstrom_products = ( get_option( 'brainstrom_products' ) ) ? get_option( 'brainstrom_products' ) : array();
-	if ( ! empty( $brainstrom_products ) ) {
-		$bsf_product_themes = ( isset( $brainstrom_products['themes'] ) ) ? $brainstrom_products['themes'] : array();
-		if ( ! empty( $bsf_product_themes ) ) {
-			foreach ( $bsf_product_themes as $theme_id => $theme ) {
-				global $bsf_theme_template;
-				$template           = $theme['template'];
-				$bsf_theme_template = $template;
-			}
-		}
-	}
-}
 // assets.
 add_action( 'admin_enqueue_scripts', 'register_bsf_core_admin_styles', 1 );
 if ( ! function_exists( 'register_bsf_core_admin_styles' ) ) {

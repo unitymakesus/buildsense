@@ -902,6 +902,9 @@ if ( $global_settings->responsive_enabled ) { // Global Setting If started.
 <?php if ( 'accordion' === $settings->responsive ) : ?>
 	<?php $responsive_breakpoint = ( '' !== $settings->responsive_breakpoint ) ? $settings->responsive_breakpoint : $global_settings->responsive_breakpoint; ?>
 	@media ( max-width: <?php echo esc_attr( $responsive_breakpoint ); ?>px ) {
+		.fl-node-<?php echo esc_attr( $id ); ?> .uabb-tabs-layout-vertical .uabb-content-wrap {
+			width: 100%;
+		}
 		.fl-node-<?php echo esc_attr( $id ); ?> .uabb-tabs-nav<?php echo esc_attr( $id ); ?> {
 			display: none;
 		}

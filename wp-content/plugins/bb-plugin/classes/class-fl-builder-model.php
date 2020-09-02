@@ -4219,6 +4219,9 @@ final class FLBuilderModel {
 			}
 		}
 
+		// Flush the cache so new meta is returned in wp meta functions.
+		wp_cache_flush();
+
 		// Duplicate post terms.
 		$taxonomies = get_object_taxonomies( $post->post_type );
 

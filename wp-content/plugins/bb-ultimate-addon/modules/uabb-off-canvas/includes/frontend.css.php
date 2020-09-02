@@ -6,6 +6,11 @@
  */
 
 $version_bb_check = UABB_Compatibility::$version_bb_check;
+if ( FLBuilder::fa5_pro_enabled() ) {
+	$font_family = 'Font Awesome 5 Pro';
+} else {
+	$font_family = 'Font Awesome 5 Free';
+}
 
 $settings->page_overlay        = UABB_Helper::uabb_colorpicker( $settings, 'page_overlay', true );
 $settings->menu_color          = UABB_Helper::uabb_colorpicker( $settings, 'menu_color', true );
@@ -506,7 +511,7 @@ if ( 'arrows' === $settings->submenu_toggle ) {
 	}
 	.fl-node-<?php echo esc_attr( $id ); ?> .uabb-offcanvas-menu .uabb-menu-toggle:before {
 		content: '\f107';
-		font-family: 'Font Awesome 5 Free';
+		font-family: '<?php echo esc_attr( $font_family ); ?>';
 		z-index: 1;
 		font-size: inherit;
 		line-height: 0;
@@ -523,7 +528,7 @@ if ( 'arrows' === $settings->submenu_toggle ) {
 	}
 	.fl-node-<?php echo esc_attr( $id ); ?> .uabb-offcanvas-menu .uabb-menu-toggle:before {
 		content: '\f067';
-		font-family: 'Font Awesome 5 Free';
+		font-family: '<?php echo esc_attr( $font_family ); ?>';
 		font-size: 0.7em;
 		z-index: 1;
 		font-weight: 900;

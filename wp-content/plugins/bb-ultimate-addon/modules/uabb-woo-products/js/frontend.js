@@ -15,6 +15,9 @@ var key_array = new Array();
 		this.nodeClass		= '.fl-node-' + settings.id;
 		this.nodeScope		= $( '.fl-node-' + settings.id );
 		this.ajaxurl		= settings.ajaxurl;
+		this.is_cart	    = settings.is_cart;
+		this.view_cart	    = settings.view_cart;
+		this.cart_url	    = settings.cart_url;
 		this.layout			= settings.layout;
 		this.skin			= settings.skin;
 
@@ -30,7 +33,8 @@ var key_array = new Array();
 		this.small_breakpoint	= settings.small_breakpoint;
 		this.small				= settings.small;
 		this.next_arrow = settings.next_arrow;
-    this.prev_arrow = settings.prev_arrow;
+    	this.prev_arrow = settings.prev_arrow;
+    	this.is_single_product = "";
 
     	_nonce = this.nodeScope.find('.uabb-woo-products').data( 'nonce' );
 
@@ -64,6 +68,7 @@ var key_array = new Array();
 			}
 			var curr = parseInt( $scope.find( '.uabb-woocommerce-pagination .page-numbers.current' ).html() );
 			var _nonce = $( '.fl-node-' + settings.id ).find('.uabb-woo-products').data( 'nonce' );
+			var ajaxurl = this.ajaxurl;
 
 			if ( $( this ).hasClass( 'next' ) ) {
 				page_number = curr + 1;
@@ -74,7 +79,7 @@ var key_array = new Array();
 			}
 
 			$.ajax({
-				url: uabb.ajax_url,
+				url: ajaxurl,
 				data: {
 					action: 'uabb_get_products',
 					settings: module_settings,
@@ -417,7 +422,7 @@ var key_array = new Array();
 						});
 					} else {
 						jQuery.ajax ({
-							url: uabb.ajax_url,
+							url: self.ajaxurl,
 							type:'POST',
 							data:'action=uabb_add_cart_single_product&product_id=' + product_id + '&quantity=' + quantity + '&security=' + _nonce + '&' + cartFormData,
 
@@ -442,9 +447,9 @@ var key_array = new Array();
 					$(button).addClass( 'added' );
 
 					// View cart text.
-					if ( ! uabb.is_cart && $(button).parent().find( '.added_to_cart' ).length === 0  && uabb.is_single_product) {
-						$(button).after( ' <a href="' + uabb.cart_url + '" class="added_to_cart wc-forward" title="' +
-							uabb.view_cart + '">' + uabb.view_cart + '</a>' );
+					if ( ! this.is_cart && $(button).parent().find( '.added_to_cart' ).length === 0  && this.is_single_product) {
+						$(button).after( ' <a href="' + this.cart_url + '" class="added_to_cart wc-forward" title="' +
+							this.view_cart + '">' + this.view_cart + '</a>' );
 					}
 
 
@@ -495,7 +500,7 @@ var key_array = new Array();
 				$thisbutton.addClass( 'loading' );
 
 				jQuery.ajax ({
-					url: uabb.ajax_url,
+					url: self.ajaxurl,
 					type:'POST',
 					data:'action=uabb_add_cart_single_product&product_id=' + product_id + '&quantity=' + quantity + '&security=' + _nonce,
 

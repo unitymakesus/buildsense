@@ -5,18 +5,9 @@
  *  @package UABB FAQ
  */
 
+$module->render_schema( true );
 ?>
 <div class="uabb-faq-module uabb-faq-layout-<?php echo esc_attr( $settings->layout_style ); ?> uabb__faq-layout-<?php echo esc_attr( $settings->faq_layout ); ?>" >
-	<?php
-	if ( 'yes' === esc_attr( $settings->enable_schema ) ) {
-		?>
-			<script type="application/ld+json">
-					<?php echo $module->render_schema(); //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-			</script>
-
-		<?php
-	}
-	?>
 	<?php if ( 'accordion' === esc_attr( $settings->faq_layout ) ) { ?>
 		<div class="<?php echo ( FLBuilderModel::is_builder_active() ) ? 'uabb-faq-edit ' : ''; ?>uabb-module-content uabb-faq-module uabb-faq__layout-accordion
 								<?php
