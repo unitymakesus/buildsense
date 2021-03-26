@@ -37,6 +37,7 @@ var key_array = new Array();
     	this.is_single_product = "";
 
     	_nonce = this.nodeScope.find('.uabb-woo-products').data( 'nonce' );
+    	var ajaxurl = this.ajaxurl;
 
 
 		key_array.push({'id' : settings.id, 'set' : settings.module_settings});
@@ -68,7 +69,6 @@ var key_array = new Array();
 			}
 			var curr = parseInt( $scope.find( '.uabb-woocommerce-pagination .page-numbers.current' ).html() );
 			var _nonce = $( '.fl-node-' + settings.id ).find('.uabb-woo-products').data( 'nonce' );
-			var ajaxurl = this.ajaxurl;
 
 			if ( $( this ).hasClass( 'next' ) ) {
 				page_number = curr + 1;

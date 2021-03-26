@@ -535,10 +535,10 @@ class FLBuilderUISettingsForms {
 		$meta           = wp_get_attachment_metadata( $id );
 		$sizes          = array();
 		$possible_sizes = apply_filters( 'image_size_names_choose', array(
-			'thumbnail' => __( 'Thumbnail' ),
-			'medium'    => __( 'Medium' ),
-			'large'     => __( 'Large' ),
-			'full'      => __( 'Full Size' ),
+			'thumbnail' => __( 'Thumbnail', 'fl-builder' ),
+			'medium'    => __( 'Medium', 'fl-builder' ),
+			'large'     => __( 'Large', 'fl-builder' ),
+			'full'      => __( 'Full Size', 'fl-builder' ),
 		) );
 
 		if ( isset( $meta['sizes'] ) ) {
@@ -808,7 +808,7 @@ class FLBuilderUISettingsForms {
 	 * @param object $settings The settings data.
 	 * @return array
 	 */
-	static public function render_settings( $form = array(), $settings ) {
+	static public function render_settings( $form, $settings ) {
 		$defaults = array(
 			'class'    => '',
 			'attrs'    => '',
@@ -823,7 +823,7 @@ class FLBuilderUISettingsForms {
 		 * Legacy filter for the config.
 		 * @see fl_builder_settings_form_config
 		 */
-		$form = apply_filters( 'fl_builder_settings_form_config', array_merge( $defaults, $form ) );
+		$form = apply_filters( 'fl_builder_settings_form_config', array_merge( $defaults, (array) $form ) );
 
 		// Setup the class var to be safe in JS.
 		$form['className'] = $form['class'];

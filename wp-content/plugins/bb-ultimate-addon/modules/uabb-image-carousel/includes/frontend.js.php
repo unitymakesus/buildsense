@@ -12,7 +12,6 @@ jQuery(document).ready(function( $ ) {
 			id: '<?php echo esc_attr( $id ); ?>',
 			infinite: <?php echo esc_attr( ( 'yes' === $settings->infinite_loop ) ? 'true' : 'false' ); ?>,
 			arrows: <?php echo esc_attr( ( 'yes' === $settings->enable_arrow ) ? 'true' : 'false' ); ?>,
-			responsive_arrows: <?php echo esc_attr( ( 'yes' === $settings->enable_arrow_resp ) ? 'false' : 'true' ); ?>,
 
 			desktop: <?php echo esc_attr( ( 'slide' === $settings->scroll_effect ) ? $settings->grid_column : 1 ); ?>,
 			medium: <?php echo esc_attr( ( 'slide' === $settings->scroll_effect ) ? $settings->medium_grid_column : 1 ); ?>,

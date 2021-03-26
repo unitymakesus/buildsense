@@ -135,7 +135,7 @@ class FLPostSliderModule extends FLBuilderModule {
 	/**
 	 * The uncropped url.
 	 *
-	 * Get's a post ID and returns the uncropped url for its featured image.
+	 * Gets a post ID and returns the uncropped url for its featured image.
 	 *
 	 * @param  int $id    The post ID.
 	 * @since  1.5.9
@@ -166,7 +166,7 @@ class FLPostSliderModule extends FLBuilderModule {
 	/**
 	 * Render thumbnail image.
 	 *
-	 * Get's the post ID and renders the html markup for the featured image
+	 * Gets the post ID and renders the html markup for the featured image
 	 * in the desired cropped size.
 	 *
 	 * @param  int $id    The post ID.
@@ -178,7 +178,7 @@ class FLPostSliderModule extends FLBuilderModule {
 		// check if image_type is set
 		if ( isset( $this->settings->image_type ) ) {
 
-			// check if the choosed image type for featured image is "thumb" or "background"
+			// check if the chosen image type for featured image is "thumb" or "background"
 			if ( 'thumb' == $this->settings->image_type ) {
 
 				// get image source and data
@@ -197,6 +197,9 @@ class FLPostSliderModule extends FLBuilderModule {
 					'photo'        => $photo_data,
 					'photo_src'    => $src,
 					'photo_source' => 'library',
+					'attributes'   => array(
+						'loading' => 'false',
+					),
 				);
 
 				// render image
@@ -218,7 +221,7 @@ class FLPostSliderModule extends FLBuilderModule {
 	/**
 	 * Render thumbnail image for mobile.
 	 *
-	 * Get's the post ID and renders the html markup for the featured image
+	 * Gets the post ID and renders the html markup for the featured image
 	 * in the desired cropped size.
 	 *
 	 * @param  int $id    The post ID.
@@ -230,7 +233,7 @@ class FLPostSliderModule extends FLBuilderModule {
 		// check if image_type is set
 		if ( isset( $this->settings->image_type ) ) {
 
-			// check if "background" is choosed as image type for featured image
+			// check if "background" is chosen as image type for featured image
 			if ( 'background' == $this->settings->image_type ) {
 
 				// get image source and data
@@ -245,6 +248,9 @@ class FLPostSliderModule extends FLBuilderModule {
 					'photo'        => $photo_data,
 					'photo_src'    => $src,
 					'photo_source' => 'library',
+					'attributes'   => array(
+						'loading' => 'false',
+					),
 				);
 
 				// render image
@@ -261,7 +267,7 @@ class FLPostSliderModule extends FLBuilderModule {
 	/**
 	 * Render slider title.
 	 *
-	 * Get's the post ID and renders the html markup for the slider title
+	 * Gets the post ID and renders the html markup for the slider title
 	 *
 	 * @param  int $id    The post ID.
 	 * @since  1.5.9
@@ -269,7 +275,7 @@ class FLPostSliderModule extends FLBuilderModule {
 	 */
 	public function render_post_title( $id ) {
 
-		// get choosed tag, otherwise set default to h2
+		// get chosen tag, otherwise set default to h2
 		$tag = ! empty( $this->settings->title_tag ) ? $this->settings->title_tag : 'h2';
 
 		// build markup
@@ -288,7 +294,7 @@ class FLPostSliderModule extends FLBuilderModule {
 	/**
 	 * Get slider css class.
 	 *
-	 * Get's the post ID, checks if the post has a thumbnail and the image_type
+	 * Gets the post ID, checks if the post has a thumbnail and the image_type
 	 * setting, and then returns the specific slider class.
 	 *
 	 * @param  int $id    The post ID.
@@ -311,6 +317,27 @@ class FLPostSliderModule extends FLBuilderModule {
 		}
 	}
 
+	/**
+	 * Renders the CSS class for each post item.
+	 *
+	 * @since 2.4
+	 * @return void
+	 */
+	public function render_post_class() {
+		$settings = $this->settings;
+		$classes  = array();
+
+		$classes[] = 'fl-post-slider-post';
+		$classes[] = 'fl-post-slider-' . $this->get_slider_class( get_the_ID() );
+
+		if ( isset( $settings->show_thumb ) && 'show' === $settings->show_thumb ) {
+			$classes[] = 'fl-post-slider-has-image';
+		}
+
+		$classes[] = 'swiper-slide';
+
+		post_class( apply_filters( 'fl_builder_post_slider_classes', $classes, $settings ) );
+	}
 
 	/**
 	 * Render the css code for background with gradients.
@@ -354,7 +381,7 @@ class FLPostSliderModule extends FLBuilderModule {
 			}
 
 			// build csss gradient code
-			$bg  = 'background: #' . $this->settings->text_bg_color . ';';
+			$bg  = 'background-color: ' . FLBuilderColor::hex_or_rgb( $color_start ) . ';';
 			$bg .= 'background: -ms-linear-gradient(' . $direction . ', ' . $color_start . ' 0%, ' . $color_end . ' 100%);';
 			$bg .= 'background: -moz-linear-gradient(' . $direction . ', ' . $color_start . ' 0%, ' . $color_end . ' 100%);';
 			$bg .= 'background: -o-linear-gradient(' . $direction . ', ' . $color_start . ' 0%, ' . $color_end . ' 100%);';
@@ -365,7 +392,7 @@ class FLPostSliderModule extends FLBuilderModule {
 		} else {
 
 			// if gradient isn't selected, set the background with default values
-			$bg = 'background-color: ' . $color_start . ';';
+			$bg = 'background-color: ' . FLBuilderColor::hex_or_rgb( $color_start ) . ';';
 		}
 
 		echo $bg;
@@ -745,8 +772,9 @@ FLBuilder::register_module('FLPostSliderModule', array(
 							'type'  => 'css',
 							'rules' => array(
 								array(
-									'selector' => '.fl-post-slider-background .fl-post-slider-content, .fl-post-slider-thumb, .fl-post-slider-no-thumb',
-									'property' => 'color',
+									'selector'  => '.fl-module-content .fl-post-slider .fl-post-slider-post .fl-post-slider-content, .fl-module-content .fl-post-slider .fl-post-slider-post .fl-post-slider-content *',
+									'property'  => 'color',
+									'important' => true,
 								),
 							),
 						),
@@ -762,8 +790,9 @@ FLBuilder::register_module('FLPostSliderModule', array(
 							'type'  => 'css',
 							'rules' => array(
 								array(
-									'selector' => '.fl-post-slider-content a',
-									'property' => 'color',
+									'selector'  => '.fl-module-content .fl-post-slider .fl-post-slider-post .fl-post-slider-content a',
+									'property'  => 'color',
+									'important' => true,
 								),
 							),
 						),

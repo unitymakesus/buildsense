@@ -151,7 +151,7 @@ class FLContactFormModule extends FLBuilderModule {
 		$recaptcha_response = isset( $_POST['recaptcha_response'] ) ? $_POST['recaptcha_response'] : false;
 		$terms_checked      = isset( $_POST['terms_checked'] ) && 1 == $_POST['terms_checked'] ? true : false;
 
-		$subject     = ( isset( $_POST['subject'] ) ? $_POST['subject'] : __( 'Contact Form Submission', 'fl-builder' ) );
+		$subject     = ( isset( $_POST['subject'] ) ? stripslashes( $_POST['subject'] ) : __( 'Contact Form Submission', 'fl-builder' ) );
 		$admin_email = get_option( 'admin_email' );
 		$site_name   = get_option( 'blogname' );
 		$response    = array(
@@ -212,7 +212,7 @@ class FLContactFormModule extends FLBuilderModule {
 			}
 
 			$fl_contact_from_email = ( isset( $_POST['email'] ) ? sanitize_email( $_POST['email'] ) : null );
-			$fl_contact_from_name  = ( isset( $_POST['name'] ) ? $_POST['name'] : '' );
+			$fl_contact_from_name  = ( isset( $_POST['name'] ) ? stripslashes( $_POST['name'] ) : '' );
 
 			if ( isset( $_POST['name'] ) ) {
 				$site_name = apply_filters( 'fl_contact_form_from', $site_name, $_POST['name'] );
@@ -227,21 +227,21 @@ class FLContactFormModule extends FLBuilderModule {
 			$template = '';
 
 			if ( isset( $_POST['name'] ) ) {
-				$template .= "Name: $_POST[name] \r\n";
+				$template .= sprintf( "Name: %s \r\n", stripslashes( $_POST['name'] ) );
 			}
 			if ( isset( $_POST['email'] ) ) {
-				$template .= "Email: $_POST[email] \r\n";
+				$template .= sprintf( "Email: %s \r\n", stripslashes( $_POST['email'] ) );
 			}
 			if ( isset( $_POST['phone'] ) ) {
-				$template .= "Phone: $_POST[phone] \r\n";
+				$template .= sprintf( "Phone: %s \r\n", stripslashes( $_POST['phone'] ) );
 			}
 
-			$template .= __( 'Message', 'fl-builder' ) . ": \r\n" . $_POST['message'];
+			$template .= __( 'Message', 'fl-builder' ) . ": \r\n" . stripslashes( $_POST['message'] );
 
 			// Double check the mailto email is proper and no validation error found, then send.
 			if ( $mailto && false === $response['error'] ) {
 
-				$subject = esc_html( do_shortcode( $subject ) );
+				$subject = do_shortcode( $subject );
 				$mailto  = esc_html( do_shortcode( $mailto ) );
 				/**
 				 * Before sending with wp_mail()
@@ -405,6 +405,21 @@ FLBuilder::register_module('FLContactFormModule', array(
 						'type'    => 'text',
 						'label'   => __( 'Your Message Placeholder', 'fl-builder' ),
 						'default' => __( 'Your message', 'fl-builder' ),
+					),
+					'placeholder_labels'  => array(
+						'type'    => 'select',
+						'label'   => __( 'Show labels/placeholders', 'fl-builder' ),
+						'default' => 'placeholder',
+						'options' => array(
+							'placeholder' => __( 'Show Placeholders Only', 'fl-builder' ),
+							'labels'      => __( 'Show Labels Only', 'fl-builder' ),
+							'both'        => __( 'Show Both', 'fl-builder' ),
+						),
+						'toggle'  => array(
+							'show' => array(
+								'fields' => array( 'terms_checkbox_text', 'terms_text' ),
+							),
+						),
 					),
 					'terms_checkbox'      => array(
 						'type'    => 'select',

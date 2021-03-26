@@ -70,6 +70,14 @@ if ( ! class_exists( 'BB_Ultimate_Addon_Helper' ) ) {
 		 * @var object instance
 		 */
 		private static $instance;
+
+		/**
+		 * Branding Name
+		 *
+		 * @var branding_name
+		 */
+		private static $branding_name;
+
 		/**
 		 *  Initiator
 		 */
@@ -105,7 +113,11 @@ if ( ! class_exists( 'BB_Ultimate_Addon_Helper' ) ) {
 			add_action( 'wp_head', __CLASS__ . '::uabb_render_faq_schema' );
 			add_action( 'wp_footer', __CLASS__ . '::uabb_force_render_faq_schema' );
 
-			if ( isset( self::$is_branding_enabled ) && 'yes' === self::$is_branding_enabled ) {
+			if ( ! self::$branding_name ) {
+				self::$branding_name = self::get_uabb_whitelabel_string( 'name', false );
+			}
+
+			if ( self::$branding_name && '' !== self::$branding_name ) {
 				add_filter( 'bsf_white_label_options', array( $this, 'uabb_bsf_analytics_white_label' ) );
 			}
 
@@ -460,8 +472,9 @@ if ( ! class_exists( 'BB_Ultimate_Addon_Helper' ) ) {
 				'uabb-table-of-contents'   => 'Table Of Contents',
 				'uabb-login-form'          => 'Login Form',
 				'uabb-how-to'              => 'How To',
-				'uabb-faq'                 => 'FAQ',
+				'uabb-faq'                 => 'FAQ Schema',
 				'uabb-devices'             => 'Devices',
+				'uabb-search'              => 'Search',
 			);
 
 			/* Include Contact form styler */
@@ -484,6 +497,7 @@ if ( ! class_exists( 'BB_Ultimate_Addon_Helper' ) ) {
 				$modules_array['uabb-woo-products']    = 'Woo - Products';
 				$modules_array['uabb-woo-categories']  = 'Woo - Categories';
 				$modules_array['uabb-woo-add-to-cart'] = 'Woo - Add To Cart';
+				$modules_array['uabb-woo-mini-cart']   = 'Woo - Mini Cart';
 			}
 			/* Include Caldera Forms Styler */
 			if ( class_exists( 'Caldera_Forms' ) || class_exists( 'Caldera_Forms_Forms' ) ) {

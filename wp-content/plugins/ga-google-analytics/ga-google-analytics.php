@@ -9,9 +9,9 @@
 	Donate link: https://monzillamedia.com/donate.html
 	Contributors: specialk
 	Requires at least: 4.1
-	Tested up to: 5.5
-	Stable tag: 20200815
-	Version: 20200815
+	Tested up to: 5.7
+	Stable tag: 20210211
+	Version: 20210211
 	Requires PHP: 5.6.20
 	Text Domain: ga-google-analytics
 	Domain Path: /languages
@@ -32,7 +32,7 @@
 	You should have received a copy of the GNU General Public License
 	with this program. If not, visit: https://www.gnu.org/licenses/
 	
-	Copyright 2020 Monzilla Media. All rights reserved.
+	Copyright 2021 Monzilla Media. All rights reserved.
 */
 
 if (!defined('ABSPATH')) die();
@@ -60,7 +60,7 @@ if (!class_exists('GA_Google_Analytics')) {
 		
 		function constants() {
 			
-			if (!defined('GAP_VERSION')) define('GAP_VERSION', '20200815');
+			if (!defined('GAP_VERSION')) define('GAP_VERSION', '20210211');
 			if (!defined('GAP_REQUIRE')) define('GAP_REQUIRE', '4.1');
 			if (!defined('GAP_AUTHOR'))  define('GAP_AUTHOR',  'Jeff Starr');
 			if (!defined('GAP_NAME'))    define('GAP_NAME',    __('GA Google Analytics', 'ga-google-analytics'));
@@ -320,7 +320,7 @@ if (!class_exists('GA_Google_Analytics')) {
 			
 			$input['gap_id'] = wp_filter_nohtml_kses($input['gap_id']);
 			
-			if (preg_match("/^GTM-/i", $input['gap_id'])) {
+			if (isset($input['gap_id']) && preg_match("/^GTM-/i", $input['gap_id'])) {
 				
 				$input['gap_id'] = '';
 				

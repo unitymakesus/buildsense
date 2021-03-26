@@ -36,6 +36,7 @@
 			this._initUserAccessNetworkOverrides();
 			this._templatesOverrideChange();
 			this._iconPro();
+			this._alphaSettings();
 		},
 
 		/**
@@ -485,18 +486,32 @@
 		},
 		_iconPro: function() {
 			form = $('#icons-form')
-			checkbox = form.find('input[name=fl-enable-fa-pro]').attr('checked')
+			checkbox = form.find('input[name=fl-enable-fa-pro]').prop('checked')
 			light = form.find('input[value=font-awesome-5-light]').parent()
 			duo   = form.find('input[value=font-awesome-5-duotone]').parent()
 
-
-			if ( 'checked' === checkbox ) {
+			if ( true === checkbox ) {
 				light.css('font-weight', '800')
 			//	light.css('color', '#0E5A71')
 				duo.css('font-weight', '800')
 			//	duo.css('color', '#0E5A71')
 			}
 
+		},
+		_alphaSettings: function() {
+			form = $('#beta-form');
+
+			form.find('.alpha-checkbox').on('click', function(){
+				console.log('checked?')
+				if ( true === $(this).prop('checked') ) {
+					if ( confirm( 'Are you sure you want to enable Alpha releases?') ) {
+						// do nothing
+					} else {
+						$(this).prop('checked',false);
+					}
+
+				}
+			})
 		}
 
 	};

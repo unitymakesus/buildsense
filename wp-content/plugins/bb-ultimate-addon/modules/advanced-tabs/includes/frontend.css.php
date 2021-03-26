@@ -781,6 +781,7 @@ if ( $global_settings->responsive_enabled ) { // Global Setting If started.
 		.fl-node-<?php echo esc_attr( $id ); ?> .uabb-content-wrap<?php echo esc_attr( $id ); ?> > .section > .uabb-content,
 		.fl-node-<?php echo esc_attr( $id ); ?> .uabb-content-wrap<?php echo esc_attr( $id ); ?> > .section > .uabb-tab-acc-content {
 
+			min-height: fit-content !important;
 			<?php
 			if ( isset( $settings->content_padding_dimension_top_responsive ) ) {
 				echo ( '' !== $settings->content_padding_dimension_top_responsive ) ? 'padding-top:' . esc_attr( $settings->content_padding_dimension_top_responsive ) . 'px;' : '';

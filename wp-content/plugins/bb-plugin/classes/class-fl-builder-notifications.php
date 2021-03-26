@@ -104,7 +104,7 @@ final class FLBuilderNotifications {
 				$stored_data['read'] = false;
 			}
 
-			update_option( self::$option, $stored_data );
+			update_option( self::$option, $stored_data, false );
 
 		} else {
 			error_log( 'response was not a 200' );
@@ -150,7 +150,7 @@ final class FLBuilderNotifications {
 	}
 
 	/**
-	 * Return notications from the db or fetch from remote
+	 * Return notifications from the db or fetch from remote
 	 *
 	 * @since 2.1
 	 */

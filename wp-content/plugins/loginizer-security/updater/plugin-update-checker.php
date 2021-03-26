@@ -1,42 +1,43 @@
 <?php
 /**
- * Plugin Update Checker Library 2.2.0
+ * Plugin Update Checker Library 3.2
  * http://w-shadow.com/
  * 
- * Copyright 2015 Janis Elsts
+ * Copyright 2016 Janis Elsts
  * Released under the MIT license. See license.txt for details.
  */
+ 
+// Prohibit direct script loading.
+defined( 'ABSPATH' ) || die( 'No direct script access allowed!' );
 
-if ( !class_exists('PluginUpdateChecker_2_2', false) ):
+if ( !class_exists('LoginizerUpdateChecker_3_2', false) ):
 
 /**
  * A custom plugin update checker. 
  * 
  * @author Janis Elsts
- * @copyright 2015
- * @version 2.2
+ * @copyright 2016
+ * @version 3.2
  * @access public
  */
-class PluginUpdateChecker_2_2 {
+class LoginizerUpdateChecker_3_2 {
 	public $metadataUrl = ''; //The URL of the plugin's metadata file.
 	public $pluginAbsolutePath = ''; //Full path of the main plugin file.
 	public $pluginFile = '';  //Plugin filename relative to the plugins directory. Many WP APIs use this to identify plugins.
 	public $slug = '';        //Plugin slug.
-	public $checkPeriod = 12; //How often to check for updates (in hours).
 	public $optionName = '';  //Where to store the update info.
 	public $muPluginFile = ''; //For MU plugins, the plugin filename relative to the mu-plugins directory.
 
 	public $debugMode = false; //Set to TRUE to enable error reporting. Errors are raised using trigger_error()
                                //and should be logged to the standard PHP error log.
+	public $scheduler;
 
-	public $throttleRedundantChecks = false; //Check less often if we already know that an update is available.
-	public $throttledCheckPeriod = 72;
+	protected $upgraderStatus;
 
-	private $cronHook = null;
 	private $debugBarPlugin = null;
 	private $cachedInstalledVersion = null;
 
-	private $upgradedPluginFile = null; //The plugin that is currently being upgraded by WordPress.
+	private $metadataHost = ''; //The host component of $metadataUrl.
 
 	/**
 	 * Class constructor.
@@ -49,38 +50,60 @@ class PluginUpdateChecker_2_2 {
 	 * @param string $muPluginFile Optional. The plugin filename relative to the mu-plugins directory.
 	 */
 	public function __construct($metadataUrl, $pluginFile, $slug = '', $checkPeriod = 12, $optionName = '', $muPluginFile = ''){
-		
-		$this->metadataUrl = $metadataUrl.'&license='.@$GLOBALS['loginizer']['license']['license'];
+		$this->metadataUrl = $metadataUrl;
 		$this->pluginAbsolutePath = $pluginFile;
 		$this->pluginFile = plugin_basename($this->pluginAbsolutePath);
 		$this->muPluginFile = $muPluginFile;
-		$this->checkPeriod = $checkPeriod;
 		$this->slug = $slug;
 		$this->optionName = $optionName;
-		$this->debugMode = defined('WP_DEBUG') && WP_DEBUG;
+		$this->debugMode = (bool)(constant('WP_DEBUG'));
 
 		//If no slug is specified, use the name of the main plugin file as the slug.
 		//For example, 'my-cool-plugin/cool-plugin.php' becomes 'cool-plugin'.
 		if ( empty($this->slug) ){
 			$this->slug = basename($this->pluginFile, '.php');
 		}
+
+		//Plugin slugs must be unique.
+		$slugCheckFilter = 'puc_is_slug_in_use-' . $this->slug;
+		$slugUsedBy = apply_filters($slugCheckFilter, false);
+		if ( $slugUsedBy ) {
+			$this->triggerError(sprintf(
+				'Plugin slug "%s" is already in use by %s. Slugs must be unique.',
+				htmlentities($this->slug),
+				htmlentities($slugUsedBy)
+			), E_USER_ERROR);
+		}
+		add_filter($slugCheckFilter, array($this, 'getAbsolutePath'));
+
 		
 		if ( empty($this->optionName) ){
 			$this->optionName = 'external_updates-' . $this->slug;
 		}
-		
-		// Debug Mode
-		if(current_user_can('update_plugins') && lz_optreq('lz-update-debug')){
-			$this->resetUpdateState();
-		}
 
 		//Backwards compatibility: If the plugin is a mu-plugin but no $muPluginFile is specified, assume
 		//it's the same as $pluginFile given that it's not in a subdirectory (WP only looks in the base dir).
-		if ( empty($this->muPluginFile) && (strpbrk($this->pluginFile, '/\\') === false) && $this->isMuPlugin() ) {
+		if ( (strpbrk($this->pluginFile, '/\\') === false) && $this->isUnknownMuPlugin() ) {
 			$this->muPluginFile = $this->pluginFile;
 		}
-		
+
+		$this->scheduler = $this->createScheduler($checkPeriod);
+		$this->upgraderStatus = new Loginizer_PucUpgraderStatus_3_2();
+
 		$this->installHooks();
+	}
+
+	/**
+	 * Create an instance of the scheduler.
+	 *
+	 * This is implemented as a method to make it possible for plugins to subclass the update checker
+	 * and substitute their own scheduler.
+	 *
+	 * @param int $checkPeriod
+	 * @return Loginizer_PucScheduler_3_2
+	 */
+	protected function createScheduler($checkPeriod) {
+		return new Loginizer_PucScheduler_3_2($this, $checkPeriod);
 	}
 	
 	/**
@@ -93,9 +116,10 @@ class PluginUpdateChecker_2_2 {
 		//Override requests for plugin information
 		add_filter('plugins_api', array($this, 'injectInfo'), 20, 3);
 		
-		//Insert our update info into the update array maintained by WP
+		//Insert our update info into the update array maintained by WP.
 		add_filter('site_transient_update_plugins', array($this,'injectUpdate')); //WP 3.0+
 		add_filter('transient_update_plugins', array($this,'injectUpdate')); //WP 2.8+
+		add_filter('site_transient_update_plugins', array($this, 'injectTranslationUpdates'));
 
 		add_filter('plugin_row_meta', array($this, 'addCheckForUpdatesLink'), 10, 2);
 		add_action('admin_init', array($this, 'handleManualCheck'));
@@ -104,50 +128,10 @@ class PluginUpdateChecker_2_2 {
 		//Clear the version number cache when something - anything - is upgraded or WP clears the update cache.
 		add_filter('upgrader_post_install', array($this, 'clearCachedVersion'));
 		add_action('delete_site_transient_update_plugins', array($this, 'clearCachedVersion'));
-
-		//Set up the periodic update checks
-		$this->cronHook = 'check_plugin_updates-' . $this->slug;
-		if ( $this->checkPeriod > 0 ){
-			
-			//Trigger the check via Cron.
-			//Try to use one of the default schedules if possible as it's less likely to conflict
-			//with other plugins and their custom schedules.
-			$defaultSchedules = array(
-				1  => 'hourly',
-				12 => 'twicedaily',
-				24 => 'daily',
-			);
-			if ( array_key_exists($this->checkPeriod, $defaultSchedules) ) {
-				$scheduleName = $defaultSchedules[$this->checkPeriod];
-			} else {
-				//Use a custom cron schedule.
-				$scheduleName = 'every' . $this->checkPeriod . 'hours';
-				add_filter('cron_schedules', array($this, '_addCustomSchedule'));
-			}
-
-			if ( !wp_next_scheduled($this->cronHook) && !defined('WP_INSTALLING') ) {
-				wp_schedule_event(time(), $scheduleName, $this->cronHook);
-			}
-			add_action($this->cronHook, array($this, 'maybeCheckForUpdates'));
-			
-			register_deactivation_hook($this->pluginFile, array($this, '_removeUpdaterCron'));
-			
-			//In case Cron is disabled or unreliable, we also manually trigger 
-			//the periodic checks while the user is browsing the Dashboard. 
-			add_action( 'admin_init', array($this, 'maybeCheckForUpdates') );
-
-			//Like WordPress itself, we check more often on certain pages.
-			/** @see wp_update_plugins */
-			add_action('load-update-core.php', array($this, 'maybeCheckForUpdates'));
-			add_action('load-plugins.php', array($this, 'maybeCheckForUpdates'));
-			add_action('load-update.php', array($this, 'maybeCheckForUpdates'));
-			//This hook fires after a bulk update is complete.
-			add_action('upgrader_process_complete', array($this, 'maybeCheckForUpdates'), 11, 0);
-
-		} else {
-			//Periodic checks are disabled.
-			wp_clear_scheduled_hook($this->cronHook);
-		}
+		//Clear translation updates when WP clears the update cache.
+		//This needs to be done directly because the library doesn't actually remove obsolete plugin updates,
+		//it just hides them (see getUpdate()). We can't do that with translations - too much disk I/O.
+		add_action('delete_site_transient_update_plugins', array($this, 'clearCachedTranslationUpdates'));
 
 		if ( did_action('plugins_loaded') ) {
 			$this->initDebugBarPanel();
@@ -158,54 +142,46 @@ class PluginUpdateChecker_2_2 {
 		//Rename the update directory to be the same as the existing directory.
 		add_filter('upgrader_source_selection', array($this, 'fixDirectoryName'), 10, 3);
 
-		//Keep track of which plugin WordPress is currently upgrading.
-		add_filter('upgrader_pre_install', array($this, 'setUpgradedPlugin'), 10, 2);
-		add_filter('upgrader_post_install', array($this, 'clearUpgradedPlugin'), 10, 1);
-		add_action('upgrader_process_complete', array($this, 'clearUpgradedPlugin'), 10, 1);
+		//Enable language support (i18n).
+		load_plugin_textdomain('plugin-update-checker', false, plugin_basename(dirname(__FILE__)) . '/languages');
+
+		//Allow HTTP requests to the metadata URL even if it's on a local host.
+		$this->metadataHost = @parse_url($this->metadataUrl, PHP_URL_HOST);
+		add_filter('http_request_host_is_external', array($this, 'allowMetadataHost'), 10, 2);
 	}
 	
 	/**
-	 * Add our custom schedule to the array of Cron schedules used by WP.
-	 * 
-	 * @param array $schedules
-	 * @return array
+	 * Explicitly allow HTTP requests to the metadata URL.
+	 *
+	 * WordPress has a security feature where the HTTP API will reject all requests that are sent to
+	 * another site hosted on the same server as the current site (IP match), a local host, or a local
+	 * IP, unless the host exactly matches the current site.
+	 *
+	 * This feature is opt-in (at least in WP 4.4). Apparently some people enable it.
+	 *
+	 * That can be a problem when you're developing your plugin and you decide to host the update information
+	 * on the same server as your test site. Update requests will mysteriously fail.
+	 *
+	 * We fix that by adding an exception for the metadata host.
+	 *
+	 * @param bool $allow
+	 * @param string $host
+	 * @return bool
 	 */
-	public function _addCustomSchedule($schedules){
-		if ( $this->checkPeriod && ($this->checkPeriod > 0) ){
-			$scheduleName = 'every' . $this->checkPeriod . 'hours';
-			$schedules[$scheduleName] = array(
-				'interval' => $this->checkPeriod * 3600, 
-				'display' => sprintf('Every %d hours', $this->checkPeriod),
-			);
+	public function allowMetadataHost($allow, $host) {
+		if ( strtolower($host) === strtolower($this->metadataHost) ) {
+			return true;
 		}
-		return $schedules;
+		return $allow;
 	}
 
-	/**
-	 * Remove the scheduled cron event that the library uses to check for updates.
-	 *
-	 * @return void
-	 */
-	public function _removeUpdaterCron(){
-		wp_clear_scheduled_hook($this->cronHook);
-	}
-
-	/**
-	 * Get the name of the update checker's WP-cron hook. Mostly useful for debugging.
-	 *
-	 * @return string
-	 */
-	public function getCronHookName() {
-		return $this->cronHook;
-	}
-	
 	/**
 	 * Retrieve plugin info from the configured API endpoint.
 	 * 
 	 * @uses wp_remote_get()
 	 * 
 	 * @param array $queryArgs Additional query arguments to append to the request. Optional.
-	 * @return PluginInfo
+	 * @return LoginizerInfo_3_2
 	 */
 	public function requestInfo($queryArgs = array()){
 		//Query args to append to the URL. Plugins can add their own by using a filter callback (see addQueryArgFilter()).
@@ -234,21 +210,20 @@ class PluginUpdateChecker_2_2 {
 		);
 
 		//Try to parse the response
+		$status = $this->validateApiResponse($result);
 		$pluginInfo = null;
-		if ( !is_wp_error($result) && isset($result['response']['code']) && ($result['response']['code'] == 200) && !empty($result['body']) ){
-			$pluginInfo = PluginInfo_2_2::fromJson($result['body'], $this->debugMode);
-			$pluginInfo->filename = $this->pluginFile;
-			$pluginInfo->slug = $this->slug;
-		} else if ( $this->debugMode ) {
-			$message = sprintf("The URL %s does not point to a valid plugin metadata file. ", $url);
-			if ( is_wp_error($result) ) {
-				$message .= "WP HTTP error: " . $result->get_error_message();
-			} else if ( isset($result['response']['code']) ) {
-				$message .= "HTTP response code is " . $result['response']['code'] . " (expected: 200)";
-			} else {
-				$message .= "wp_remote_get() returned an unexpected result.";
+		if ( !is_wp_error($status) ){
+			$pluginInfo = LoginizerInfo_3_2::fromJson($result['body']);
+			if ( $pluginInfo !== null ) {
+				$pluginInfo->filename = $this->pluginFile;
+				$pluginInfo->slug = $this->slug;
 			}
-			trigger_error($message, E_USER_WARNING);
+		} else {
+			$this->triggerError(
+				sprintf('The URL %s does not point to a valid plugin metadata file. ', $url)
+					. $status->get_error_message(),
+				E_USER_WARNING
+			);
 		}
 
 		$pluginInfo = apply_filters('puc_request_info_result-'.$this->slug, $pluginInfo, $result);
@@ -256,11 +231,40 @@ class PluginUpdateChecker_2_2 {
 	}
 
 	/**
+	 * Check if $result is a successful update API response.
+	 *
+	 * @param array|WP_Error $result
+	 * @return true|WP_Error
+	 */
+	private function validateApiResponse($result) {
+		if ( is_wp_error($result) ) { /** @var WP_Error $result */
+			return new WP_Error($result->get_error_code(), 'WP HTTP Error: ' . $result->get_error_message());
+		}
+
+		if ( !isset($result['response']['code']) ) {
+			return new WP_Error('puc_no_response_code', 'wp_remote_get() returned an unexpected result.');
+		}
+
+		if ( $result['response']['code'] !== 200 ) {
+			return new WP_Error(
+				'puc_unexpected_response_code',
+				'HTTP response code is ' . $result['response']['code'] . ' (expected: 200)'
+			);
+		}
+
+		if ( empty($result['body']) ) {
+			return new WP_Error('puc_empty_response', 'The metadata file appears to be empty.');
+		}
+
+		return true;
+	}
+
+	/**
 	 * Retrieve the latest update (if any) from the configured API endpoint.
 	 *
-	 * @uses PluginUpdateChecker::requestInfo()
+	 * @uses LoginizerUpdateChecker::requestInfo()
 	 *
-	 * @return PluginUpdate An instance of PluginUpdate, or NULL when no updates are available.
+	 * @return LoginizerUpdate_3_2 An instance of LoginizerUpdate, or NULL when no updates are available.
 	 */
 	public function requestUpdate(){
 		//For the sake of simplicity, this function just calls requestInfo() 
@@ -269,7 +273,47 @@ class PluginUpdateChecker_2_2 {
 		if ( $pluginInfo == null ){
 			return null;
 		}
-		return PluginUpdate_2_2::fromPluginInfo($pluginInfo);
+		$update = LoginizerUpdate_3_2::fromLoginizerInfo($pluginInfo);
+
+		//Keep only those translation updates that apply to this site.
+		$update->translations = $this->filterApplicableTranslations($update->translations);
+
+		return $update;
+	}
+
+	/**
+	 * Filter a list of translation updates and return a new list that contains only updates
+	 * that apply to the current site.
+	 *
+	 * @param array $translations
+	 * @return array
+	 */
+	private function filterApplicableTranslations($translations) {
+		$languages = array_flip(array_values(get_available_languages()));
+		$installedTranslations = wp_get_installed_translations('plugins');
+		if ( isset($installedTranslations[$this->slug]) ) {
+			$installedTranslations = $installedTranslations[$this->slug];
+		} else {
+			$installedTranslations = array();
+		}
+
+		$applicableTranslations = array();
+		foreach($translations as $translation) {
+			//Does it match one of the available core languages?
+			$isApplicable = array_key_exists($translation->language, $languages);
+			//Is it more recent than an already-installed translation?
+			if ( isset($installedTranslations[$translation->language]) ) {
+				$updateTimestamp = strtotime($translation->updated);
+				$installedTimestamp = strtotime($installedTranslations[$translation->language]['PO-Revision-Date']);
+				$isApplicable = $updateTimestamp > $installedTimestamp;
+			}
+
+			if ( $isApplicable ) {
+				$applicableTranslations[] = $translation;
+			}
+		}
+
+		return $applicableTranslations;
 	}
 	
 	/**
@@ -288,15 +332,13 @@ class PluginUpdateChecker_2_2 {
 			return $pluginHeader['Version'];
 		} else {
 			//This can happen if the filename points to something that is not a plugin.
-			if ( $this->debugMode ) {
-				trigger_error(
-					sprintf(
-						"Can't to read the Version header for '%s'. The filename is incorrect or is not a plugin.",
-						$this->pluginFile
-					),
-					E_USER_WARNING
-				);
-			}
+			$this->triggerError(
+				sprintf(
+					"Can't to read the Version header for '%s'. The filename is incorrect or is not a plugin.",
+					$this->pluginFile
+				),
+				E_USER_WARNING
+			);
 			return null;
 		}
 	}
@@ -309,19 +351,18 @@ class PluginUpdateChecker_2_2 {
 	protected function getPluginHeader() {
 		if ( !is_file($this->pluginAbsolutePath) ) {
 			//This can happen if the plugin filename is wrong.
-			if ( $this->debugMode ) {
-				trigger_error(
-					sprintf(
-						"Can't to read the plugin header for '%s'. The file does not exist.",
-						$this->pluginFile
-					),
-					E_USER_WARNING
-				);
-			}
+			$this->triggerError(
+				sprintf(
+					"Can't to read the plugin header for '%s'. The file does not exist.",
+					$this->pluginFile
+				),
+				E_USER_WARNING
+			);
 			return array();
 		}
 
 		if ( !function_exists('get_plugin_data') ){
+			/** @noinspection PhpIncludeInspection */
 			require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
 		}
 		return get_plugin_data($this->pluginAbsolutePath, false, false);
@@ -331,24 +372,22 @@ class PluginUpdateChecker_2_2 {
 	 * Check for plugin updates.
 	 * The results are stored in the DB option specified in $optionName.
 	 *
-	 * @return PluginUpdate|null
+	 * @return LoginizerUpdate_3_2|null
 	 */
 	public function checkForUpdates(){
 		$installedVersion = $this->getInstalledVersion();
 		//Fail silently if we can't find the plugin or read its header.
 		if ( $installedVersion === null ) {
-			if ( $this->debugMode ) {
-				trigger_error(
-					sprintf('Skipping update check for %s - installed version unknown.', $this->pluginFile),
-					E_USER_WARNING
-				);
-			}
+			$this->triggerError(
+				sprintf('Skipping update check for %s - installed version unknown.', $this->pluginFile),
+				E_USER_WARNING
+			);
 			return null;
 		}
 
 		$state = $this->getUpdateState();
 		if ( empty($state) ){
-			$state = new StdClass;
+			$state = new stdClass;
 			$state->lastCheck = 0;
 			$state->checkedVersion = '';
 			$state->update = null;
@@ -365,65 +404,9 @@ class PluginUpdateChecker_2_2 {
 	}
 	
 	/**
-	 * Check for updates if the configured check interval has already elapsed.
-	 * Will use a shorter check interval on certain admin pages like "Dashboard -> Updates" or when doing cron.
-	 *
-	 * You can override the default behaviour by using the "puc_check_now-$slug" filter.
-	 * The filter callback will be passed three parameters:
-	 *     - Current decision. TRUE = check updates now, FALSE = don't check now.
-	 *     - Last check time as a Unix timestamp.
-	 *     - Configured check period in hours.
-	 * Return TRUE to check for updates immediately, or FALSE to cancel.
-	 *
-	 * This method is declared public because it's a hook callback. Calling it directly is not recommended.
-	 */
-	public function maybeCheckForUpdates(){
-		if ( empty($this->checkPeriod) ){
-			return;
-		}
-
-		$currentFilter = current_filter();
-		if ( in_array($currentFilter, array('load-update-core.php', 'upgrader_process_complete')) ) {
-			//Check more often when the user visits "Dashboard -> Updates" or does a bulk update.
-			$timeout = 60;
-		} else if ( in_array($currentFilter, array('load-plugins.php', 'load-update.php')) ) {
-			//Also check more often on the "Plugins" page and /wp-admin/update.php.
-			$timeout = 3600;
-		} else if ( $this->throttleRedundantChecks && ($this->getUpdate() !== null) ) {
-			//Check less frequently if it's already known that an update is available.
-			$timeout = $this->throttledCheckPeriod * 3600;
-		} else if ( defined('DOING_CRON') && constant('DOING_CRON') ) {
-			//WordPress cron schedules are not exact, so lets do an update check even
-			//if slightly less than $checkPeriod hours have elapsed since the last check.
-			$cronFuzziness = 20 * 60;
-			$timeout = $this->checkPeriod * 3600 - $cronFuzziness;
-		} else {
-			$timeout = $this->checkPeriod * 3600;
-		}
-
-		$state = $this->getUpdateState();
-		$shouldCheck =
-			empty($state) ||
-			!isset($state->lastCheck) ||
-			( (time() - $state->lastCheck) >= $timeout );
-
-		//Let plugin authors substitute their own algorithm.
-		$shouldCheck = apply_filters(
-			'puc_check_now-' . $this->slug,
-			$shouldCheck,
-			(!empty($state) && isset($state->lastCheck)) ? $state->lastCheck : 0,
-			$this->checkPeriod
-		);
-
-		if ( $shouldCheck ){
-			$this->checkForUpdates();
-		}
-	}
-	
-	/**
 	 * Load the update checker state from the DB.
 	 *  
-	 * @return StdClass|null
+	 * @return stdClass|null
 	 */
 	public function getUpdateState() {
 		$state = get_site_option($this->optionName, null);
@@ -431,8 +414,8 @@ class PluginUpdateChecker_2_2 {
 			$state = null;
 		}
 
-		if ( !empty($state) && isset($state->update) && is_object($state->update) ){
-			$state->update = PluginUpdate_2_2::fromObject($state->update);
+		if ( isset($state, $state->update) && is_object($state->update) ) {
+			$state->update = LoginizerUpdate_3_2::fromObject($state->update);
 		}
 		return $state;
 	}
@@ -446,16 +429,9 @@ class PluginUpdateChecker_2_2 {
 	 */
 	private function setUpdateState($state) {
 		if ( isset($state->update) && is_object($state->update) && method_exists($state->update, 'toStdClass') ) {
-			$update = $state->update; /** @var PluginUpdate $update */
+			$update = $state->update; /** @var LoginizerUpdate_3_2 $update */
 			$state->update = $update->toStdClass();
 		}
-		
-		// Debug Mode
-		if(current_user_can('update_plugins') && lz_optreq('lz-update-debug')){
-			print_r($state);
-		}
-		
-		
 		update_site_option($this->optionName, $state);
 	}
 
@@ -484,13 +460,13 @@ class PluginUpdateChecker_2_2 {
     	$relevant = ($action == 'plugin_information') && isset($args->slug) && (
 			($args->slug == $this->slug) || ($args->slug == dirname($this->pluginFile))
 		);
-		if ( !$relevant ){
+		if ( !$relevant ) {
 			return $result;
 		}
 		
 		$pluginInfo = $this->requestInfo();
 		$pluginInfo = apply_filters('puc_pre_inject_info-' . $this->slug, $pluginInfo);
-		if ($pluginInfo){
+		if ( $pluginInfo ) {
 			return $pluginInfo->toWpFormat();
 		}
 				
@@ -509,33 +485,106 @@ class PluginUpdateChecker_2_2 {
 
 		//No update notifications for mu-plugins unless explicitly enabled. The MU plugin file
 		//is usually different from the main plugin file so the update wouldn't show up properly anyway.
-		if ( !empty($update) && empty($this->muPluginFile) && $this->isMuPlugin() ) {
+		if ( $this->isUnknownMuPlugin() ) {
 			$update = null;
 		}
 
 		if ( !empty($update) ) {
 			//Let plugins filter the update info before it's passed on to WordPress.
 			$update = apply_filters('puc_pre_inject_update-' . $this->slug, $update);
-			if ( !is_object($updates) ) {
-				$updates = new StdClass();
-				$updates->response = array();
-			}
+			$updates = $this->addUpdateToList($updates, $update);
+		} else {
+			//Clean up any stale update info.
+			$updates = $this->removeUpdateFromList($updates);
+		}
 
-			$wpUpdate = $update->toWpFormat();
-			$pluginFile = $this->pluginFile;
+		return $updates;
+	}
 
-			if ( $this->isMuPlugin() ) {
-				//WP does not support automatic update installation for mu-plugins, but we can still display a notice.
-				$wpUpdate->package = null;
-				$pluginFile = $this->muPluginFile;
-			}
-			$updates->response[$pluginFile] = $wpUpdate;
+	/**
+	 * @param StdClass|null $updates
+	 * @param LoginizerUpdate_3_2 $updateToAdd
+	 * @return StdClass
+	 */
+	private function addUpdateToList($updates, $updateToAdd) {
+		if ( !is_object($updates) ) {
+			$updates = new stdClass();
+			$updates->response = array();
+		}
 
-		} else if ( isset($updates, $updates->response) ) {
+		$wpUpdate = $updateToAdd->toWpFormat();
+		$pluginFile = $this->pluginFile;
+
+		if ( $this->isMuPlugin() ) {
+			//WP does not support automatic update installation for mu-plugins, but we can still display a notice.
+			$wpUpdate->package = null;
+			$pluginFile = $this->muPluginFile;
+		}
+		$updates->response[$pluginFile] = $wpUpdate;
+		return $updates;
+	}
+
+	/**
+	 * @param stdClass|null $updates
+	 * @return stdClass|null
+	 */
+	private function removeUpdateFromList($updates) {
+		if ( isset($updates, $updates->response) ) {
 			unset($updates->response[$this->pluginFile]);
 			if ( !empty($this->muPluginFile) ) {
 				unset($updates->response[$this->muPluginFile]);
 			}
+		}
+		return $updates;
+	}
+
+	/**
+	 * Insert translation updates into the list maintained by WordPress.
+	 *
+	 * @param stdClass $updates
+	 * @return stdClass
+	 */
+	public function injectTranslationUpdates($updates) {
+		$translationUpdates = $this->getTranslationUpdates();
+		if ( empty($translationUpdates) ) {
+			return $updates;
+		}
+
+		//Being defensive.
+		if ( !is_object($updates) ) {
+			$updates = new stdClass();
+		}
+		if ( !isset($updates->translations) ) {
+			$updates->translations = array();
+		}
+
+		//In case there's a name collision with a plugin hosted on wordpress.org,
+		//remove any preexisting updates that match our plugin.
+		$translationType = 'plugin';
+		$filteredTranslations = array();
+		foreach($updates->translations as $translation) {
+			if ( ($translation['type'] === $translationType) && ($translation['slug'] === $this->slug) ) {
+				continue;
+			}
+			$filteredTranslations[] = $translation;
+		}
+		$updates->translations = $filteredTranslations;
+
+		//Add our updates to the list.
+		foreach($translationUpdates as $update) {
+			$convertedUpdate = array_merge(
+				array(
+					'type' => $translationType,
+					'slug' => $this->slug,
+					'autoupdate' => 0,
+					//AFAICT, WordPress doesn't actually use the "version" field for anything.
+					//But lets make sure it's there, just in case.
+					'version' => isset($update->version) ? $update->version : ('1.' . strtotime($update->updated)),
+				),
+				(array)$update
+			);
+
+			$updates->translations[] = $convertedUpdate;
 		}
 
 		return $updates;
@@ -551,12 +600,14 @@ class PluginUpdateChecker_2_2 {
 	 * GitHub and other repositories provide ZIP downloads, but they often use directory names like
 	 * "project-branch" or "project-tag-hash". We need to change the name to the actual plugin folder.
 	 *
+	 * This is a hook callback. Don't call it from a plugin.
+	 *
 	 * @param string $source The directory to copy to /wp-content/plugins. Usually a subdirectory of $remoteSource.
 	 * @param string $remoteSource WordPress has extracted the update to this directory.
 	 * @param WP_Upgrader $upgrader
 	 * @return string|WP_Error
 	 */
-	function fixDirectoryName($source, $remoteSource, $upgrader) {
+	public function fixDirectoryName($source, $remoteSource, $upgrader) {
 		global $wp_filesystem; /** @var WP_Filesystem_Base $wp_filesystem */
 
 		//Basic sanity checks.
@@ -564,50 +615,14 @@ class PluginUpdateChecker_2_2 {
 			return $source;
 		}
 
-		//Figure out which plugin is being upgraded.
-		$pluginFile = null;
-		$skin = $upgrader->skin;
-		if ( $skin instanceof Plugin_Upgrader_Skin ) {
-			if ( isset($skin->plugin) && is_string($skin->plugin) && ($skin->plugin !== '') ) {
-				$pluginFile = $skin->plugin;
-			}
-		} elseif ( isset($skin->plugin_info) && is_array($skin->plugin_info) ) {
-			//This case is tricky because Bulk_Plugin_Upgrader_Skin (etc) doesn't actually store the plugin
-			//filename anywhere. Instead, it has the plugin headers in $plugin_info. So the best we can
-			//do is compare those headers to the headers of installed plugins.
-			if ( !function_exists('get_plugins') ){
-				require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
-			}
-
-			$installedPlugins = get_plugins();
-			$matches = array();
-			foreach($installedPlugins as $pluginBasename => $headers) {
-				$diff1 = array_diff_assoc($headers, $skin->plugin_info);
-				$diff2 = array_diff_assoc($skin->plugin_info, $headers);
-				if ( empty($diff1) && empty($diff2) ) {
-					$matches[] = $pluginBasename;
-				}
-			}
-
-			//It's possible (though very unlikely) that there could be two plugins with identical
-			//headers. In that case, we can't unambiguously identify the plugin that's being upgraded.
-			if ( count($matches) !== 1 ) {
-				return $source;
-			}
-
-			$pluginFile = reset($matches);
-		} elseif ( !empty($this->upgradedPluginFile) ) {
-			$pluginFile = $this->upgradedPluginFile;
-		}
-
 		//If WordPress is upgrading anything other than our plugin, leave the directory name unchanged.
-		if ( empty($pluginFile) || ($pluginFile !== $this->pluginFile) ) {
+		if ( !$this->isPluginBeingUpgraded($upgrader) ) {
 			return $source;
 		}
 
 		//Rename the source to match the existing plugin directory.
 		$pluginDirectoryName = dirname($this->pluginFile);
-		if ( ($pluginDirectoryName === '.') || ($pluginDirectoryName === '/') ) {
+		if ( $pluginDirectoryName === '.' ) {
 			return $source;
 		}
 		$correctedSource = trailingslashit($remoteSource) . $pluginDirectoryName . '/';
@@ -615,23 +630,18 @@ class PluginUpdateChecker_2_2 {
 			//The update archive should contain a single directory that contains the rest of plugin files. Otherwise,
 			//WordPress will try to copy the entire working directory ($source == $remoteSource). We can't rename
 			//$remoteSource because that would break WordPress code that cleans up temporary files after update.
-			$sourceFiles = $wp_filesystem->dirlist($remoteSource);
-			if ( is_array($sourceFiles) ) {
-				$sourceFiles = array_keys($sourceFiles);
-				$firstFilePath = trailingslashit($remoteSource) . $sourceFiles[0];
-
-				if ( (count($sourceFiles) > 1) || (!$wp_filesystem->is_dir($firstFilePath)) ) {
-					return new WP_Error(
-						'puc-incorrect-directory-structure',
-						sprintf(
-							'The directory structure of the update is incorrect. All plugin files should be inside ' .
-							'a directory named <span class="code">%s</span>, not at the root of the ZIP file.',
-							htmlentities($this->slug)
-						)
-					);
-				}
+			if ( $this->isBadDirectoryStructure($remoteSource) ) {
+				return new WP_Error(
+					'puc-incorrect-directory-structure',
+					sprintf(
+						'The directory structure of the update is incorrect. All plugin files should be inside ' .
+						'a directory named <span class="code">%s</span>, not at the root of the ZIP file.',
+						htmlentities($this->slug)
+					)
+				);
 			}
 
+			/** @var WP_Upgrader_Skin $upgrader->skin */
 			$upgrader->skin->feedback(sprintf(
 				'Renaming %s to %s&#8230;',
 				'<span class="code">' . basename($source) . '</span>',
@@ -653,30 +663,34 @@ class PluginUpdateChecker_2_2 {
 	}
 
 	/**
-	 * @access private
+	 * Check for incorrect update directory structure. An update must contain a single directory,
+	 * all other files should be inside that directory.
 	 *
-	 * @param mixed $input
-	 * @param array $hookExtra
-	 * @return mixed Returns $input unaltered.
+	 * @param string $remoteSource Directory path.
+	 * @return bool
 	 */
-	public function setUpgradedPlugin($input, $hookExtra) {
-		if (!empty($hookExtra['plugin']) && is_string($hookExtra['plugin'])) {
-			$this->upgradedPluginFile = $hookExtra['plugin'];
-		} else {
-			$this->upgradedPluginFile = null;
+	private function isBadDirectoryStructure($remoteSource) {
+		global $wp_filesystem; /** @var WP_Filesystem_Base $wp_filesystem */
+
+		$sourceFiles = $wp_filesystem->dirlist($remoteSource);
+		if ( is_array($sourceFiles) ) {
+			$sourceFiles = array_keys($sourceFiles);
+			$firstFilePath = trailingslashit($remoteSource) . $sourceFiles[0];
+			return (count($sourceFiles) > 1) || (!$wp_filesystem->is_dir($firstFilePath));
 		}
-		return $input;
+
+		//Assume it's fine.
+		return false;
 	}
 
 	/**
-	 * @access private
+	 * Is there and update being installed RIGHT NOW, for this specific plugin?
 	 *
-	 * @param mixed $input
-	 * @return mixed Returns $input unaltered.
+	 * @param WP_Upgrader|null $upgrader The upgrader that's performing the current update.
+	 * @return bool
 	 */
-	public function clearUpgradedPlugin($input = null) {
-		$this->upgradedPluginFile = null;
-		return $input;
+	public function isPluginBeingUpgraded($upgrader = null) {
+		return $this->upgraderStatus->isPluginBeingUpgraded($this->pluginFile, $upgrader);
 	}
 
 	/**
@@ -688,13 +702,13 @@ class PluginUpdateChecker_2_2 {
 	 * Uses cached update data. To retrieve update information straight from
 	 * the metadata URL, call requestUpdate() instead.
 	 *
-	 * @return PluginUpdate|null
+	 * @return LoginizerUpdate_3_2|null
 	 */
 	public function getUpdate() {
 		$state = $this->getUpdateState(); /** @var StdClass $state */
 
-		//Is there an update available insert?
-		if ( !empty($state) && isset($state->update) && !empty($state->update) ){
+		//Is there an update available?
+		if ( isset($state, $state->update) ) {
 			$update = $state->update;
 			//Check if the update is actually newer than the currently installed version.
 			$installedVersion = $this->getInstalledVersion();
@@ -704,6 +718,35 @@ class PluginUpdateChecker_2_2 {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Get a list of available translation updates.
+	 *
+	 * This method will return an empty array if there are no updates.
+	 * Uses cached update data.
+	 *
+	 * @return array
+	 */
+	public function getTranslationUpdates() {
+		$state = $this->getUpdateState();
+		if ( isset($state, $state->update, $state->update->translations) ) {
+			return $state->update->translations;
+		}
+		return array();
+	}
+
+	/**
+	 * Remove all cached translation updates.
+	 *
+	 * @see wp_clean_update_cache
+	 */
+	public function clearCachedTranslationUpdates() {
+		$state = $this->getUpdateState();
+		if ( isset($state, $state->update, $state->update->translations) ) {
+			$state->update->translations = array();
+			$this->setUpdateState($state);
+		}
 	}
 
 	/**
@@ -718,34 +761,25 @@ class PluginUpdateChecker_2_2 {
 	 * @return array
 	 */
 	public function addCheckForUpdatesLink($pluginMeta, $pluginFile) {
-		
 		$isRelevant = ($pluginFile == $this->pluginFile)
 		              || (!empty($this->muPluginFile) && $pluginFile == $this->muPluginFile);
-		
-		// Is the license key there ?
-		if($isRelevant && current_user_can('update_plugins') && empty($GLOBALS['loginizer']['license']['license'])){
 
-			$linkText = apply_filters('puc_manual_check_link-' . $this->slug, 'Install License Key to Update');
-			if ( !empty($linkText) ) {
-				$pluginMeta[] = sprintf('<a href="%s">%s</a>', admin_url('admin.php?page=loginizer'), $linkText);
-			}
-		
-		// Show the Check for Updates
-		}elseif ( $isRelevant && current_user_can('update_plugins') ) {
+		if ( $isRelevant && current_user_can('update_plugins') ) {
 			$linkUrl = wp_nonce_url(
 				add_query_arg(
 					array(
 						'puc_check_for_updates' => 1,
 						'puc_slug' => $this->slug,
 					),
-					is_network_admin() ? network_admin_url('plugins.php') : admin_url('plugins.php')
+					self_admin_url('plugins.php')
 				),
 				'puc_check_for_updates'
 			);
 
-			$linkText = apply_filters('puc_manual_check_link-' . $this->slug, 'Check for updates');
+			$linkText = apply_filters('puc_manual_check_link-' . $this->slug, __('Check for updates', 'plugin-update-checker'));
 			if ( !empty($linkText) ) {
-				$pluginMeta[] = sprintf('<a href="%s">%s</a>', esc_attr($linkUrl), $linkText);
+				$final_link = sprintf('<a href="%s">%s</a>', esc_attr($linkUrl), $linkText);
+				$pluginMeta[] = apply_filters('puc_manual_final_check_link-' . $this->slug, $final_link);
 			}
 		}
 		return $pluginMeta;
@@ -768,11 +802,11 @@ class PluginUpdateChecker_2_2 {
 			$update = $this->checkForUpdates();
 			$status = ($update === null) ? 'no_update' : 'update_available';
 			wp_redirect(add_query_arg(
-					array(
-					     'puc_update_check_result' => $status,
-					     'puc_slug' => $this->slug,
-					),
-					is_network_admin() ? network_admin_url('plugins.php') : admin_url('plugins.php')
+				array(
+					'puc_update_check_result' => $status,
+					'puc_slug' => $this->slug,
+				),
+				self_admin_url('plugins.php')
 			));
 		}
 	}
@@ -787,14 +821,14 @@ class PluginUpdateChecker_2_2 {
 		if ( isset($_GET['puc_update_check_result'], $_GET['puc_slug']) && ($_GET['puc_slug'] == $this->slug) ) {
 			$status = strval($_GET['puc_update_check_result']);
 			if ( $status == 'no_update' ) {
-				$message = 'This plugin is up to date.';
+				$message = __('This plugin is up to date.', 'plugin-update-checker');
 			} else if ( $status == 'update_available' ) {
-				$message = 'A new version of this plugin is available.';
+				$message = __('A new version of this plugin is available.', 'plugin-update-checker');
 			} else {
-				$message = sprintf('Unknown update checker status "%s"', htmlentities($status));
+				$message = sprintf(__('Unknown update checker status "%s"', 'plugin-update-checker'), htmlentities($status));
 			}
 			printf(
-				'<div class="updated"><p>%s</p></div>',
+				'<div class="updated notice is-dismissible"><p>%s</p></div>',
 				apply_filters('puc_manual_check_message-' . $this->slug, $message, $status)
 			);
 		}
@@ -809,14 +843,35 @@ class PluginUpdateChecker_2_2 {
 		static $cachedResult = null;
 
 		if ( $cachedResult === null ) {
+			
+			if ( !defined('WPMU_PLUGIN_DIR') || !is_string(WPMU_PLUGIN_DIR) ) {
+				$cachedResult = false;
+				return $cachedResult;
+			}
+			
 			//Convert both paths to the canonical form before comparison.
 			$muPluginDir = realpath(WPMU_PLUGIN_DIR);
 			$pluginPath  = realpath($this->pluginAbsolutePath);
+			
+			if ( empty($muPluginDir) ) {
+				$cachedResult = false;
+				return $cachedResult;
+			}
 
 			$cachedResult = (strpos($pluginPath, $muPluginDir) === 0);
 		}
 
 		return $cachedResult;
+	}
+
+	/**
+	 * MU plugins are partially supported, but only when we know which file in mu-plugins
+	 * corresponds to this plugin.
+	 *
+	 * @return bool
+	 */
+	protected function isUnknownMuPlugin() {
+		return empty($this->muPluginFile) && $this->isMuPlugin();
 	}
 
 	/**
@@ -829,6 +884,15 @@ class PluginUpdateChecker_2_2 {
 	public function clearCachedVersion($filterArgument = null) {
 		$this->cachedInstalledVersion = null;
 		return $filterArgument;
+	}
+
+	/**
+	 * Get absolute path to the main plugin file.
+	 *
+	 * @return string
+	 */
+	public function getAbsolutePath() {
+		return $this->pluginAbsolutePath;
 	}
 
 	/**
@@ -866,11 +930,11 @@ class PluginUpdateChecker_2_2 {
 	 * Register a callback for filtering the plugin info retrieved from the external API.
 	 * 
 	 * The callback function should take two arguments. If the plugin info was retrieved 
-	 * successfully, the first argument passed will be an instance of  PluginInfo. Otherwise, 
+	 * successfully, the first argument passed will be an instance of  LoginizerInfo. Otherwise, 
 	 * it will be NULL. The second argument will be the corresponding return value of 
 	 * wp_remote_get (see WP docs for details).
 	 *  
-	 * The callback function should return a new or modified instance of PluginInfo or NULL.
+	 * The callback function should return a new or modified instance of LoginizerInfo or NULL.
 	 * 
 	 * @uses add_filter() This method is a convenience wrapper for add_filter().
 	 * 
@@ -901,34 +965,49 @@ class PluginUpdateChecker_2_2 {
 	 * Initialize the update checker Debug Bar plugin/add-on thingy.
 	 */
 	public function initDebugBarPanel() {
-		if ( class_exists('Debug_Bar', false) ) {
-			require_once dirname(__FILE__) . '/debug-bar-plugin.php';
-			$this->debugBarPlugin = new PucDebugBarPlugin($this);
+		$debugBarPlugin = dirname(__FILE__) . '/debug-bar-plugin.php';
+		if ( class_exists('Debug_Bar', false) && file_exists($debugBarPlugin) ) {
+			/** @noinspection PhpIncludeInspection */
+			require_once $debugBarPlugin;
+			$this->debugBarPlugin = new Loginizer_PucDebugBarPlugin_3_2($this);
+		}
+	}
+
+	/**
+	 * Trigger a PHP error, but only when $debugMode is enabled.
+	 *
+	 * @param string $message
+	 * @param int $errorType
+	 */
+	protected function triggerError($message, $errorType) {
+		if ( $this->debugMode ) {
+			trigger_error($message, $errorType);
 		}
 	}
 }
 
 endif;
 
-if ( !class_exists('PluginInfo_2_2', false) ):
+if ( !class_exists('LoginizerInfo_3_2', false) ):
 
 /**
  * A container class for holding and transforming various plugin metadata.
  * 
  * @author Janis Elsts
- * @copyright 2015
- * @version 2.2
+ * @copyright 2016
+ * @version 3.2
  * @access public
  */
-class PluginInfo_2_2 {
+class LoginizerInfo_3_2 {
 	//Most fields map directly to the contents of the plugin's info.json file.
 	//See the relevant docs for a description of their meaning.  
 	public $name;
 	public $slug;
 	public $version;
 	public $homepage;
-	public $sections;
+	public $sections = array();
 	public $banners;
+	public $translations = array();
 	public $download_url;
 
 	public $author;
@@ -949,39 +1028,26 @@ class PluginInfo_2_2 {
 	public $filename; //Plugin filename relative to the plugins directory.
 		
 	/**
-	 * Create a new instance of PluginInfo from JSON-encoded plugin info 
+	 * Create a new instance of LoginizerInfo from JSON-encoded plugin info 
 	 * returned by an external update API.
 	 * 
 	 * @param string $json Valid JSON string representing plugin info.
-	 * @param bool $triggerErrors
-	 * @return PluginInfo|null New instance of PluginInfo, or NULL on error.
+	 * @return LoginizerInfo_3_2|null New instance of LoginizerInfo, or NULL on error.
 	 */
-	public static function fromJson($json, $triggerErrors = false){
+	public static function fromJson($json){
 		/** @var StdClass $apiResponse */
 		$apiResponse = json_decode($json);
-		
-		// Update the plugin download link with license KEY to download
-		$apiResponse->download_url = $apiResponse->download_url.'&license='.@$GLOBALS['loginizer']['license']['license'];
-		
 		if ( empty($apiResponse) || !is_object($apiResponse) ){
-			if ( $triggerErrors ) {
-				trigger_error(
-					"Failed to parse plugin metadata. Try validating your .json file with http://jsonlint.com/",
-					E_USER_NOTICE
-				);
-			}
+			trigger_error(
+				"Failed to parse plugin metadata. Try validating your .json file with http://jsonlint.com/",
+				E_USER_NOTICE
+			);
 			return null;
 		}
 		
-		//Very, very basic validation.
-		$valid = isset($apiResponse->name) && !empty($apiResponse->name) && isset($apiResponse->version) && !empty($apiResponse->version);
-		if ( !$valid ){
-			if ( $triggerErrors ) {
-				trigger_error(
-					"The plugin metadata file does not contain the required 'name' and/or 'version' keys.",
-					E_USER_NOTICE
-				);
-			}
+		$valid = self::validateMetadata($apiResponse);
+		if ( is_wp_error($valid) ){
+			trigger_error($valid->get_error_message(), E_USER_NOTICE);
 			return null;
 		}
 		
@@ -989,9 +1055,33 @@ class PluginInfo_2_2 {
 		foreach(get_object_vars($apiResponse) as $key => $value){
 			$info->$key = $value;
 		}
+
+		//json_decode decodes assoc. arrays as objects. We want it as an array.
+		$info->sections = (array)$info->sections;
 		
 		return $info;		
 	}
+
+	/**
+	 * Very, very basic validation.
+	 *
+	 * @param StdClass $apiResponse
+	 * @return bool|WP_Error
+	 */
+	protected static function validateMetadata($apiResponse) {
+		if (
+			!isset($apiResponse->name, $apiResponse->version)
+			|| empty($apiResponse->name)
+			|| empty($apiResponse->version)
+		) {
+			return new WP_Error(
+				'puc-invalid-metadata',
+				"The plugin metadata file does not contain the required 'name' and/or 'version' keys."
+			);
+		}
+		return true;
+	}
+
 	
 	/**
 	 * Transform plugin info into the format used by the native WordPress.org API
@@ -999,7 +1089,7 @@ class PluginInfo_2_2 {
 	 * @return object
 	 */
 	public function toWpFormat(){
-		$info = new StdClass;
+		$info = new stdClass;
 		
 		//The custom update API is built so that many fields have the same name and format
 		//as those returned by the native WordPress.org API. These can be assigned directly. 
@@ -1016,21 +1106,9 @@ class PluginInfo_2_2 {
 		}
 
 		//Other fields need to be renamed and/or transformed.
-		$info->download_link = $this->download_url.'&license='.@$GLOBALS['loginizer']['license']['license'];
-		
-		if ( !empty($this->author_homepage) ){
-			$info->author = sprintf('<a href="%s">%s</a>', $this->author_homepage, $this->author);
-		} else {
-			$info->author = $this->author;
-		}
-		
-		if ( is_object($this->sections) ){
-			$info->sections = get_object_vars($this->sections);
-		} elseif ( is_array($this->sections) ) {
-			$info->sections = $this->sections;
-		} else {
-			$info->sections = array('description' => '');
-		}
+		$info->download_link = $this->download_url;
+		$info->author = $this->getFormattedAuthor();
+		$info->sections = array_merge(array('description' => ''), $this->sections);
 
 		if ( !empty($this->banners) ) {
 			//WP expects an array with two keys: "high" and "low". Both are optional.
@@ -1041,75 +1119,93 @@ class PluginInfo_2_2 {
 
 		return $info;
 	}
+
+	protected function getFormattedAuthor() {
+		if ( !empty($this->author_homepage) ){
+			return sprintf('<a href="%s">%s</a>', $this->author_homepage, $this->author);
+		}
+		return $this->author;
+	}
 }
 	
 endif;
 
-if ( !class_exists('PluginUpdate_2_2', false) ):
+if ( !class_exists('LoginizerUpdate_3_2', false) ):
 
 /**
  * A simple container class for holding information about an available update.
  * 
  * @author Janis Elsts
- * @copyright 2015
- * @version 2.2
+ * @copyright 2016
+ * @version 3.2
  * @access public
  */
-class PluginUpdate_2_2 {
+class LoginizerUpdate_3_2 {
 	public $id = 0;
 	public $slug;
 	public $version;
 	public $homepage;
 	public $download_url;
 	public $upgrade_notice;
+	public $tested;
+	public $translations = array();
 	public $filename; //Plugin filename relative to the plugins directory.
 
-	private static $fields = array('id', 'slug', 'version', 'homepage', 'download_url', 'upgrade_notice', 'filename');
+	private static $fields = array(
+		'id', 'slug', 'version', 'homepage', 'tested',
+		'download_url', 'upgrade_notice', 'filename',
+		'translations', 'icons', 'banners'
+	);
 	
 	/**
-	 * Create a new instance of PluginUpdate from its JSON-encoded representation.
+	 * Create a new instance of LoginizerUpdate from its JSON-encoded representation.
 	 * 
 	 * @param string $json
-	 * @param bool $triggerErrors
-	 * @return PluginUpdate|null
+	 * @return LoginizerUpdate_3_2|null
 	 */
-	public static function fromJson($json, $triggerErrors = false){
+	public static function fromJson($json){
 		//Since update-related information is simply a subset of the full plugin info,
 		//we can parse the update JSON as if it was a plugin info string, then copy over
 		//the parts that we care about.
-		$pluginInfo = PluginInfo_2_2::fromJson($json, $triggerErrors);
+		$pluginInfo = LoginizerInfo_3_2::fromJson($json);
 		if ( $pluginInfo != null ) {
-			return self::fromPluginInfo($pluginInfo);
+			return self::fromLoginizerInfo($pluginInfo);
 		} else {
 			return null;
 		}
 	}
 
 	/**
-	 * Create a new instance of PluginUpdate based on an instance of PluginInfo.
+	 * Create a new instance of LoginizerUpdate based on an instance of LoginizerInfo.
 	 * Basically, this just copies a subset of fields from one object to another.
 	 * 
-	 * @param PluginInfo $info
-	 * @return PluginUpdate
+	 * @param LoginizerInfo_3_2 $info
+	 * @return LoginizerUpdate_3_2
 	 */
-	public static function fromPluginInfo($info){
+	public static function fromLoginizerInfo($info){
 		return self::fromObject($info);
 	}
 	
 	/**
-	 * Create a new instance of PluginUpdate by copying the necessary fields from 
+	 * Create a new instance of LoginizerUpdate by copying the necessary fields from 
 	 * another object.
 	 *  
-	 * @param StdClass|PluginInfo|PluginUpdate $object The source object.
-	 * @return PluginUpdate The new copy.
+	 * @param StdClass|LoginizerInfo_3_2|LoginizerUpdate_3_2 $object The source object.
+	 * @return LoginizerUpdate_3_2 The new copy.
 	 */
 	public static function fromObject($object) {
 		$update = new self();
 		$fields = self::$fields;
-		if (!empty($object->slug)) $fields = apply_filters('puc_retain_fields-'.$object->slug, $fields);
+		if ( !empty($object->slug) ) {
+			$fields = apply_filters('puc_retain_fields-' . $object->slug, $fields);
+		}
 		foreach($fields as $field){
 			if (property_exists($object, $field)) {
-				$update->$field = $object->$field;
+				if(in_array($field, array('icons', 'banners'))){
+					$update->$field = (array) $object->$field;
+				}else{
+					$update->$field = $object->$field;
+				}
 			}
 		}
 		return $update;
@@ -1117,16 +1213,18 @@ class PluginUpdate_2_2 {
 	
 	/**
 	 * Create an instance of StdClass that can later be converted back to 
-	 * a PluginUpdate. Useful for serialization and caching, as it avoids
+	 * a LoginizerUpdate. Useful for serialization and caching, as it avoids
 	 * the "incomplete object" problem if the cached value is loaded before
 	 * this class.
 	 * 
 	 * @return StdClass
 	 */
 	public function toStdClass() {
-		$object = new StdClass();
+		$object = new stdClass();
 		$fields = self::$fields;
-		if (!empty($this->slug)) $fields = apply_filters('puc_retain_fields-'.$this->slug, $fields);
+		if ( !empty($this->slug) ) {
+			$fields = apply_filters('puc_retain_fields-' . $this->slug, $fields);
+		}
 		foreach($fields as $field){
 			if (property_exists($this, $field)) {
 				$object->$field = $this->$field;
@@ -1142,14 +1240,17 @@ class PluginUpdate_2_2 {
 	 * @return object
 	 */
 	public function toWpFormat(){
-		$update = new StdClass;
+		$update = new stdClass;
 
 		$update->id = $this->id;
 		$update->slug = $this->slug;
 		$update->new_version = $this->version;
 		$update->url = $this->homepage;
-		$update->package = $this->download_url.'&license='.@$GLOBALS['loginizer']['license']['license'];
+		$update->package = $this->download_url;
+		$update->tested = $this->tested;
 		$update->plugin = $this->filename;
+		$update->icons = $this->icons;
+		$update->banners = $this->banners;
 
 		if ( !empty($this->upgrade_notice) ){
 			$update->upgrade_notice = $this->upgrade_notice;
@@ -1161,28 +1262,352 @@ class PluginUpdate_2_2 {
 	
 endif;
 
-if ( !class_exists('PucFactory', false) ):
+if ( !class_exists('Loginizer_PucScheduler_3_2', false) ):
+
+/**
+ * The scheduler decides when and how often to check for updates.
+ * It calls @see LoginizerUpdateChecker::checkForUpdates() to perform the actual checks.
+ *
+ * @version 3.2
+ */
+class Loginizer_PucScheduler_3_2 {
+	public $checkPeriod = 12; //How often to check for updates (in hours).
+	public $throttleRedundantChecks = false; //Check less often if we already know that an update is available.
+	public $throttledCheckPeriod = 72;
+
+	/**
+	 * @var LoginizerUpdateChecker_3_2
+	 */
+	protected $updateChecker;
+
+	private $cronHook = null;
+
+	/**
+	 * Scheduler constructor.
+	 *
+	 * @param LoginizerUpdateChecker_3_2 $updateChecker
+	 * @param int $checkPeriod How often to check for updates (in hours).
+	 */
+	public function __construct($updateChecker, $checkPeriod) {
+		$this->updateChecker = $updateChecker;
+		$this->checkPeriod = $checkPeriod;
+
+		//Set up the periodic update checks
+		$this->cronHook = 'check_plugin_updates-' . $this->updateChecker->slug;
+		if ( $this->checkPeriod > 0 ){
+
+			//Trigger the check via Cron.
+			//Try to use one of the default schedules if possible as it's less likely to conflict
+			//with other plugins and their custom schedules.
+			$defaultSchedules = array(
+				1  => 'hourly',
+				12 => 'twicedaily',
+				24 => 'daily',
+			);
+			if ( array_key_exists($this->checkPeriod, $defaultSchedules) ) {
+				$scheduleName = $defaultSchedules[$this->checkPeriod];
+			} else {
+				//Use a custom cron schedule.
+				$scheduleName = 'every' . $this->checkPeriod . 'hours';
+				add_filter('cron_schedules', array($this, '_addCustomSchedule'));
+			}
+
+			if ( !wp_next_scheduled($this->cronHook) && !defined('WP_INSTALLING') ) {
+				wp_schedule_event(time(), $scheduleName, $this->cronHook);
+			}
+			add_action($this->cronHook, array($this, 'maybeCheckForUpdates'));
+
+			register_deactivation_hook($this->updateChecker->pluginFile, array($this, '_removeUpdaterCron'));
+
+			//In case Cron is disabled or unreliable, we also manually trigger
+			//the periodic checks while the user is browsing the Dashboard.
+			add_action( 'admin_init', array($this, 'maybeCheckForUpdates') );
+
+			//Like WordPress itself, we check more often on certain pages.
+			/** @see wp_update_plugins */
+			add_action('load-update-core.php', array($this, 'maybeCheckForUpdates'));
+			add_action('load-plugins.php', array($this, 'maybeCheckForUpdates'));
+			add_action('load-update.php', array($this, 'maybeCheckForUpdates'));
+			//This hook fires after a bulk update is complete.
+			add_action('upgrader_process_complete', array($this, 'maybeCheckForUpdates'), 11, 0);
+
+		} else {
+			//Periodic checks are disabled.
+			wp_clear_scheduled_hook($this->cronHook);
+		}
+	}
+
+	/**
+	 * Check for updates if the configured check interval has already elapsed.
+	 * Will use a shorter check interval on certain admin pages like "Dashboard -> Updates" or when doing cron.
+	 *
+	 * You can override the default behaviour by using the "puc_check_now-$slug" filter.
+	 * The filter callback will be passed three parameters:
+	 *     - Current decision. TRUE = check updates now, FALSE = don't check now.
+	 *     - Last check time as a Unix timestamp.
+	 *     - Configured check period in hours.
+	 * Return TRUE to check for updates immediately, or FALSE to cancel.
+	 *
+	 * This method is declared public because it's a hook callback. Calling it directly is not recommended.
+	 */
+	public function maybeCheckForUpdates(){
+		if ( empty($this->checkPeriod) ){
+			return;
+		}
+
+		$state = $this->updateChecker->getUpdateState();
+		$shouldCheck =
+			empty($state) ||
+			!isset($state->lastCheck) ||
+			( (time() - $state->lastCheck) >= $this->getEffectiveCheckPeriod() );
+
+		//Let plugin authors substitute their own algorithm.
+		$shouldCheck = apply_filters(
+			'puc_check_now-' . $this->updateChecker->slug,
+			$shouldCheck,
+			(!empty($state) && isset($state->lastCheck)) ? $state->lastCheck : 0,
+			$this->checkPeriod
+		);
+
+		if ( $shouldCheck ) {
+			$this->updateChecker->checkForUpdates();
+		}
+	}
+
+	/**
+	 * Calculate the actual check period based on the current status and environment.
+	 *
+	 * @return int Check period in seconds.
+	 */
+	protected function getEffectiveCheckPeriod() {
+		$currentFilter = current_filter();
+		if ( in_array($currentFilter, array('load-update-core.php', 'upgrader_process_complete')) ) {
+			//Check more often when the user visits "Dashboard -> Updates" or does a bulk update.
+			$period = 60;
+		} else if ( in_array($currentFilter, array('load-plugins.php', 'load-update.php')) ) {
+			//Also check more often on the "Plugins" page and /wp-admin/update.php.
+			$period = 3600;
+		} else if ( $this->throttleRedundantChecks && ($this->updateChecker->getUpdate() !== null) ) {
+			//Check less frequently if it's already known that an update is available.
+			$period = $this->throttledCheckPeriod * 3600;
+		} else if ( defined('DOING_CRON') && constant('DOING_CRON') ) {
+			//WordPress cron schedules are not exact, so lets do an update check even
+			//if slightly less than $checkPeriod hours have elapsed since the last check.
+			$cronFuzziness = 20 * 60;
+			$period = $this->checkPeriod * 3600 - $cronFuzziness;
+		} else {
+			$period = $this->checkPeriod * 3600;
+		}
+
+		return $period;
+	}
+
+	/**
+	 * Add our custom schedule to the array of Cron schedules used by WP.
+	 *
+	 * @param array $schedules
+	 * @return array
+	 */
+	public function _addCustomSchedule($schedules){
+		if ( $this->checkPeriod && ($this->checkPeriod > 0) ){
+			$scheduleName = 'every' . $this->checkPeriod . 'hours';
+			$schedules[$scheduleName] = array(
+				'interval' => $this->checkPeriod * 3600,
+				'display' => sprintf('Every %d hours', $this->checkPeriod),
+			);
+		}
+		return $schedules;
+	}
+
+	/**
+	 * Remove the scheduled cron event that the library uses to check for updates.
+	 *
+	 * @return void
+	 */
+	public function _removeUpdaterCron(){
+		wp_clear_scheduled_hook($this->cronHook);
+	}
+
+	/**
+	 * Get the name of the update checker's WP-cron hook. Mostly useful for debugging.
+	 *
+	 * @return string
+	 */
+	public function getCronHookName() {
+		return $this->cronHook;
+	}
+}
+
+endif;
+
+
+if ( !class_exists('Loginizer_PucUpgraderStatus_3_2', false) ):
+
+/**
+ * A utility class that helps figure out which plugin WordPress is upgrading.
+ *
+ * It may seem strange to have an separate class just for that, but the task is surprisingly complicated.
+ * Core classes like Plugin_Upgrader don't expose the plugin file name during an in-progress update (AFAICT).
+ * This class uses a few workarounds and heuristics to get the file name.
+ */
+class Loginizer_PucUpgraderStatus_3_2 {
+	private $upgradedPluginFile = null; //The plugin that is currently being upgraded by WordPress.
+
+	public function __construct() {
+		//Keep track of which plugin WordPress is currently upgrading.
+		add_filter('upgrader_pre_install', array($this, 'setUpgradedPlugin'), 10, 2);
+		add_filter('upgrader_package_options', array($this, 'setUpgradedPluginFromOptions'), 10, 1);
+		add_filter('upgrader_post_install', array($this, 'clearUpgradedPlugin'), 10, 1);
+		add_action('upgrader_process_complete', array($this, 'clearUpgradedPlugin'), 10, 1);
+	}
+
+	/**
+	 * Is there and update being installed RIGHT NOW, for a specific plugin?
+	 *
+	 * Caution: This method is unreliable. WordPress doesn't make it easy to figure out what it is upgrading,
+	 * and upgrader implementations are liable to change without notice.
+	 *
+	 * @param string $pluginFile The plugin to check.
+	 * @param WP_Upgrader|null $upgrader The upgrader that's performing the current update.
+	 * @return bool True if the plugin identified by $pluginFile is being upgraded.
+	 */
+	public function isPluginBeingUpgraded($pluginFile, $upgrader = null) {
+		if ( isset($upgrader) ) {
+			$upgradedPluginFile = $this->getPluginBeingUpgradedBy($upgrader);
+			if ( !empty($upgradedPluginFile) ) {
+				$this->upgradedPluginFile = $upgradedPluginFile;
+			}
+		}
+		return ( !empty($this->upgradedPluginFile) && ($this->upgradedPluginFile === $pluginFile) );
+	}
+
+	/**
+	 * Get the file name of the plugin that's currently being upgraded.
+	 *
+	 * @param Plugin_Upgrader|WP_Upgrader $upgrader
+	 * @return string|null
+	 */
+	private function getPluginBeingUpgradedBy($upgrader) {
+		if ( !isset($upgrader, $upgrader->skin) ) {
+			return null;
+		}
+
+		//Figure out which plugin is being upgraded.
+		$pluginFile = null;
+		$skin = $upgrader->skin;
+		if ( $skin instanceof Plugin_Upgrader_Skin ) {
+			if ( isset($skin->plugin) && is_string($skin->plugin) && ($skin->plugin !== '') ) {
+				$pluginFile = $skin->plugin;
+			}
+		} elseif ( isset($skin->plugin_info) && is_array($skin->plugin_info) ) {
+			//This case is tricky because Bulk_Plugin_Upgrader_Skin (etc) doesn't actually store the plugin
+			//filename anywhere. Instead, it has the plugin headers in $plugin_info. So the best we can
+			//do is compare those headers to the headers of installed plugins.
+			$pluginFile = $this->identifyPluginByHeaders($skin->plugin_info);
+		}
+
+		return $pluginFile;
+	}
+
+	/**
+	 * Identify an installed plugin based on its headers.
+	 *
+	 * @param array $searchHeaders The plugin file header to look for.
+	 * @return string|null Plugin basename ("foo/bar.php"), or NULL if we can't identify the plugin.
+	 */
+	private function identifyPluginByHeaders($searchHeaders) {
+		if ( !function_exists('get_plugins') ){
+			/** @noinspection PhpIncludeInspection */
+			require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
+		}
+
+		$installedPlugins = get_plugins();
+		$matches = array();
+		foreach($installedPlugins as $pluginBasename => $headers) {
+			$diff1 = array_diff_assoc($headers, $searchHeaders);
+			$diff2 = array_diff_assoc($searchHeaders, $headers);
+			if ( empty($diff1) && empty($diff2) ) {
+				$matches[] = $pluginBasename;
+			}
+		}
+
+		//It's possible (though very unlikely) that there could be two plugins with identical
+		//headers. In that case, we can't unambiguously identify the plugin that's being upgraded.
+		if ( count($matches) !== 1 ) {
+			return null;
+		}
+
+		return reset($matches);
+	}
+
+	/**
+	 * @access private
+	 *
+	 * @param mixed $input
+	 * @param array $hookExtra
+	 * @return mixed Returns $input unaltered.
+	 */
+	public function setUpgradedPlugin($input, $hookExtra) {
+		if (!empty($hookExtra['plugin']) && is_string($hookExtra['plugin'])) {
+			$this->upgradedPluginFile = $hookExtra['plugin'];
+		} else {
+			$this->upgradedPluginFile = null;
+		}
+		return $input;
+	}
+
+	/**
+	 * @access private
+	 *
+	 * @param array $options
+	 * @return array
+	 */
+	public function setUpgradedPluginFromOptions($options) {
+		if (isset($options['hook_extra']['plugin']) && is_string($options['hook_extra']['plugin'])) {
+			$this->upgradedPluginFile = $options['hook_extra']['plugin'];
+		} else {
+			$this->upgradedPluginFile = null;
+		}
+		return $options;
+	}
+
+	/**
+	 * @access private
+	 *
+	 * @param mixed $input
+	 * @return mixed Returns $input unaltered.
+	 */
+	public function clearUpgradedPlugin($input = null) {
+		$this->upgradedPluginFile = null;
+		return $input;
+	}
+}
+
+endif;
+
+
+if ( !class_exists('Loginizer_PucFactory', false) ):
 
 /**
  * A factory that builds instances of other classes from this library.
  *
- * When multiple versions of the same class have been loaded (e.g. PluginUpdateChecker 1.2
+ * When multiple versions of the same class have been loaded (e.g. LoginizerUpdateChecker 1.2
  * and 1.3), this factory will always use the latest available version. Register class
- * versions by calling {@link PucFactory::addVersion()}.
+ * versions by calling {@link Loginizer_PucFactory::addVersion()}.
  *
- * At the moment it can only build instances of the PluginUpdateChecker class. Other classes
+ * At the moment it can only build instances of the LoginizerUpdateChecker class. Other classes
  * are intended mainly for internal use and refer directly to specific implementations. If you
- * want to instantiate one of them anyway, you can use {@link PucFactory::getLatestClassVersion()}
+ * want to instantiate one of them anyway, you can use {@link Loginizer_PucFactory::getLatestClassVersion()}
  * to get the class name and then create it with <code>new $class(...)</code>.
  */
-class PucFactory {
+class Loginizer_PucFactory {
 	protected static $classVersions = array();
 	protected static $sorted = false;
 
 	/**
-	 * Create a new instance of PluginUpdateChecker.
+	 * Create a new instance of LoginizerUpdateChecker.
 	 *
-	 * @see PluginUpdateChecker::__construct()
+	 * @see LoginizerUpdateChecker::__construct()
 	 *
 	 * @param $metadataUrl
 	 * @param $pluginFile
@@ -1190,10 +1615,10 @@ class PucFactory {
 	 * @param int $checkPeriod
 	 * @param string $optionName
 	 * @param string $muPluginFile
-	 * @return PluginUpdateChecker
+	 * @return LoginizerUpdateChecker_3_2
 	 */
 	public static function buildUpdateChecker($metadataUrl, $pluginFile, $slug = '', $checkPeriod = 12, $optionName = '', $muPluginFile = '') {
-		$class = self::getLatestClassVersion('PluginUpdateChecker');
+		$class = self::getLatestClassVersion('LoginizerUpdateChecker');
 		return new $class($metadataUrl, $pluginFile, $slug, $checkPeriod, $optionName, $muPluginFile);
 	}
 
@@ -1235,8 +1660,8 @@ class PucFactory {
 	 *
 	 * @access private This method is only for internal use by the library.
 	 *
-	 * @param string $generalClass Class name without version numbers, e.g. 'PluginUpdateChecker'.
-	 * @param string $versionedClass Actual class name, e.g. 'PluginUpdateChecker_1_2'.
+	 * @param string $generalClass Class name without version numbers, e.g. 'LoginizerUpdateChecker'.
+	 * @param string $versionedClass Actual class name, e.g. 'LoginizerUpdateChecker_1_2'.
 	 * @param string $version Version number, e.g. '1.2'.
 	 */
 	public static function addVersion($generalClass, $versionedClass, $version) {
@@ -1250,26 +1675,8 @@ class PucFactory {
 
 endif;
 
-require_once(dirname(__FILE__) . '/github-checker.php');
-
 //Register classes defined in this file with the factory.
-PucFactory::addVersion('PluginUpdateChecker', 'PluginUpdateChecker_2_2', '2.2');
-PucFactory::addVersion('PluginUpdate', 'PluginUpdate_2_2', '2.2');
-PucFactory::addVersion('PluginInfo', 'PluginInfo_2_2', '2.2');
-PucFactory::addVersion('PucGitHubChecker', 'PucGitHubChecker_2_2', '2.2');
-
-/**
- * Create non-versioned variants of the update checker classes. This allows for backwards
- * compatibility with versions that did not use a factory, and it simplifies doc-comments.
- */
-if ( !class_exists('PluginUpdateChecker', false) ) {
-	class PluginUpdateChecker extends PluginUpdateChecker_2_2 { }
-}
-
-if ( !class_exists('PluginUpdate', false) ) {
-	class PluginUpdate extends PluginUpdate_2_2 {}
-}
-
-if ( !class_exists('PluginInfo', false) ) {
-	class PluginInfo extends PluginInfo_2_2 {}
-}
+Loginizer_PucFactory::addVersion('LoginizerUpdateChecker', 'LoginizerUpdateChecker_3_2', '3.2');
+Loginizer_PucFactory::addVersion('LoginizerUpdate', 'LoginizerUpdate_3_2', '3.2');
+Loginizer_PucFactory::addVersion('LoginizerInfo', 'LoginizerInfo_3_2', '3.2');
+Loginizer_PucFactory::addVersion('Loginizer_PucGitHubChecker', 'Loginizer_PucGitHubChecker_3_2', '3.2');

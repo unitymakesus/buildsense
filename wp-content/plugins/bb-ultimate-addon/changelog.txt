@@ -1,3 +1,117 @@
+Version 1.30.2 Monday, 8th March 2021
+- Improvement: Added Compatibility with WordPress 5.7
+- Improvement: Video - Add `Do not Track` option for Vimeo for GDPR compliance.
+- Fixed: Heading - Typography settings not working when a link is added.
+- Fixed: Photo Gallery - Display order not maintained with pagination.
+
+Version 1.30.1 Friday, 26th February 2021
+- Fixed: Video - Not able to play the video with YouTube and Vimeo option.
+
+Version 1.30.0 Tuesday, 23rd February 2021
+- New: Introduced Search module
+- Improvement: Particle Backgrounds - Replaced particles.js with tsParticles for better performance
+- Improvement: Price List - Added 'alt' attribute support for images
+- Improvement: Video - Added self hosted video option
+- Improvement: Video Gallery - Added Self Hosted video type
+- Fixed: Advanced Posts - Empty 'img' tag is rendered when there is no featured image
+- Fixed: Advanced Posts - Layout issue when used in the Advanced Tabs Content
+- Fixed: Photo Gallery - Resolved PHP warning error for Photo Spacing option
+- Fixed: Woo-Categories - Carousel layout issue due to conflict with Advanced Posts module
+- Fixed: Woo-Mini Cart - Cart Buttons not working properly in Modal & Off-Canvas layout
+- Fixed: Woo-Mini-Cart - Cart Container Alignment issue in Dropdown layout
+
+Version 1.29.0 Wednesday, 20th January 2021
+- New: Introduced Woo - Mini Cart module.
+- Improvement: Advanced Icon - Added responsive support for Icon size.
+- Improvement: Photo Gallery - Added responsive support for photo spacing setting.
+- Improvement: Retina image - Added alt tag support for both images in module.
+- Fix: Button - Border settings not working as expected with all the styles.
+- Fix: Marketing Button - HTML rendering issue in the settings field.
+- Fix: Price Box - Typography settings not showing in some cases.
+- Fix: Subscription Form - Handled ADA compliance error for extra HTML.
+- Fix: Video Gallery: Filterable Tab Border settings not working as expected.
+- Fix: Video Gallery: Filterable Tab Typography not working.
+
+Version 1.28.10 Tuesday, 15th December 2020
+- Improvement: Compatibility with PHP v8.0.
+- Improvement: Advanced Posts - Added Taxonomy Badge option.
+- Improvement: Advanced Posts - Added options to add icons for Post Meta.
+- Improvement: Advanced Posts - Added Inter Post Meta Spacing option.
+- Improvement: Advanced Posts - Added Bottom Spacing option for Taxonomy Badge, Title & Meta.
+- Improvement: Image/Icon - Added WPML support.
+- Improvement: User Registration Form - Added Phone field.
+- Improvement: User Registration Form - Added option to make Register Button and Login Link inline.
+- Improvement: User Registration Form - Added option to set Lost Your Password Text above Terms and Conditions.
+- Fixed: Google Map - Window scrolls down on close of InfoWindow on Chrome.
+- Fixed: How-to Schema - Added 'title' attributes to steps images.
+- Fixed: Price Box - Title background color width issue.
+- Fixed: Woo - Products - Grid layout issue with BB theme on archive pages.
+
+Version 1.28.9 Wednesday 4th November 2020
+- Improvement: Advanced Menu - Added Hamburger Icon Size option.
+- Improvement: Advanced Menu - Improved Accessibility for all types of menu.
+- Improvement: Heading - Added spacing option for separator
+- Improvement: Hotspot - Provided filters to change the tour navigation strings.
+- Fixed: Advanced Menu - Sub menu not displayed on Internet Explorer
+- Fixed: Advanced Tabs - Active Tab Index setting not working properly.
+- Fixed: Font Awesome 5 Pro conflict in some UABB modules.
+- Fixed: Info Box - Box Shadow not working properly
+- Fixed: Off-Canvas - Close Canvas on Menu Link conflict with sub menu.
+- Fixed: Photo Gallery - CreativeWork warning for Caption.
+- Fixed: User Registration Form - Added WordPress 5.5 password check compatibility.
+- Fixed: User Registration Form - Password not getting saved when new user is created
+- Fixed: WPForms Styler - Checked Color setting not working for Checkbox.
+
+Version 1.28.8 Friday, 16th October 2020
+- Fixed: Info List - Layout stacking issue in some cases
+- Fixed: Table - Body Cells Padding not working in Responsive Stacked layout
+
+Version 1.28.7 Wednesday, 7th October 2020
+- Improvement: Dual Button - Added border settings for each button
+- Improvement: Dual Color Heading - Added background text option
+- Improvement: Dual Color Heading - Added background fill option
+- Improvement: Dual Color Heading - Added inline and stack option for headings
+- Improvement: Dual Color Heading - Added separate typography for both headings
+- Improvement: Dual Color Heading - Option to add text after the Heading
+- Improvement: Heading - Added background text option
+- Improvement: Heading - Added fill background image and gradient option
+- Improvement: Heading - Added Description position option
+- Improvement: Info Box - Added option for Border Radius
+- Improvement: Info Box - Added Image / Icon Spacing option
+- Improvement: Price Box - Added Heading icon option
+- Improvement: Price Box - Added Featured List icon option
+- Improvement: Price Box - Added Offering Price Option
+- Improvement: Price Box - Added Ribbon option
+- Improvement: Price Box - Added Price Position option
+- Improvement: Price Box - Added Box Padding and Item Padding options for Feature List
+- Improvement: Price Box - Added Box Shadow option
+- Improvement: Info List - Added an option to align list
+- Improvement: Fancy Text - Added New animations
+- Improvement: Price List - Added none border option for Connector Line style
+- Improvement: Table - Added responsive support
+- Fixed: Advanced Posts - Posts layout issue with Grid layout
+- Fixed: Dual Button - Border Hover Color setting not working
+- Fixed: FAQ Schema - Active FAQ background color not working
+- Fixed: Heading - Alignment setting not working for Description
+- Fixed: Info Box - Border setting not working properly in some themes
+- Fixed: Table - Border is applied even if set to zero
+- Fixed: Price List - Layout issue when Image is not set
+- Fixed: Price List - Connector hover color not working
+
+Version 1.28.6 Tuesday, 15th September 2020
+- Fixed: Info Box: Resolved default padding causing layout issue.
+- Fixed: Image Carousel: Enable Arrow settings conflict in mobile devices
+- Fixed: Video Gallery: Typography settings not visible for caption when set to Always
+
+Version 1.28.5 Tuesday, 8th September 2020
+- Improvement: Info Box - Added Box Shadow settings
+- Improvement: Table of Contents - RankMath plugin compatibility added
+- Fixed: Advanced Posts - Issue with Taxonomy Filters showing empty categories
+- Fixed: Advanced Tab - Min-height issue in the content layout
+- Fixed: Content Toggle - Issue with Toggle animation not working after the first switch
+- Fixed: Woo-Products - Issue with Pagination not working
+- Fixed: Woo-Products - Issue with variable product images not reflecting in quick view
+
 Version 1.28.4 Thursday, 20th August 2020
 - Improvement: Social Share - Added new styles, floating share buttons and UI improvements
 - Improvement: Advanced Posts - Added settings to change meta separator

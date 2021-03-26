@@ -7,7 +7,6 @@
 
         this.infinite          = settings.infinite;
         this.arrows            = settings.arrows;
-        this.arrows_responsive = settings.responsive_arrows;
         this.slidesToScroll    = settings.slidesToScroll;
         this.autoplay          = settings.autoplay;
         this.on_pause_hover    = settings.onhover;
@@ -77,7 +76,6 @@
                         breakpoint: this.small_breakpoint,
                         settings: {
                             slidesToShow: this.small,
-                            arrows: this.arrows_responsive
                         }
                     }
                 ]

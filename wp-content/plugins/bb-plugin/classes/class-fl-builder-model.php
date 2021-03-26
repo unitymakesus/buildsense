@@ -265,7 +265,7 @@ final class FLBuilderModel {
 	 * @return string
 	 */
 	static public function get_relative_plugin_url() {
-		$url = str_ireplace( home_url(), '', FL_BUILDER_URL );
+		$url         = str_ireplace( home_url(), '', FL_BUILDER_URL );
 		$parsed_path = parse_url( FL_BUILDER_URL, PHP_URL_PATH );
 
 		if ( strstr( $url, '://' ) && $parsed_path ) {
@@ -512,6 +512,7 @@ final class FLBuilderModel {
 
 			wp_set_post_lock( $data['fl_builder_post_lock']['post_id'] );
 		}
+		return $response;
 	}
 
 	/**
@@ -789,7 +790,7 @@ final class FLBuilderModel {
 	 * @since 1.0
 	 * @return string
 	 */
-	static public function get_asset_version() {
+	static public function get_asset_version( $path = false ) {
 		$post_id = self::get_post_id();
 		$active  = self::is_builder_active();
 		$preview = self::is_builder_draft_preview();
@@ -797,9 +798,10 @@ final class FLBuilderModel {
 		if ( $active || $preview ) {
 			return md5( uniqid() );
 		} else {
-			return md5( get_post_modified_time( 'U', false, $post_id ) );
+			return $path ? md5( file_get_contents( $path ) ) : md5( get_post_modified_time( 'U', false, $post_id ) );
 		}
 	}
+
 
 	/**
 	 * Returns an array of paths for the CSS and JS assets
@@ -950,11 +952,10 @@ final class FLBuilderModel {
 	 * @since 1.6.3
 	 * @return void
 	 */
-	static public function delete_asset_cache_for_all_posts() {
+	static public function delete_asset_cache_for_all_posts( $parts = '*' ) {
 		$cache_dir = self::get_cache_dir();
-		$css       = glob( $cache_dir['path'] . '*.css' );
-		$js        = glob( $cache_dir['path'] . '*.js' );
-
+		$css       = glob( $cache_dir['path'] . $parts . '.css' );
+		$js        = glob( $cache_dir['path'] . $parts . '.js' );
 		if ( is_array( $css ) ) {
 			array_map( array( fl_builder_filesystem(), 'unlink' ), $css );
 		}
@@ -1611,7 +1612,7 @@ final class FLBuilderModel {
 	 * @param object $data The data array to delete from.
 	 * @return void
 	 */
-	static public function delete_child_nodes_from_data( $parent = null, &$data ) {
+	static public function delete_child_nodes_from_data( $parent, &$data ) {
 		$children = self::get_nodes( null, $parent );
 
 		foreach ( $children as $child_id => $child ) {
@@ -1779,7 +1780,7 @@ final class FLBuilderModel {
 	}
 
 	/**
-	 * Copys a row and adds it to the current layout.
+	 * Copies a row and adds it to the current layout.
 	 *
 	 * @since 1.0
 	 * @param string $node_id Node ID of the row to copy.
@@ -2635,7 +2636,7 @@ final class FLBuilderModel {
 	}
 
 	/**
-	 * Copys a column and adds it to the current layout.
+	 * Copies a column and adds it to the current layout.
 	 *
 	 * @since 2.0
 	 * @param string $node_id Node ID of the column to copy.
@@ -2922,10 +2923,7 @@ final class FLBuilderModel {
 	static public function get_default_enabled_modules() {
 		$default = array_keys( self::$modules );
 
-		// These modules are deprecated and disabled by default.
-		$deprecated = array(
-			'social-buttons',
-		);
+		$deprecated = self::get_deprecated_modules();
 
 		// Remove deprecated modules from the defaults.
 		foreach ( $default as $key => $slug ) {
@@ -2935,6 +2933,17 @@ final class FLBuilderModel {
 		}
 
 		return array_values( $default );
+	}
+
+	/**
+	 * @since 2.4.1
+	 */
+	static public function get_deprecated_modules() {
+		// These modules are deprecated and disabled by default.
+		$deprecated = array(
+			'social-buttons',
+		);
+		return $deprecated;
 	}
 
 	/**
@@ -4039,6 +4048,77 @@ final class FLBuilderModel {
 	}
 
 	/**
+	 * Verify the settings for a node to make sure they
+	 * can be saved safely.
+	 *
+	 * @since 2.4.1
+	 * @param object $settings The settings to verify.
+	 * @return bool
+	 */
+	static public function verify_settings( $settings ) {
+		return self::verify_settings_kses( $settings );
+	}
+
+	/**
+	 * Verify the settings for a node by running them through wp_kses.
+	 * Any settings that have changed mean unallowed code was entered.
+	 *
+	 * @since 2.4.1
+	 * @param object $settings The settings to verify.
+	 * @return bool
+	 */
+	public static function verify_settings_kses( $settings ) {
+
+		if ( ! has_filter( 'safe_style_css', '__return_empty_array' ) ) {
+			add_filter( 'safe_style_css', '__return_empty_array' );
+		}
+
+		foreach ( $settings as $key => $value ) {
+			if ( is_string( $value ) ) {
+				$value     = stripslashes( $value );
+				$sanitized = wp_kses_post( $value );
+				if ( json_encode( $sanitized ) !== json_encode( self::fix_kses( $value ) ) ) {
+					remove_filter( 'safe_style_css', '__return_empty_array' );
+					$output = array(
+						'diff'   => wp_text_diff( $value, $sanitized, array( 'show_split_view' => false ) ),
+						'value'  => self::fix_kses( $value ),
+						'parsed' => $sanitized,
+						'key'    => $key,
+					);
+					return $output;
+				}
+			} else {
+				if ( is_object( $value ) || is_array( $value ) ) {
+					if ( ! self::verify_settings_kses( $value ) ) {
+						remove_filter( 'safe_style_css', '__return_empty_array' );
+						return false;
+					}
+				}
+			}
+		}
+
+		remove_filter( 'safe_style_css', '__return_empty_array' );
+		return true;
+	}
+
+	/**
+	 * Add a space to self closing tags and other things if there isn't one because kses will and checks will fail.
+	 * @since 2.4.2
+	 */
+	static public function fix_kses( $value ) {
+
+		// fix & -> &amp;
+		$value = preg_replace( '/&([a-z0-9#]+);/i', '&$1;', $value );
+		$value = preg_replace( '#(&)(?!(.*);)#i', '&amp;', $value );
+
+		// fix <br/> -> <br />
+		$value = preg_replace( '#(<[a-z]+)(\/>)#', '$1 $2', $value );
+
+		return $value;
+	}
+
+
+	/**
 	 * Sanitizes settings for a form.
 	 *
 	 * @since 2.0
@@ -4312,7 +4392,7 @@ final class FLBuilderModel {
 
 		if ( 'fl-builder-template' == $post->post_type ) {
 			/**
-			 * Limit the ammount of revisions for the fl-builder-template type.
+			 * Limit the amount of revisions for the fl-builder-template type.
 			 * @see fl_builder_template_revisions
 			 */
 			$num = apply_filters( 'fl_builder_template_revisions', 25 );
@@ -4540,7 +4620,7 @@ final class FLBuilderModel {
 	}
 
 	/**
-	* Remove all empty values from the settings object recursivly to save ~60% db size
+	* Remove all empty values from the settings object recursively to save ~60% db size
 	* @since 2.3
 	* @param array $haystack
 	* @param array $values
@@ -5802,17 +5882,17 @@ final class FLBuilderModel {
 				// Unset this node in the layout data.
 				unset( $layout_data[ $node_id ] );
 
-				// Find sibiling nodes to update their position.
+				// Find sibling nodes to update their position.
 				foreach ( $layout_data as $i => $n ) {
 					if ( $n->parent == $node->parent ) {
 						$siblings[ $i ] = $n;
 					}
 				}
 
-				// Sort the sibiling nodes by position.
+				// Sort the sibling nodes by position.
 				uasort( $siblings, array( 'FLBuilderModel', 'order_nodes' ) );
 
-				// Update sibiling node positions.
+				// Update sibling node positions.
 				foreach ( $siblings as $i => $n ) {
 					$layout_data[ $i ]->position = $position;
 					$position++;
@@ -6005,8 +6085,11 @@ final class FLBuilderModel {
 
 		// glob() will return false on error so cast as an array() just in case.
 		foreach ( (array) $templates as $template ) {
+			$basename = basename( $template );
 
-			if ( 'templates.dat' == basename( $template ) ) {
+			if ( 'templates.dat' === $basename ) {
+				continue;
+			} elseif ( true !== FL_BUILDER_LITE && 'templates-config.dat' === $basename ) {
 				continue;
 			}
 
@@ -6263,6 +6346,7 @@ final class FLBuilderModel {
 				'type'     => 'core',
 				'kind'     => 'template',
 				'content'  => ! in_array( $type, array( 'row', 'column', 'module' ) ) ? 'layout' : $type,
+				'premium'  => isset( $template->premium ) ? ! ! $template->premium : false,
 			), $template );
 		}
 
@@ -6378,6 +6462,23 @@ final class FLBuilderModel {
 	 */
 	static public function get_module_templates_data() {
 		return apply_filters( 'fl_builder_module_templates_data', self::get_template_selector_data( 'module' ) );
+	}
+
+	/**
+	 * Returns the config for pro modules if it exists.
+	 *
+	 * @since 2.4
+	 * @return object
+	 */
+	static public function get_pro_modules_config() {
+		$path   = FL_BUILDER_DIR . 'json/modules-config.json';
+		$config = new stdClass;
+
+		if ( file_exists( $path ) ) {
+			$config = json_decode( file_get_contents( $path ) );
+		}
+
+		return $config;
 	}
 
 	/**

@@ -1,25 +1,32 @@
-import React, { Component, Fragment } from 'react'
-import InlineEditor from 'components/inline-editor'
-import { NotificationsManager } from 'builder/notifications'
-import { SVGSymbols } from './svg'
+import React from 'react'
+import { useSystemState } from 'data'
+import { NotificationsManager } from './notifications'
+import InlineEditor from './inline-editor'
+import ShortcutsPanel from './shortcuts-panel'
+import { SVGSymbols } from './art'
+import PanelManager from './panel-manager'
+import './style.scss'
 
 /**
- * Class for rendering all of the main
- * builder UI components.
+ * Builder React-based UI Root
  *
- * @since 2.1
- * @class UI
+ * Gets rendered onto the page and remains.
  */
-class UI extends Component {
-	render() {
-		return (
-			<Fragment>
-				<InlineEditor />
-				<NotificationsManager />
-				<SVGSymbols />
-			</Fragment>
-		)
-	}
+const BeaverBuilderUI = () => {
+	const { isEditing, shouldShowShortcuts } = useSystemState()
+	return (
+		<>
+			<InlineEditor />
+			{ isEditing && (
+				<>
+					<SVGSymbols />
+					<NotificationsManager />
+					{ shouldShowShortcuts && <ShortcutsPanel /> }
+					<PanelManager />
+				</>
+			) }
+		</>
+	)
 }
 
-export default UI
+export default BeaverBuilderUI

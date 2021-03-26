@@ -27,8 +27,8 @@ class UABBFAQModule extends FLBuilderModule {
 	public function __construct() {
 		parent::__construct(
 			array(
-				'name'            => __( 'FAQ', 'uabb' ),
-				'description'     => __( 'FAQ', 'uabb' ),
+				'name'            => __( 'FAQ Schema', 'uabb' ),
+				'description'     => __( 'FAQ Schema', 'uabb' ),
 				'category'        => BB_Ultimate_Addon_Helper::module_cat( BB_Ultimate_Addon_Helper::$content_modules ),
 				'group'           => UABB_CAT,
 				'dir'             => BB_ULTIMATE_ADDON_DIR . 'modules/uabb-faq/',
