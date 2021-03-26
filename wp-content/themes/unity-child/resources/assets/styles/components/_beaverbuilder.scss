@@ -30,3 +30,30 @@
     }
   }
 }
+
+.uabb-image-carousel button.slick-next {
+  right: 14px !important;
+}
+
+.uabb-image-carousel button.slick-prev {
+  left: 14px !important;
+}
+
+.uabb-image-carousel .slick-dots > li {
+  padding-left: 0 !important;
+  margin-right: 10px !important;
+
+  > button {
+    width: 10px !important;
+    height: 10px !important;
+    border: 2px solid $color-yellow !important;
+  }
+
+  &.slick-active > button {
+    background-color: $color-yellow;
+  }
+
+  &::before {
+    display: none !important;
+  }
+}
